@@ -4,7 +4,7 @@
 // 1. Define route components.
 // These can be imported from other files
 const Foo = { template: '<div>foo</div>' };
-const Bar = { template: '<div>bar</div>' };
+const Home = { template: '#home-template' };
 const User = { template: '<div>User {{ $route.params.uname }}</div>' };
 
 // 2. Define some routes
@@ -15,7 +15,8 @@ const User = { template: '<div>User {{ $route.params.uname }}</div>' };
 const routes = [
   // { path: '/foo', component: Foo },
   // { path: '/bar', component: Bar },
-  { path: '/user/:uname', component: User, name: 'user' }
+  { path: '/', component: Home, name: 'home' },
+  { path: '/solicitud', component: User, name: 'user' }
 ]
 
 // 3. Create the router instance and pass the `routes` option

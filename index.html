@@ -13,7 +13,7 @@
     <!-- use router-link component for navigation. -->
     <!-- specify the link by passing the `to` prop. -->
     <!-- `<router-link>` will be rendered as an `<a>` tag by default -->
-    <router-link to="/user/foo">Go to Foo</router-link>
+    <router-link to="/">Go to Home</router-link>
     <router-link to="/user/bar">Go to Bar</router-link>
     <router-link to="/user">Go to User</router-link>
   </p>
@@ -22,6 +22,12 @@
   <router-view></router-view>
 </div>
 
+
+<script type="text/x-template" id="home-template">
+	<div>
+  Home
+</div>
+</script>
 
 <script src="js/main.js"></script>
 
