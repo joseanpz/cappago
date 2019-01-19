@@ -1,35 +1,83 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Capacidad de Pago</title>
-
-	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Capacidad de Pago</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">    
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
-</head>
-<body>
-<div id="app">
-  <h1>Hello App!</h1>
-  <p>
-    <!-- use router-link component for navigation. -->
-    <!-- specify the link by passing the `to` prop. -->
-    <!-- `<router-link>` will be rendered as an `<a>` tag by default -->
-    <router-link to="/">Go to Home</router-link>
-    <router-link to="/user/bar">Go to Bar</router-link>
-    <router-link to="/user">Go to User</router-link>
-  </p>
-  <!-- route outlet -->
-  <!-- component matched by the route will render here -->
-  <router-view></router-view>
-</div>
+
+  </head>
+  <body>
+
+    <div id="app">
+    <nav class="navbar is-primary">
+      	<div class="container">
+      	  <div class="navbar-brand">
+      	  	<a class="navbar-item" href="#" style="font-weight:bold;">
+      	  	  banregio 	
+      	  	</a>
+      	  	<span class="navbar-burger burger" data-target="navMenu">
+      	  	  <span></span>
+      	  	  <span></span>
+      	  	  <span></span>
+      	  	</span>
+      	  </div> 
+  	  	  <div id="navMenu" class="navbar-end">
+  	  		<div class="navbar-end">
+  	  			<a href="#/" class="navbar-item" is-active>Inicio</a>
+  	  			<a href="#/evaluaciones" class="navbar-item">Evaluaciones</a>
+  	  			<a href="#/evaluar" class="navbar-item">Nueva Evaluación</a>
+  	  		</div>
+  	  	  </div>      	  
+      	</div>
+    </nav>	
+      
+       <!-- route outlet -->
+       <!-- component matched by the route will render here -->
+      <router-view></router-view>
+    </div>
+  
+  </body>
+
+  
 
 
-<script type="text/x-template" id="home-template">
+  <!-- Vue templates -->
+  <script type="text/x-template" id="home-template">
 	<div>
-  Home
-</div>
-</script>
+	  <section class="container">
+	  	<div class="columns"> <div class="column">Home</div> </div>
+	  </section>
+	</div>
+  </script>
 
-<script src="js/main.js"></script>
+  <script type="text/x-template" id="form-template">
+    <div>
+      Form
+    </div>
+  </script>
+  <script type="text/x-template" id="list-template">
+    <div>
+      List-Table
+    </div>
+  </script>
+  <script type="text/x-template" id="updateform-template">
+    <div>
+      Update Form {{ $route.params.id }}
+    </div>
+  </script>
+  <script type="text/x-template" id="detail-template">
+    <div>
+      Detail {{ $route.params.id }}
+    </div>
+  </script>
 
-</body>
+  <!-- js -->
+  <script src="js/main.js"></script>
 </html>
