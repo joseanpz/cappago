@@ -12,8 +12,8 @@
 
 // 1. Define route components.
 // These can be imported from other files
-const Home = { 
-	template: '#home-template',
+const EvalList = { 
+	template: '#list-template',
 	data() {
 		return {
 		  data: [
@@ -51,7 +51,7 @@ const Home = {
 
 		}
 	} };
-const EvalList = { template: '#list-template' };
+const Home = { template: '#home-template' };
 const EvalForm = { template: '#form-template' };
 const EvalUpdateForm = { template: '#updateform-template' };
 const EvalDetail = { template: '#detail-template' };
