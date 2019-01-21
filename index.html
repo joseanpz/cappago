@@ -56,7 +56,11 @@
 	  <section class="container">
 	  	<div class="columns"> <div class="column">Home</div>
           
-            <DataTable></DataTable>
+           <b-table
+                :data="data"
+                :columns="columns"
+                :row-class="(row, index) => row.id === 1 && 'is-info'">
+            </b-table>
         
        </div>
 	  </section>
