@@ -5,11 +5,11 @@
 // `Vue.extend()`, or just a component options object.
 // We'll talk about nested routes later.
 const routes = [
-  { path: '/', component: Home, name: 'home' },
-  { path: '/evaluaciones', component: EvalList, name: 'evaluaciones' },
-  { path: '/evaluar', component: EvalForm, name: 'evaluar' },
-  { path: '/evaluaciones/:id', component: EvalDetail, name: 'evaluaciones-detalle' },
-  { path: '/evaluar/:id', component: EvalUpdateForm, name: 'reevaluar' }
+  { path: '/', component: HomeController, name: 'home' },
+  { path: '/evaluaciones', component: EvalListController, name: 'evaluaciones' },
+  { path: '/evaluar', component: EvalFormController, name: 'evaluar' },
+  { path: '/evaluaciones/:id', component: EvalDetailController, name: 'evaluaciones-detalle' },
+  { path: '/evaluar/:id', component: EvalUpdateFormController, name: 'reevaluar' }
 ]
 
 // 3. Create the router instance and pass the `routes` option
