@@ -7,87 +7,8 @@
   });
 })();
 
-// 0. If using a module system (e.g. via vue-cli), import Vue and VueRouter
-// and then call `Vue.use(VueRouter)`.
-
-// 1. Define route components.
-// These can be imported from other files
-	
-const Home = { template: '#home-template' };
-
-const EvalList = { 
-	template: '#list-template',
-	components: {
-      DataTable,
-	},
-	data() {
-		return {
-		  data: [
-                { 'id': 1, 'first_name': 'Jesse', 'last_name': 'Simmons', 'date': '2016-10-15 13:43:27', 'gender': 'Male' },
-                { 'id': 2, 'first_name': 'John', 'last_name': 'Jacobs', 'date': '2016-12-15 06:00:53', 'gender': 'Male' },
-                { 'id': 3, 'first_name': 'Tina', 'last_name': 'Gilbert', 'date': '2016-04-26 06:26:28', 'gender': 'Female' },
-                { 'id': 4, 'first_name': 'Clarence', 'last_name': 'Flores', 'date': '2016-04-10 10:28:46', 'gender': 'Male' },
-                { 'id': 5, 'first_name': 'Anne', 'last_name': 'Lee', 'date': '2016-12-06 14:38:38', 'gender': 'Female' }
-              ],
-          columns: [
-            {
-                field: 'id',
-                label: 'ID',
-                width: '40',
-                numeric: true
-            },
-            {
-                field: 'first_name',
-                label: 'First Name',
-            },
-            {
-                field: 'last_name',
-                label: 'Last Name',
-            },
-            {
-                field: 'date',
-                label: 'Date',
-                centered: true
-            },
-            {
-                field: 'gender',
-                label: 'Gender',
-            }
-          ]
-
-		}
-	} };
-
-const EvalForm = { 
-	template: '#form-template',
-	components: {
-		EvalFormWizard,
-	} 
-};
 
 
-const EvalUpdateForm = { template: '#updateform-template' };
-const EvalDetail = { template: '#detail-template' };
- 
-// 2. Define some routes
-// Each route should map to a component. The "component" can
-// either be an actual component constructor created via
-// `Vue.extend()`, or just a component options object.
-// We'll talk about nested routes later.
-const routes = [
-  { path: '/', component: Home, name: 'home' },
-  { path: '/evaluaciones', component: EvalList, name: 'evaluaciones' },
-  { path: '/evaluar', component: EvalForm, name: 'evaluar' },
-  { path: '/evaluaciones/:id', component: EvalDetail, name: 'evaluaciones-detalle' },
-  { path: '/evaluar/:id', component: EvalUpdateForm, name: 'reevaluar' }
-]
-
-// 3. Create the router instance and pass the `routes` option
-// You can pass in additional options here, but let's
-// keep it simple for now.
-const router = new VueRouter({
-  routes // short for `routes: routes`
-})
 
 // 4. Create and mount the root instance.
 // Make sure to inject the router with the router option to make the
