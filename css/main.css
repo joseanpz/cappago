@@ -1,0 +1,17 @@
+/*body, html {
+	font-family: "LL Circular Pro Book Web";
+}*/
+
+.navbar.is-primary {
+	background-color: #FF681E;
+	height: 110px;
+	font-size: 45px;
+}
+
+.navbar a:hover {
+	background-color: #e57238 !important;
+}
+
+#navMenu {
+	font-size: 25px;
+}

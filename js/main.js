@@ -1,10 +1,24 @@
+(function() {
+  var burger = document.querySelector('.burger');
+  var nav = document.querySelector('#'+burger.dataset.target);
+  burger.addEventListener('click', function(){
+    burger.classList.toggle('is-active');
+    nav.classList.toggle('is-active');
+  });
+})();
+
 // 0. If using a module system (e.g. via vue-cli), import Vue and VueRouter
 // and then call `Vue.use(VueRouter)`.
 
 // 1. Define route components.
 // These can be imported from other files
-const Foo = { template: '<div>foo</div>' };
 const Home = { template: '#home-template' };
+const EvalList = { template: '#list-template' };
+const EvalForm = { template: '#form-template' };
+const EvalUpdateForm = { template: '#updateform-template' };
+const EvalDetail = { template: '#detail-template' };
+
+
 const User = { template: '<div>User {{ $route.params.uname }}</div>' };
 
 // 2. Define some routes
@@ -16,7 +30,10 @@ const routes = [
   // { path: '/foo', component: Foo },
   // { path: '/bar', component: Bar },
   { path: '/', component: Home, name: 'home' },
-  { path: '/solicitud', component: User, name: 'user' }
+  { path: '/evaluaciones', component: EvalList, name: 'evaluaciones' },
+  { path: '/evaluar', component: EvalForm, name: 'evaluar' },
+  { path: '/evaluaciones/:id', component: EvalDetail, name: 'evaluaciones-detalle' },
+  { path: '/evaluar/:id', component: EvalUpdateForm, name: 'reevaluar' }
 ]
 
 // 3. Create the router instance and pass the `routes` option
