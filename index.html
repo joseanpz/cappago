@@ -8,9 +8,11 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
     <!-- Vue -->
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
 
   </head>
   <body>
@@ -52,20 +54,40 @@
   <script type="text/x-template" id="home-template">
 	<div>
 	  <section class="container">
-	  	<div class="columns"> <div class="column">Home</div> </div>
+	  	<div class="columns"> <div class="column">Home</div>
+          
+            <DataTable></DataTable>
+        
+       </div>
 	  </section>
 	</div>
   </script>
 
+  <script type="text/x-template" id="table-template">
+          
+            <b-table
+                :data="data_table.data"
+                :columns="data_table.columns"
+                :row-class="(row, index) => row.id === 1 && 'is-info'">
+            </b-table>
+
+  </script>
+
   <script type="text/x-template" id="form-template">
     <div>
-      Form
-    </div>
+    <section class="container">
+      <div class="columns"> <div class="column">Form</div>
+
+       </div>
+    </section>
+  </div>
   </script>
   <script type="text/x-template" id="list-template">
     <div>
-      List-Table
-    </div>
+    <section class="container">
+      <div class="columns"> <div class="column">List</div> </div>
+    </section>
+  </div>
   </script>
   <script type="text/x-template" id="updateform-template">
     <div>
