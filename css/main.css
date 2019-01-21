@@ -15,3 +15,13 @@
 #navMenu {
 	font-size: 25px;
 }
+
+.btn_editar{
+	background:#fb6830 !important; 
+	color:white !important;
+}
+
+.btn_detalles{
+	background:#3a5fab !important; 
+	color:white !important;
+}

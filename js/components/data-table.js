@@ -60,6 +60,23 @@ const DataTable = Vue.component('data-table', {
                     </b-icon>
                     {{ props.row.gender }}
                 </b-table-column>
+                <b-table-column label="Acciones">
+                    <router-link :to="{ name: 'evaluaciones-detalle', params: { id: props.row.id }}">
+	                    <a class="button btn_detalles"  title="Detalles">
+						    <span class="icon">
+						      <i class="far fa-clipboard"></i>
+						    </span>
+						   
+						 </a>
+                    </router-link>
+                    <router-link :to="{ name: 'reevaluar', params: { id: props.row.id }}">
+	                    <a class="button btn_editar"  title="Editar">
+						    <span class="icon">
+						      <i class="far fa-edit"></i>
+						    </span>
+						 </a>
+                    </router-link>
+                </b-table-column>
             </template>
         </b-table>
     </section>`,
@@ -111,6 +128,10 @@ const DataTable = Vue.component('data-table', {
                 {
                 field: 'gender',
                 label: 'Gender',
+                },
+                {
+                field: 'Acciones',
+                label: 'Acciones',
                 }
             ],
           isPaginated: true,
