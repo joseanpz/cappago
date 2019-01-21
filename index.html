@@ -7,11 +7,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">    
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     
-    <link rel="stylesheet" href="css/main.css">
+    
+    <link rel="stylesheet" href="https://unpkg.com/vue-form-wizard/dist/vue-form-wizard.min.css">
     <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <link rel="stylesheet" href="css/main.css">
     <!-- Vue -->
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script src="https://unpkg.com/vue-form-wizard/dist/vue-form-wizard.js"></script>
     <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
 
   </head>
@@ -54,42 +57,42 @@
   <script type="text/x-template" id="list-template">
 	<div>
 	  <section class="container">
-	  	<div class="columns"> <div class="column">List</div>
-          
-           <b-table
+	  	<div class="columns"> 
+	  		<div class="column">
+	  			List          
+              <data-table
                 :data="data"
                 :columns="columns"
-                :row-class="(row, index) => row.id === 1 && 'is-info'">
-            </b-table>
+              >                
+              </data-table>
+            </div>
         
        </div>
 	  </section>
 	</div>
   </script>
 
-  <script type="text/x-template" id="table-template">
-          
-            <b-table
-                :data="data_table.data"
-                :columns="data_table.columns"
-                :row-class="(row, index) => row.id === 1 && 'is-info'">
-            </b-table>
-
-  </script>
 
   <script type="text/x-template" id="form-template">
-    <div>
+  <div>
     <section class="container">
-      <div class="columns"> <div class="column">Form</div>
-
-       </div>
+      <div class="columns"> 
+      	<div class="column">
+      	  Form
+      	  <eval-form></eval-form>
+      	</div>  
+      </div> 
     </section>
   </div>
   </script>
   <script type="text/x-template" id="home-template">
     <div>
     <section class="container">
-      <div class="columns"> <div class="column">Home</div> </div>
+      <div class="columns"> 
+      	<div class="column">
+      	  Home
+      	</div>
+      </div>
     </section>
   </div>
   </script>
@@ -105,5 +108,7 @@
   </script>
 
   <!-- js -->
+  <script src="js/components/data-table.js"></script>
+  <script src="js/components/eval-form.js"></script>
   <script src="js/main.js"></script>
 </html>
