@@ -1,5 +1,6 @@
 Vue.use(VueFormWizard);
 
+
 const EvalFormWizard = Vue.component('eval-form', {
 	template: '<form-wizard @on-complete="onComplete" \
 	             subtitle="subtitulo" nextButtonText="Siguiente" \
@@ -8,19 +9,19 @@ const EvalFormWizard = Vue.component('eval-form', {
 	            > \
 	             <h1 slot="title">Evaluación</h1> \
 	             <tab-content title="Personal details" icon="" :before-change="beforeTabSwitch"> \
-			       My first tab content \
+			        <first-form-step></first-form-step>\
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
-			       My second tab content \
+			       	<second-form-step></second-form-step> \
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
-			       My second tab content \
+			       <second-form-step></second-form-step> \
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
-			       My second tab content \
+			       <second-form-step></second-form-step> \
 			     </tab-content> \
 			     <tab-content title="Last step"> \
-			       Yuhuuu! This seems pretty damn simple \
+			       <second-form-step></second-form-step> \
 			     </tab-content> \
 			     <template slot="footer" slot-scope="props"> \
                    <div class="wizard-footer-left"> \
@@ -35,6 +36,102 @@ const EvalFormWizard = Vue.component('eval-form', {
                    </div> \
                  </template> \
 			   </form-wizard>',
+    data () {
+    	return {
+    		radio: "Jack",
+		   model:{
+			    firstName:'',
+			    lastName:'',
+			    email:'',
+			    streetName:'',
+			    streetNumber:'',
+			    city:'',
+			    country:''
+		   },
+		   formOptions: {
+			    validationErrorClass: "has-error",
+			    validationSuccessClass: "has-success",
+			    validateAfterChanged: true
+		   },
+		   firstTabSchema:{
+			     fields:[
+				     {
+				        type: "input",
+								inputType: "text",
+				        label: "First name",
+				        model: "firstName",
+				        required:true,
+				        validator:VueFormGenerator.validators.string,
+				        styleClasses:'col-xs-6'
+				     },
+				     {
+				        type: "input",
+								inputType: "text",
+				        label: "Last name",
+				        model: "lastName",
+				        required:true,
+				        validator:VueFormGenerator.validators.string,
+				        styleClasses:'col-xs-6'
+				     },
+				      {
+				        type: "input",
+								inputType: "text",
+				        label: "Email",
+				        model: "email",
+				        required:true,
+				        validator:VueFormGenerator.validators.email,
+				        styleClasses:'col-xs-12'
+				     }
+			     ]
+		   },
+		   secondTabSchema:{
+		     fields:[
+			     {
+			        type: "input",
+							inputType: "text",
+			        label: "Street name",
+			        model: "streetName",
+			        required:true,
+			        validator:VueFormGenerator.validators.string,
+			        styleClasses:'col-xs-9'
+			     },
+			      {
+			        type: "input",
+							inputType: "text",
+			        label: "Street number",
+			        model: "streetNumber",
+			        required:true,
+			        validator:VueFormGenerator.validators.string,
+			        styleClasses:'col-xs-3'
+			      },
+			      {
+			        type: "input",
+							inputType: "text",
+			        label: "City",
+			        model: "city",
+			        required:true,
+			        validator:VueFormGenerator.validators.string,
+			        styleClasses:'col-xs-6'
+			      },
+			      {
+			        type: "select",
+			        label: "Country",
+			        model: "country",
+			        required:true,
+			        validator:VueFormGenerator.validators.string,
+			        values:['United Kingdom','Romania','Germany'],
+			        styleClasses:'col-xs-6'
+			      },
+		     ]
+		   }
+ 
+        }
+    },
+    components : {
+    	FirstFormStep,
+    	SecondFormStep,
+    },  
+
     methods: {
     	onComplete: function(){
           alert('Yay. Done!');
@@ -43,7 +140,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           alert('Saving form!');
         },
         beforeTabSwitch: function(){
-           alert("This is called before switchind tabs")
+           //alert("This is called before switchind tabs")
            return true;
         }      
     }
