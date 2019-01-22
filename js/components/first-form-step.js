@@ -28,5 +28,11 @@ const FirstFormStep = Vue.component('first-form-step', {
 				radio: "Jack",
 			}
 		}
+	},
+
+	watch: {
+		evaluation_type: function (val) {
+			this.$emit('eval-type-change', val);
+		}
 	}
 });

@@ -9,19 +9,23 @@ const EvalFormWizard = Vue.component('eval-form', {
 	            > \
 	             <h1 slot="title">Evaluación</h1> \
 	             <tab-content title="Personal details" icon="" :before-change="beforeTabSwitch"> \
-			        <first-form-step></first-form-step>\
+			        <first-form-step v-on:eval-type-change="setEvalType"></first-form-step>\
+			        <p class="content"> \
+					    <b>Selection:</b> \
+					    {{ evaluation_type }} \
+					</p> \
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
-			       	<second-form-step></second-form-step> \
+			       	<second-form-step :bank_list="bank_list"></second-form-step> \
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
-			       <second-form-step></second-form-step> \
+			       <third-form-step></third-form-step> \
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
-			       <second-form-step></second-form-step> \
+			       <third-form-step></third-form-step> \
 			     </tab-content> \
 			     <tab-content title="Last step"> \
-			       <second-form-step></second-form-step> \
+			       <third-form-step></third-form-step> \
 			     </tab-content> \
 			     <template slot="footer" slot-scope="props"> \
                    <div class="wizard-footer-left"> \
@@ -38,98 +42,34 @@ const EvalFormWizard = Vue.component('eval-form', {
 			   </form-wizard>',
     data () {
     	return {
-    		radio: "Jack",
-		   model:{
-			    firstName:'',
-			    lastName:'',
-			    email:'',
-			    streetName:'',
-			    streetNumber:'',
-			    city:'',
-			    country:''
-		   },
-		   formOptions: {
-			    validationErrorClass: "has-error",
-			    validationSuccessClass: "has-success",
-			    validateAfterChanged: true
-		   },
-		   firstTabSchema:{
-			     fields:[
-				     {
-				        type: "input",
-								inputType: "text",
-				        label: "First name",
-				        model: "firstName",
-				        required:true,
-				        validator:VueFormGenerator.validators.string,
-				        styleClasses:'col-xs-6'
-				     },
-				     {
-				        type: "input",
-								inputType: "text",
-				        label: "Last name",
-				        model: "lastName",
-				        required:true,
-				        validator:VueFormGenerator.validators.string,
-				        styleClasses:'col-xs-6'
-				     },
-				      {
-				        type: "input",
-								inputType: "text",
-				        label: "Email",
-				        model: "email",
-				        required:true,
-				        validator:VueFormGenerator.validators.email,
-				        styleClasses:'col-xs-12'
-				     }
-			     ]
-		   },
-		   secondTabSchema:{
-		     fields:[
-			     {
-			        type: "input",
-							inputType: "text",
-			        label: "Street name",
-			        model: "streetName",
-			        required:true,
-			        validator:VueFormGenerator.validators.string,
-			        styleClasses:'col-xs-9'
-			     },
-			      {
-			        type: "input",
-							inputType: "text",
-			        label: "Street number",
-			        model: "streetNumber",
-			        required:true,
-			        validator:VueFormGenerator.validators.string,
-			        styleClasses:'col-xs-3'
-			      },
-			      {
-			        type: "input",
-							inputType: "text",
-			        label: "City",
-			        model: "city",
-			        required:true,
-			        validator:VueFormGenerator.validators.string,
-			        styleClasses:'col-xs-6'
-			      },
-			      {
-			        type: "select",
-			        label: "Country",
-			        model: "country",
-			        required:true,
-			        validator:VueFormGenerator.validators.string,
-			        values:['United Kingdom','Romania','Germany'],
-			        styleClasses:'col-xs-6'
-			      },
-		     ]
-		   }
- 
+    		evaluation_type: "account_statements",
+    		solicitation_number: null,
+    		account_statements: [
+    			{
+    				bank_name: null,
+    				statements: [
+    					{
+    						month: null,
+    						deposits: null,
+    						balance: null
+    					}
+    				]
+    			}
+    		],
+    		// static, must be loaded from backend
+    		bank_list: [
+    			"Banregio",
+    			"Scotiabank",
+    			"Bancomer",
+    			"Banorte",
+    			"Banamex"
+    		]		   
         }
     },
     components : {
     	FirstFormStep,
     	SecondFormStep,
+    	ThirdFormStep
     },  
 
     methods: {
@@ -142,7 +82,10 @@ const EvalFormWizard = Vue.component('eval-form', {
         beforeTabSwitch: function(){
            //alert("This is called before switchind tabs")
            return true;
-        }      
+        },
+        setEvalType: function(val) {
+        	this.evaluation_type = val;
+        }     
     }
 });
 
