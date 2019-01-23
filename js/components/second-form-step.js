@@ -1,38 +1,56 @@
 Vue.use(VueJsonPretty);
 const SecondFormStep = Vue.component('second-form-step', {
 	props: ["bank_list"],
-	template: `<section> \
-					<b-field label="Seleccione Banco"> \
-            			<b-select placeholder="Select a name" v-model="selected_bank"> \
-                			<option \
-                    		v-for="option in bank_list" \
-                    		:value="option" \
-                    		:key="option" > \
-                   				{{ option}} \
-                			</option> \
-            			</b-select> \
-            		</b-field> \
-            		<a class="button is-medium" @click="addAccountStetment">\
-    					Agregar \
-  					</a> \
+	template: `<section> 
+                <div class="columns">
+                  <div  class="column is-2">
+                      <b-field label="Seleccione un Banco"></b-field>
+                  </div>
+                  <div class="column is-2">
+                      <b-select placeholder="Select a name" v-model="selected_bank"> 
+                        <option 
+                          v-for="option in bank_list" 
+                          :value="option" 
+                          :key="option" > 
+                            {{ option}} 
+                        </option> 
+                      </b-select> 
+                      
+                  </div>
+                  <div class="column is-2">
+                  <a class="button is-light" @click="addAccountStetment">
+                      <span class="icon is-small">
+                        <i class="fas fa-check"></i>
+                      </span>
+                      <span>Agregar</span>
+                  </a>
+                  </div>
+                </div>
+                <hr/>
+
   					<div v-if="account_statements.length">
-	  					<div class="columns" > \
-	  						<div class="column" v-for="acc_smnt in account_statements" :key="acc_smnt.id">\
-	  							{{acc_smnt.bank_name}}\
-	  							<b-field v-for="statement in acc_smnt.statements" :key="statement.id"> \
-	  								<b-input type="number" step="0.01" v-model="statement.deposits"></b-input> \
-	  								<b-input type="number" step="0.01" v-model="statement.balance"></b-input> \
-	  							</b-field> \
-	  							<a class="button" @click="addStatement(acc_smnt.id)">\
-	    							Agregar registro \
-	  							</a> \
-	  							<a class="button" @click="deleteAccountStatement(acc_smnt.id)">\
-	    							Borrar banco \
-	  							</a> \
-	  						</div>\	  						
-	  					</div>	  					
-	  					
-  					</div> \
+	  					<div class="columns" >
+	  						<div class="column" v-for="acc_smnt in account_statements" :key="acc_smnt.id">
+	  							<div v-bind:class="{ 'is-6': account_statements.length===1 }" class="card column">
+                      <header class="card-header">
+                        <p class="card-header-title title-color">{{acc_smnt.bank_name}}</p>
+                      </header>  
+                      <div class="card-content">
+                        <div class="content">
+        	  							<b-field v-for="statement in acc_smnt.statements" :key="statement.id">
+        	  								<b-input type="number" step="0.01" v-model="statement.deposits"></b-input>
+        	  								<b-input type="number" step="0.01" v-model="statement.balance"></b-input>
+        	  							</b-field>
+                        </div>
+                      </div>
+                      <footer class="card-footer">
+                        <a class="card-footer-item" @click="addStatement(acc_smnt.id)">Agregar registro</a>
+                        <a class="card-footer-item" @click="deleteAccountStatement(acc_smnt.id)">Borrar banco</a>
+                      </footer>
+                  </div>
+	  						</div>						
+	  					</div>	  						
+  					</div> 
   					
 				</section> `,
 	data () {
