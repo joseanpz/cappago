@@ -11,7 +11,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 					    </b-radio> \
 					</div> \
 					<div class="field"> \
-					    <b-radio v-model="evaluation_type" size="is-medium" \
+					    <b-radio v-model="evaluation_type" size="is-medium" class="form-color" \
 					        native-value="financial_statements"> \
 					        Estados Financieros  \
 					    </b-radio> \
