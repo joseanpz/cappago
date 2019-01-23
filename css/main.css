@@ -26,3 +26,19 @@
 	color:white !important;
 }
 
+a[target] ,input[type="number"]{
+  
+}
+input[type="number"]:focus { 
+  border-color: #3a5fab;
+}
+.select:focus { 
+  border-color: #3a5fab;
+}
+
+.pagination-link.is-current{
+	 background-color: #3a5fab;
+}
+.check{
+	background-color: #3a5fab;
+}
