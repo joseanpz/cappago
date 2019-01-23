@@ -20,13 +20,14 @@ const EvalFormWizard = Vue.component('eval-form', {
 			       	<!--<pre>{{ account_statements | pretty }}</pre>--> 
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
-			       <third-form-step></third-form-step> \
+			       <third-form-step v-on:smpl-credits-change="setSimpleCredits" v-on:rvlg-credits-change="setRevolvingCredits" ></third-form-step> \
+			       <pre>{{ solicited_credits | pretty }}</pre>
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
-			       <third-form-step></third-form-step> \
+			       <fourth-form-step></fourth-form-step> \
 			     </tab-content> \
 			     <tab-content title="Last step"> \
-			       <third-form-step></third-form-step> \
+			       <fourth-form-step></fourth-form-step> \
 			     </tab-content> \
 			     <template slot="footer" slot-scope="props"> \
                    <div class="wizard-footer-left"> \
@@ -46,6 +47,10 @@ const EvalFormWizard = Vue.component('eval-form', {
     		evaluation_type: "account_statements",
     		solicitation_number: null,
     		account_statements: [],
+    		simple_credits: [],
+    		revolving_credits: [],
+    		//solicited_credits: [],
+    		
     		// static, must be loaded from backend
     		bank_list: [
     			"Banregio",
@@ -60,7 +65,21 @@ const EvalFormWizard = Vue.component('eval-form', {
     	FirstFormStep,
     	SecondFormStep,
     	ThirdFormStep
-    },  
+    },
+
+    computed: {
+    	solicited_credits: function () {
+    		return this.simple_credits.concat(this.revolving_credits);
+    	},
+    },
+
+    filters: {
+    	pretty: function(value) {
+    		console.log('pretty');
+    		console.log(value);
+      		return JSON.stringify(value, null, 2);
+    	}
+  	},
 
     methods: {
     	onComplete: function(){
@@ -78,7 +97,13 @@ const EvalFormWizard = Vue.component('eval-form', {
         },
         setAccountStatements: function(val) {
         	this.account_statements = val;
-        }  
+        },
+        setSimpleCredits: function(val) {
+        	this.simple_credits = val;
+        },
+        setRevolvingCredits: function(val) {
+        	this.revolving_credits = val;
+        } 
     }
 });
 

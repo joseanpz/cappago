@@ -57,7 +57,7 @@ const SecondFormStep = Vue.component('second-form-step', {
 		return {
 			acc_stmnt_count: 0,
 			account_statements: [],
-    		selected_bank: null,
+    	selected_bank: null,
 		}
 	},
 	filters: {
