@@ -20,7 +20,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 			       	<!--<pre>{{ account_statements | pretty }}</pre>--> 
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
-			       <third-form-step></third-form-step> \
+			       <third-form-step v-on:sol-credits-change="setSolicitedCredits"></third-form-step> \
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
 			       <third-form-step></third-form-step> \
@@ -46,6 +46,8 @@ const EvalFormWizard = Vue.component('eval-form', {
     		evaluation_type: "account_statements",
     		solicitation_number: null,
     		account_statements: [],
+    		solicited_credits: [],
+    		
     		// static, must be loaded from backend
     		bank_list: [
     			"Banregio",
@@ -78,7 +80,10 @@ const EvalFormWizard = Vue.component('eval-form', {
         },
         setAccountStatements: function(val) {
         	this.account_statements = val;
-        }  
+        },
+        setSolicitedCredits: function(val) {
+        	this.solicited_credits = val;
+        } 
     }
 });
 
