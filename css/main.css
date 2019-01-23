@@ -30,23 +30,28 @@ a[target] ,input[type="number"]{
   
 }
 input[type="number"]:focus { 
-  border-color: #3a5fab;
+  border-color: #3a5fab !important;
 }
-.select:focus { 
-  border-color: #3a5fab;
+
+select:focus { 
+  border-color: #3a5fab !important;
 }
 
 .pagination-link.is-current{
-	 background-color: #3a5fab;
-}
-
-input[type=radio]:over{
-	border-color: #3a5fab;
+	 background-color: #3a5fab !important;
 }
 
 .b-radio.radio input[type=radio]:checked+.check {
-    border-color: #3a5fab;
+    border-color: #3a5fab !important;
 }
 .b-radio.radio input[type=radio]+.check:before {
     background: #3a5fab;
+}
+
+.switch input[type=checkbox]:checked+.check {
+    background: #3a5fab !important;
+}
+
+.title-color{
+	color: #3a5fab !important;
 }
