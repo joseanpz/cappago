@@ -39,6 +39,14 @@ input[type="number"]:focus {
 .pagination-link.is-current{
 	 background-color: #3a5fab;
 }
-.check{
-	background-color: #3a5fab;
+
+input[type=radio]:over{
+	border-color: #3a5fab;
+}
+
+.b-radio.radio input[type=radio]:checked+.check {
+    border-color: #3a5fab;
+}
+.b-radio.radio input[type=radio]+.check:before {
+    background: #3a5fab;
 }
