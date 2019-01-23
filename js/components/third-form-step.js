@@ -9,63 +9,89 @@ const ThirdFormStep = Vue.component('third-form-step', {
             		<a class="button is-medium" @click="addCredit">\
     					Agregar Crédito \
   					</a> \
-  					<div v-if="account_statements.length">
-	  					<div class="columns" > \
+  					
+	  				<div class="columns" > \
+	  					<div v-if="revolving_credits.length">
 	  						<div class="column">\
-	  							<h5 class="title is-5">Créditos Simples </h5>
-	  							<b-field v-for="credit in simple_credits" label="Monto Solicitado"> \
-	  								<b-input type="number" step="0.01" v-model="credit.amount"></b-input> \
-	  								<a class="button" @click="deleteCredit(credit.id)"> \
-	    								Borrar credito \
-	  								</a> \
+	  							<h5 class="title is-5">Créditos Revolvente </h5>
+	  							<b-field v-for="credit in revolving_credits" label="Monto Solicitado" :key="credit.id"> \
+	  								
+		  								<b-input type="number" step="0.01" v-model="credit.amount"></b-input> \
+		  								<a class="button" @click="deleteCredit(credit.id, 'revolvente')"> \
+		    								Borrar credito \
+		  								</a> \
+		  							
 	  							</b-field> \	  							
 	  						</div> \
-	  						<div class="column"> \	  							
-	  							<b-field v-for="credit in revolving_credits" label="Monto"> \
-	  								<b-input type="number" step="0.01" v-model="credit.amount"></b-input> \
-	  								<b-input type="number" step="0.01" v-model="credit.term"></b-input> \
-	  								<a class="button" @click="deleteCredit(credit.id)">\
-	    								Borrar credito \
-	  								</a> \
+	  					</div>
+	  					<div v-if="simple_credits.length">
+	  						<div class="column"> \
+	  							<h5 class="title is-5">Créditos Simple </h5>  							
+	  							<b-field v-for="credit in simple_credits" label="Monto Solicitado - Plazo" :key="credit.id"> \
+	  								
+		  								<b-input type="number" step="0.01" v-model="credit.amount"></b-input> \
+		  								<b-input type="number" step="0.01" v-model="credit.term"></b-input> \
+		  								<a class="button" @click="deleteCredit(credit.id, 'simple')">\
+		    								Borrar credito \
+		  								</a> \
+	  								
 	  							</b-field> \	  							
-	  						</div>\	  						
-	  					</div>	  					
-  					</div> \
+	  						</div>\	
+	  					</div>  						
+	  				</div>	  					
+  					
 				</section> `,
 
 	data () {
 		return {
 			credits_count: 0,
 			selected_type: null,
-			solicited_credits: [],
+			simple_credits: [],
+			revolving_credits: [],
+			//solicited_credits: [],
 		}
 	},
 	methods: {
 		addCredit: function () {
-			this.solicited_credits.find(elm => elm.id == id).statements.push({
-		    	id: this.credits_count,
-	    		type: this.selected_type,
-	    		amount: null,
-	    		term: null
-	    	});
+			if (this.selected_type === "1") {
+				this.simple_credits.push({
+		    		id: this.credits_count,
+	    			type: this.selected_type,
+	    			amount: null,
+	    			term: null
+	    		});	 
+			} else if (this.selected_type === "2") {
+				this.revolving_credits.push({
+		    		id: this.credits_count,
+	    			type: this.selected_type,
+	    			amount: null,
+	    			term: null
+	    		});	  
+			}
+			console.log(this.selected_type);
+			console.log(this.revolving_credits);
+			console.log(this.simple_credits);
+			  	
 	    	this.credits_count++;
 		},
-		deleteCredit: function(id) {
-	    	var index = this.solicited_credits.indexOf(this.solicited_credits.find(elm => elm.id == id));
-	        if (index >= 0) this.solicited_credits.splice(index, 1);
+		deleteCredit: function(id, crd_type) {
+			if (crd_type === 'simple') {
+				var index = this.simple_credits.indexOf(this.simple_credits.find(elm => elm.id == id));
+	        	if (index >= 0) this.simple_credits.splice(index, 1);
+				 
+			} else if (crd_type === 'revolvente') {
+				var index = this.revolving_credits.indexOf(this.revolving_credits.find(elm => elm.id == id));
+	        	if (index >= 0) this.revolving_credits.splice(index, 1);
+			}
 	    },
 	},
-	computed: {
-		simple_credits: function() {
-			return this.solicited_credits.filter(credit => credit.type === 1);
-		},
-		revolving_credits: function() {
-			return this.solicited_credits.filter(credit => credit.type === 2);
-		},
-	},
+	
 	watch: {
-		solicited_credits: function(val) {
-			this.$emit('sol-credits-change', val);
+		simple_credits: function(val) {
+			this.$emit('smpl-credits-change', val);
+		},
+		revolving_credits: function(val) {
+			this.$emit('rvlg-credits-change', val);
 		}
 	}
 });
