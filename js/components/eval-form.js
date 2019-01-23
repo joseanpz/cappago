@@ -2,7 +2,7 @@ Vue.use(VueFormWizard);
 
 
 const EvalFormWizard = Vue.component('eval-form', {
-	template: '<form-wizard @on-complete="onComplete" \
+	template: `<form-wizard @on-complete="onComplete" \
 	             subtitle="subtitulo" nextButtonText="Siguiente" \
 	            backButtonText="Atras" finishButtonText="Guardar" stepSize="sm" \
 	            color="#3a5fab"  errorColor="#8b0000" shape="circle" transition="" \
@@ -16,7 +16,8 @@ const EvalFormWizard = Vue.component('eval-form', {
 					</p> \
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
-			       	<second-form-step :bank_list="bank_list"></second-form-step> \
+			       	<second-form-step :bank_list="bank_list" v-on:acc-statements-change="setAccountStatements"></second-form-step> \
+			       	<!--<pre>{{ account_statements | pretty }}</pre>--> 
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
 			       <third-form-step></third-form-step> \
@@ -33,29 +34,18 @@ const EvalFormWizard = Vue.component('eval-form', {
                    </div> \
                    <div class="wizard-footer-right"> \
                      <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" class="wizard-footer-right" :style="props.fillButtonStyle">Siguiente</wizard-button> \
-                     <wizard-button v-else @click.native="alert(`Done`)" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">Finalizar</wizard-button> \
+                     <wizard-button v-else @click.native="alert('Done')" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">Finalizar</wizard-button> \
                    </div> \
                    <div class="wizard-footer-right" style = "padding-right: 10px;"> \
                      <wizard-button @click.native="saveForm" class="wizard-footer-right" :style="props.fillButtonStyle">Guardar</wizard-button> \
                    </div> \
                  </template> \
-			   </form-wizard>',
+			   </form-wizard>`,
     data () {
     	return {
     		evaluation_type: "account_statements",
     		solicitation_number: null,
-    		account_statements: [
-    			{
-    				bank_name: null,
-    				statements: [
-    					{
-    						month: null,
-    						deposits: null,
-    						balance: null
-    					}
-    				]
-    			}
-    		],
+    		account_statements: [],
     		// static, must be loaded from backend
     		bank_list: [
     			"Banregio",
@@ -85,7 +75,10 @@ const EvalFormWizard = Vue.component('eval-form', {
         },
         setEvalType: function(val) {
         	this.evaluation_type = val;
-        }     
+        },
+        setAccountStatements: function(val) {
+        	this.account_statements = val;
+        }  
     }
 });
 
