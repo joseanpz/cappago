@@ -33,6 +33,13 @@ input[type="number"]:focus {
   border-color: #3a5fab !important;
 }
 
+.select{
+	color: #3a5fab !important;
+}
+.select:not(.is-multiple):not(.is-loading):after{
+	color: red !important;
+}
+
 select:focus { 
   border-color: #3a5fab !important;
 }
@@ -64,23 +71,24 @@ select:focus {
 }
 
 .card-header-title{
-	background-color:#FF681E;
+	border:1px solid #FF681E;
+	color:#3a5fab;
 	text-align: center;
 	display:inline; 
 }
 
 .title-color{
-	color:white; 
+	color:#3a5fab; 
 	text-align: center;
 }
 
 .card-footer{
-	background-color:#FF681E !important;
-	
+	border:1px solid #FF681E;
+	color:#3a5fab;
 }
 
 .card-footer-item{
-	color:white; 
+	color:#3a5fab; 
 }
 
 .is-info.is-outlined{
