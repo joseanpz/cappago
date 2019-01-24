@@ -52,6 +52,52 @@ select:focus {
     background: #3a5fab !important;
 }
 
-.title-color{
+
+.label_color{
 	color: #3a5fab !important;
+}
+
+.lbl_months{
+	font-size:12px;
+	color: #3a5fab !important;	
+	font-weight: bold;
+}
+
+.card-header-title{
+	background-color:#FF681E;
+	text-align: center;
+	display:inline; 
+}
+
+.title-color{
+	color:white; 
+	text-align: center;
+}
+
+.card-footer{
+	background-color:#FF681E !important;
+	
+}
+
+.card-footer-item{
+	color:white; 
+}
+
+.is-info.is-outlined{
+	border-color: ##3a5fab !important;
+    color: ##3a5fab !important;
+}
+
+.button{
+	border-color: ##3a5fab !important;
+    color: ##3a5fab !important;
+}
+
+.button.is-info.is-outlined:focus{
+	border-color: #3a5fab !important;
+    background-color: #3a5fab !important;
+}
+.button.is-info.is-outlined:hover{
+	border-color: #3a5fab !important;
+    background-color : #3a5fab !important;
 }
