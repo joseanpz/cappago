@@ -14,6 +14,16 @@
 
 #navMenu {
 	font-size: 25px;
+	background-color: #FF681E;
+	color: white;
+}
+
+.navbar-link, a.navbar-item:hover, a.navbar-item:before{
+	color:white !important;
+}
+
+.navbar-item, .navbar-link{
+	color:white;
 }
 
 .btn_editar{
@@ -33,15 +43,19 @@ input[type="number"]:focus {
   border-color: #3a5fab !important;
 }
 
-.select{
+.select:visited{
 	color: #3a5fab !important;
 }
 .select:not(.is-multiple):not(.is-loading):after{
 	color: red !important;
 }
 
-select:focus { 
+select:focus select:before { 
   border-color: #3a5fab !important;
+}
+
+.select is-empty{
+	color:#3a5fab;
 }
 
 .pagination-link.is-current{
@@ -53,7 +67,13 @@ select:focus {
 }
 .b-radio.radio input[type=radio]+.check:before {
     background: #3a5fab;
+    border-color: #3a5fab !important;
 }
+
+.b-radio.radio:hover input[type=radio]+.check{
+	border-color: #3a5fab !important;
+}
+
 
 .switch input[type=checkbox]:checked+.check {
     background: #3a5fab !important;
@@ -108,4 +128,22 @@ select:focus {
 .button.is-info.is-outlined:hover{
 	border-color: #3a5fab !important;
     background-color : #3a5fab !important;
+}
+
+.select:not(.is-multiple):not(.is-loading):after{
+	border-color: #3a5fab !important;
+}
+.select:not(.is-multiple):not(.is-loading){
+	border-color: #3a5fab !important;
+}
+
+.class-section{
+	border:solid 1px #b5b5b5;
+	padding:  30px;
+} 
+
+thead{
+	background: #b5b5b5;
+	color: #FFFFFF;
+	text-align: center;
 }
