@@ -37,19 +37,24 @@
       	  	<a class="navbar-item" href="#" style="font-weight:bold;">
       	  	  banregio 	
       	  	</a>
-      	  	<span class="navbar-burger burger" data-target="navMenu">
-      	  	  <span></span>
-      	  	  <span></span>
-      	  	  <span></span>
-      	  	</span>
+            <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
       	  </div> 
-  	  	  <div id="navMenu" class="navbar-end">
+          <div class="navbar-menu navbar-end" id="navMenu">
+            <a href="#/" class="navbar-item" is-active>Inicio</a>
+            <a href="#/evaluaciones" class="navbar-item">Evaluaciones</a>
+            <a href="#/evaluar" class="navbar-item">Nueva Evaluación</a>
+          </div>
+  	  	  <!-- <div id="navMenu" class="navbar-end">
   	  		<div class="navbar-end">
   	  			<a href="#/" class="navbar-item" is-active>Inicio</a>
   	  			<a href="#/evaluaciones" class="navbar-item">Evaluaciones</a>
   	  			<a href="#/evaluar" class="navbar-item">Nueva Evaluación</a>
   	  		</div>
-  	  	  </div>      	  
+  	  	  </div>-->      	  
       	</div>
     </nav>	
       
@@ -115,7 +120,6 @@
   <script src="js/components/first-form-step.js"></script>
   <script src="js/components/second-form-step.js"></script>
   <script src="js/components/third-form-step.js"></script>
-  <script src="js/components/fourth-form-step.js"></script>
   <script src="js/components/eval-form.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/router.js"></script>
