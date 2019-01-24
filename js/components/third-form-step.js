@@ -30,16 +30,15 @@ const ThirdFormStep = Vue.component('third-form-step', {
 	                      		</header>
 								<div class="card-content">                     
 	                        		<div class="content">
-		  								<b-field v-for="credit in revolving_credits" label="Monto Solicitado" :key="credit.id"> \
-		  								
-			  								<b-input type="number" step="0.01" v-model="credit.amount"></b-input>
-			  								<a class="button is-danger is-outlined" @click="deleteCredit(credit.id, 'revolvente')">
-											    <span>Borrar</span>
-											    <span class="icon is-small">
-											      <i class="fas fa-times"></i>
-											    </span>
-											  </a>			 
-			  							
+                        				<label class="label_color" >Monto Solicitado</label>
+		  									<b-field v-for="credit in revolving_credits" :key="credit.id"> 
+				  								<b-input type="number" step="0.01" v-model="credit.amount" style="width:80%;"></b-input> &nbsp
+				  								<a class="button is-danger is-outlined "  style="justify-content: center;" @click="deleteCredit(credit.id, 'revolvente')">
+												    <span>Borrar</span>
+												    <span class="icon is-small">
+												      <i class="fas fa-times"></i>
+												    </span>
+												 </a>			 
 		  								</b-field>
 		  							</div>	 	
 		  						</div>	 			
@@ -52,11 +51,13 @@ const ThirdFormStep = Vue.component('third-form-step', {
 	  								<p class="card-header-title title-color">Créditos Simple </p>
 	  							</header>
 	  							 <div class="card-content">                     
-	                        		<div class="content"> 							
-			  							<b-field v-for="credit in simple_credits" label="Monto Solicitado - Plazo" :key="credit.id"> 
-			  								<b-input type="number" step="0.01" v-model="credit.amount"></b-input>
-			  								<b-input type="number" step="0.01" v-model="credit.term"></b-input>
-			  								<a class="button is-danger is-outlined" @click="deleteCredit(credit.id, 'simple')">
+	                        		<div class="content"> 	
+	                        		<label class="label_color" style="padding-left:10%;">Monto solicitado</label>
+                        			<label class="label_color" style="padding-right:45%; float:right;">Plazo</label>					
+			  							<b-field v-for="credit in simple_credits"  :key="credit.id"> 
+			  								<b-input type="number" step="0.01" style="width:40%;" v-model="credit.amount"></b-input> &nbsp
+			  								<b-input type="number" step="0.01" style="width:40%;" v-model="credit.term" ></b-input> &nbsp
+			  								<a class="button is-danger is-outlined"  @click="deleteCredit(credit.id, 'simple')">
 											    <span>Borrar</span>
 											    <span class="icon is-small">
 											      <i class="fas fa-times"></i>
