@@ -17,4 +17,4 @@ const routes = [
 // keep it simple for now.
 const router = new VueRouter({
   routes // short for `routes: routes`
-})
+});
