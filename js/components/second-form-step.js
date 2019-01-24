@@ -18,7 +18,7 @@ const SecondFormStep = Vue.component('second-form-step', {
                       
                   </div>
                   <div class="column is-2">
-                  <a class="button is-light" @click="addAccountStetment">
+                  <a class="button is-info is-outlined" @click="addAccountStetment">
                       <span class="icon is-small">
                         <i class="fas fa-check"></i>
                       </span>
@@ -32,12 +32,16 @@ const SecondFormStep = Vue.component('second-form-step', {
 	  					<div class="columns" >
 	  						<div class="column" v-for="acc_smnt in account_statements" :key="acc_smnt.id">
 	  							<div v-bind:class="{ 'is-6': account_statements.length===1 }" class="card column">
-                      <header class="card-header">
+                      <header class="card-header" >
                         <p class="card-header-title title-color">{{acc_smnt.bank_name}}</p>
                       </header>  
-                      <div class="card-content">
+                      <div class="card-content">                     
                         <div class="content">
+                        <label class="label_color" style="padding-left:20%;">Depositos</label>
+                        <label class="label_color" style="padding-right:25%; float:right;">Saldos</label>
+
         	  							<b-field v-for="statement in acc_smnt.statements" :key="statement.id">
+                            <label class="lbl_months">{{statement.month}}</label>
         	  								<b-input type="number" step="0.01" v-model="statement.deposits"></b-input>
         	  								<b-input type="number" step="0.01" v-model="statement.balance"></b-input>
         	  							</b-field>
@@ -106,7 +110,7 @@ const SecondFormStep = Vue.component('second-form-step', {
 	    	for (var i = 0; i < n; i++) {
 	    			stmnts.push({
 			    		id: i,
-		    			month: null,
+		    			month: '2019-01',
 		    			deposits: null,
 		    			balance: null
 		    		});
