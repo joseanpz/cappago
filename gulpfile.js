@@ -18,7 +18,7 @@ var js_paths = [
 gulp.task('scripts', function (){
 	return gulp.src(js_paths)
     	.pipe(concat('all.js'))
-    	.pipe(gulp.dest('js/'));
+    	.pipe(gulp.dest('dist/'));
 });
 
 
@@ -30,7 +30,7 @@ gulp.task('html', function (){
         		tpl: '<style>%s</style>'
         	},  // 'styles.min.css',
         	'js': {
-        		src: gulp.src('js/all.js'),
+        		src: gulp.src('dist/all.js'),
         		tpl: '<script>%s</script>'
 	        }
     	}))
