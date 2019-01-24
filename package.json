@@ -1,0 +1,29 @@
+{
+  "name": "capacidad_pago",
+  "version": "1.0.0",
+  "description": "App script + vue application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joseanpz/cappago.git"
+  },
+  "keywords": [
+    "vue",
+    "appscript"
+  ],
+  "author": "Jose AngelEspinozaa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joseanpz/cappago/issues"
+  },
+  "homepage": "https://github.com/joseanpz/cappago#readme",
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-html-replace": "^1.6.2",
+    "gulp-watch": "^5.0.1"
+  }
+}

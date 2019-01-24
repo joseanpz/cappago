@@ -25,3 +25,87 @@
 	background:#3a5fab !important; 
 	color:white !important;
 }
+
+a[target] ,input[type="number"]{
+  
+}
+input[type="number"]:focus { 
+  border-color: #3a5fab !important;
+}
+
+.select{
+	color: #3a5fab !important;
+}
+.select:not(.is-multiple):not(.is-loading):after{
+	color: red !important;
+}
+
+select:focus { 
+  border-color: #3a5fab !important;
+}
+
+.pagination-link.is-current{
+	 background-color: #3a5fab !important;
+}
+
+.b-radio.radio input[type=radio]:checked+.check {
+    border-color: #3a5fab !important;
+}
+.b-radio.radio input[type=radio]+.check:before {
+    background: #3a5fab;
+}
+
+.switch input[type=checkbox]:checked+.check {
+    background: #3a5fab !important;
+}
+
+
+.label_color{
+	color: #3a5fab !important;
+}
+
+.lbl_months{
+	font-size:12px;
+	color: #3a5fab !important;	
+	font-weight: bold;
+}
+
+.card-header-title{
+	border:1px solid #FF681E;
+	color:#3a5fab;
+	text-align: center;
+	display:inline; 
+}
+
+.title-color{
+	color:#3a5fab; 
+	text-align: center;
+}
+
+.card-footer{
+	border:1px solid #FF681E;
+	color:#3a5fab;
+}
+
+.card-footer-item{
+	color:#3a5fab; 
+}
+
+.is-info.is-outlined{
+	border-color: ##3a5fab !important;
+    color: ##3a5fab !important;
+}
+
+.button{
+	border-color: ##3a5fab !important;
+    color: ##3a5fab !important;
+}
+
+.button.is-info.is-outlined:focus{
+	border-color: #3a5fab !important;
+    background-color: #3a5fab !important;
+}
+.button.is-info.is-outlined:hover{
+	border-color: #3a5fab !important;
+    background-color : #3a5fab !important;
+}
