@@ -1,7 +1,7 @@
 
 function keyValueFilter(key, value) {
-  var filtr = function(record) {
+  var filter = function(record) {
     return record[key] === value;
   }
-  return filtr;
+  return filter;
 }
