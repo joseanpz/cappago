@@ -34,17 +34,24 @@ const SecondFormStep = Vue.component('second-form-step', {
 	  							<div v-bind:class="{ 'is-6': account_statements.length===1 }" class="card column">
                       <header class="card-header" >
                         <p class="card-header-title title-color">{{acc_smnt.bank_name}}</p>
-                      </header>  
-                      <div class="card-content">                     
-                        <div class="content">
-                        <label class="label_color" style="padding-left:20%;">Depositos</label>
-                        <label class="label_color" style="padding-right:25%; float:right;">Saldos</label>
 
-        	  							<b-field v-for="statement in acc_smnt.statements" :key="statement.id">
-                            <label class="lbl_months">{{statement.month}}</label>
-        	  								<b-input type="number" step="0.01" v-model="statement.deposits"></b-input>
-        	  								<b-input type="number" step="0.01" v-model="statement.balance"></b-input>
-        	  							</b-field>
+                      </header>  
+                      
+                      <div class="card-content"> 
+                      	<div class="columns">
+		                  	<label class="label_color column is-2" >Meses</label>
+		                  	<label class="label_color column" >Depositos</label>
+		                    <label class="label_color column" >Saldos</label>
+		                  </div>
+                        <div class="content">
+
+						<b-field v-for="statement in acc_smnt.statements" :key="statement.id">
+							<div class="columns">
+        					<label class="lbl_months column is-2">{{statement.month}}</label>
+							<b-input type="number" class="column" step="0.01" v-model="statement.deposits"></b-input> &nbsp
+							<b-input type="number" class="column" step="0.01" v-model="statement.balance"></b-input>
+							</div>
+						</b-field>
                         </div>
                       </div>
                       <footer class="card-footer">
