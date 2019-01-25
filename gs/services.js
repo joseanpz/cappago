@@ -30,7 +30,6 @@ function _readData(sheetObject, properties) {
 
 function _getDataRows(sheetObject) {
    var sh = sheetObject;
-  //return [2, 1, sh.getLastRow() - 1, sh.getLastColumn()];
 
   //var header
 

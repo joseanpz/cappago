@@ -16,6 +16,8 @@ function read_sucursales(){
   return data;
 }
 
+
+
 /*
 * Insetrt Solicitud
 */
