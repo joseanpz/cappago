@@ -142,8 +142,33 @@ select:focus select:before {
 	padding:  30px;
 } 
 
-thead{
-	background: #b5b5b5;
-	color: #FFFFFF;
+.th-wrap{
+	color: #3a5fab !important;
+	font-weight: bold;
+	
+}
+
+.b-table .table thead {
+    font-weight: 600;
+	color:red;
+}
+
+.b-table .table {
+	border:1.5px solid #FF681E !important;
+}
+
+.div-titulos{
+	color: #3a5fab !important;
+	font-weight: bold;
 	text-align: center;
+	border:2px solid #FF681E !important;
+	font-size: 20px;
+}
+
+.td-cantidad{
+	text-align: right;
+}
+
+.centra-text{
+	text-align: center;	
 }
