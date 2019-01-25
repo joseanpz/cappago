@@ -2,9 +2,9 @@ const DataTable = Vue.component('data-table', {
   // props:  ['data', 'columns', 'isPaginated', 'isPaginationSimple', 
   // 'defaultSortDirection', 'currentPage', 'perPage'],
   //template: '<span>Test</span>'
-  template: `    
-    <section>
-        <b-field grouped group-multiline>
+  template: ` 
+    <section class="class-section">
+        <b-field grouped group-multiline >
             <b-select v-model="defaultSortDirection">
                 <option value="asc">Default sort direction: ASC</option>
                 <option value="desc">Default sort direction: DESC</option>
@@ -25,7 +25,7 @@ const DataTable = Vue.component('data-table', {
                 <b-switch v-model="isPaginationSimple" :disabled="!isPaginated">Simple pagination</b-switch>
             </div>
         </b-field>
-
+        <br/>
         <b-table
             :data="data"
             :paginated="isPaginated"

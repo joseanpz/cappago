@@ -49,7 +49,7 @@ const SecondFormStep = Vue.component('second-form-step', {
                       </div>
                       <footer class="card-footer">
                         <!--<a class="card-footer-item" @click="addStatement(acc_smnt.id)">Agregar registro</a> -->
-                        <a class="card-footer-item" @click="deleteAccountStatement(acc_smnt.id)">Borrar banco</a>
+                        <a class="card-footer-item button is-danger is-outlined" @click="deleteAccountStatement(acc_smnt.id)">Borrar banco</a>
                       </footer>
                   </div>
 	  						</div>						
