@@ -119,6 +119,8 @@ function _getHeaderRow(sheet) {
 function _getDataRows(sheet) {
 	var rows_count = sheet.getLastRow() -1, columns_count = sheet.getLastColumn();
 
+	if (rows_count === 0) {return [];}
+
 	// getRange(from_row, from_column, rows_count ,columns_count)
 	var rows = sheet.getRange(2, 1, rows_count, columns_count).getDisplayValues();
 

@@ -38,6 +38,7 @@ function _getDataRows(sheetObject) {
 
   return rows;
 }
+
 function _getHeaderRow(sheetObject) {
    var sh = sheetObject;
 
