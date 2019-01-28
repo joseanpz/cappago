@@ -39,6 +39,7 @@
 a[target] ,input[type="number"]{
   
 }
+
 input[type="number"]:focus { 
   border-color: #3a5fab !important;
 }
@@ -177,4 +178,8 @@ select:focus select:before {
 
 .column{
 	padding: 5px;
+}
+
+.input:after, .input:focus{
+	border-color: #3a5fab !important;
 }

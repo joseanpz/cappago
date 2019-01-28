@@ -62,7 +62,7 @@ const SecondFormStep = Vue.component('second-form-step', {
 	  						</div>						
 	  					</div>	  						
   					</div> 
-  					
+  					<br/>
 				</section> `,
 	data () {
 		return {
