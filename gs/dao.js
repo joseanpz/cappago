@@ -20,7 +20,10 @@ function _create(sheet_name, data, constrains) {
 	var new_row = [ms_id];
 
 	for (var r = 1, l = properties.length; r < l; r++) {
-         new_row.push((typeof data[properties[r]] != "undefined") ? data[properties[r]]: '');
+		var field_data = data[properties[r]];
+		var is_not_undefined = typeof field_data != "undefined";
+		
+		new_row.push(is_not_undefined && field_data != null  ? data[properties[r]]: '');
     }
 
 	var rowData = sheet.appendRow(new_row);

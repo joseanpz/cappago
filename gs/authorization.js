@@ -10,7 +10,7 @@ User.prototype.is_authorized = function() {
   var user_email = this.getEmail();
   var records = _readData(this._sheet);  
   for (var r = 0, l = records.length; r < l; r++) {
-    if (records[r].email === user_email) {
+    if (records[r].user_name === user_email) {
       return true
     }
   }
