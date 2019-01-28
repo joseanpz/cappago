@@ -61,6 +61,12 @@ const EvalFormController = {
 	} 
 };
 
+const EvalDetailController = { 
+  template: '#detail-template',
+  components: {
+    DetailForm,
+  }
+};
+
 
 const EvalUpdateFormController = { template: '#updateform-template' };
-const EvalDetailController = { template: '#detail-template' };
