@@ -1,4 +1,4 @@
-Vue.use(VueJsonPretty);
+
 const SecondFormStep = Vue.component('second-form-step', {
 	props: ["bank_list"],
 	template: `<section> 
@@ -79,7 +79,7 @@ const SecondFormStep = Vue.component('second-form-step', {
     }
   },
 	components: {
-		VueJsonPretty,
+		
 	},
 	methods: {
 	    addAccountStetment: function () {

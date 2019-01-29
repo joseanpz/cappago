@@ -152,7 +152,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 	methods: {
 		readActivities: function () {
           var self = this;
-          /*google.script.run
+          google.script.run
             .withSuccessHandler(function(response){
               console.log(response);
               self.activities = response.records;
@@ -160,12 +160,12 @@ const FirstFormStep = Vue.component('first-form-step', {
             .withFailureHandler(function(err){
               console.log(err);
             })
-            .read('actividad')*/
+            .read('actividad')
         },
 
         readRiskLevels: function () {
           var self = this;
-          /*google.script.run
+          google.script.run
             .withSuccessHandler(function(response){
               console.log(response);
               self.risk_lavels = response.records;
@@ -173,7 +173,7 @@ const FirstFormStep = Vue.component('first-form-step', {
             .withFailureHandler(function(err){
               console.log(err);
             })
-            .read('nivel_riesgo')*/
+            .read('nivel_riesgo')
         },
 	}
 });
