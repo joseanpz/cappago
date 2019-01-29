@@ -70,7 +70,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 						</div>
 						<div class="column is-3">
 							<label class="label">Antiguedad operacion: </label>
-							<input type="text" v-model="aniguedad_operacion" class="input" />
+							<input type="text" v-model="antiguedad_operacion" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Calificacion deudor: </label>
@@ -127,7 +127,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 			capital_contable: null,
 			destino_credito: null,
 			antiguedad_actividad: null,
-			aniguedad_operacion: null,
+			antiguedad_operacion: null,
 			calificacion_deudor: null,
 			deuda_total: null,
 			MONTHS_ON_FILE_BANKING: null,
@@ -178,7 +178,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 		antiguedad_actividad: function (val) {
 			this.$emit('act-seniority-change', val);
 		},
-		aniguedad_operacion: function (val) {
+		antiguedad_operacion: function (val) {
 			this.$emit('oper-seniority-change', val);
 		},
 		calificacion_deudor: function (val) {
