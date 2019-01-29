@@ -15,7 +15,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 						        native-value="account_statements"> 
 						        Estados de Cuenta 
 					    		</b-radio>
-							<b-radio v-model="evaluation_type" size="is-normal" class="form-color" 
+							<b-radio v-model="tipo_comprobante" size="is-normal" class="form-color" 
 					        native-value="financial_statements"> 
 					        Estados Financieros  
 					    	</b-radio>
@@ -132,7 +132,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 			deuda_total: null,
 			MONTHS_ON_FILE_BANKING: null,
 			BK12_CLEAN: null,
-			BK12_MAX_CREDIT_AMT: null
+			BK12_MAX_CREDIT_AMT: null,
 			activities: [],
 			risk_levels: []
 		}
@@ -206,7 +206,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 	methods: {
 		readActivities: function () {
           var self = this;
-          google.script.run
+          /*google.script.run
             .withSuccessHandler(function(response){
               console.log(response);
               self.activities = response.records;
@@ -214,12 +214,12 @@ const FirstFormStep = Vue.component('first-form-step', {
             .withFailureHandler(function(err){
               console.log(err);
             })
-            .readCatalog('actividad')
+            .readCatalog('actividad')*/
         },
 
         readRiskLevels: function () {
           var self = this;
-          google.script.run
+          /*google.script.run
             .withSuccessHandler(function(response){
               console.log(response);
               self.risk_levels = response.records;
@@ -227,7 +227,7 @@ const FirstFormStep = Vue.component('first-form-step', {
             .withFailureHandler(function(err){
               console.log(err);
             })
-            .readCatalog('nivel_riesgo')
+            .readCatalog('nivel_riesgo')*/
         },
 	}
 });

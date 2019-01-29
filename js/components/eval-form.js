@@ -46,7 +46,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 			     <tab-content title="Additional Info"> \
 
 			       <third-form-step v-on:smpl-credits-change="setSimpleCredits" v-on:rvlg-credits-change="setRevolvingCredits" ></third-form-step> \
-			       <pre>{{ solicited_credits | pretty }}</pre>
+			       
 
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
@@ -59,7 +59,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 			       <fourth-form-step></fourth-form-step> \
 
 			     </tab-content> \
-			     
+			     <pre>{{ data | pretty }}</pre>
 
            <template slot="footer" slot-scope="props"> \
                    <div class="wizard-footer-left"> \
@@ -126,6 +126,13 @@ const EvalFormWizard = Vue.component('eval-form', {
     	solicited_credits: function () {
     		return this.simple_credits.concat(this.revolving_credits);
     	},
+      data: function() {
+        return {
+          solicitud: this.solicitud,
+          account_statements: this.account_statements,
+          solicited_credits: this.solicited_credits
+        }
+      }
     },
 
     filters: {
