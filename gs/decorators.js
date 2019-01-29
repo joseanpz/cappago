@@ -12,3 +12,9 @@ function userAuth(fn) {
 		}
 	}	
 }
+
+function userFilteredData(fn) {
+	return function(a1, a2, a3) {
+		return fn(a1, a2, a);
+	}
+}

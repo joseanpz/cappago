@@ -26,6 +26,7 @@ function test_controllers(){
   //var records = _readData(sheet);
   //records = records.filter(filter1);
   var data = read("test");
+  var data_id = readId("test", "1548439381010");
   //var new_row = _create("test", {key1: "foo" });
   //var old_row = _update("test", {id: '3105417721', key2: "meh332" });
   //var new_data = _read("test", [filter1]);
