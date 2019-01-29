@@ -26,8 +26,15 @@ html2pdf(element, {
 */
 const DetailForm = Vue.component('detail', {
 	template: `
-	<section class="container" id="detail-print">
+	<section class="container" >
+  <div id="detail-print">
         {{ $route.params.id }} <br/>
+        <br/>
+        <div class="columns navbar is-primary" id="header_PDF" style="display:none;">
+          <a class="navbar-item" href="#" style="font-weight:bold; padding-left:50px;">
+              banregio  
+          </a>
+        </div>
         <br/>
         <div class="columns">
           <div class="column div-titulos" >
@@ -237,11 +244,16 @@ const DetailForm = Vue.component('detail', {
                 </tr>
               </table>
               <br/><br/><br/>
-              <div id="editor" style="display:none;">Hola</div>
+              
           </div>
         </div>
-
-    </section>`,
+        </div>
+        <div id="editor" style="text-align:right;" >
+          <button class="button" @click = "genPDF" style="background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Descarga</button>
+        </div>
+        <br/>
+    </section>
+    `,
 	data () {
 		return {
 			id: null
@@ -249,15 +261,19 @@ const DetailForm = Vue.component('detail', {
 	},
 	methods: {
 		genPDF: function () {		
+      document.getElementById("header_PDF").style.display = "block";
 			html2canvas(document.getElementById("detail-print"), {
 				onrendered: function (canvas) {
+          
 					var img = canvas.toDataURL("image/url",1.0);
 					var doc = new jsPDF('p', 'pt', 'letter')
 					doc.addImage(img, 'JPEG',30,20,550,500);
+          
 					doc.save('test.pdf');
+           document.getElementById("header_PDF").style.display = "none";
 				}
 			});
-      
+    
 		},
 	},
 	beforeCreate: function() {
@@ -271,6 +287,7 @@ const DetailForm = Vue.component('detail', {
 
 	},
 	mounted: function() {
-		this.genPDF();
+	//	this.genPDF();
+   
 	}
-});
+}); 
