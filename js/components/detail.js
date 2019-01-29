@@ -2,21 +2,39 @@
 // require jsPDF
 
 // to be used
+/*
 function genPDF() {
+  var element = document.getElementById('my-pdf-div');
+html2pdf(element, {
+  margin:       1,
+  filename:     'myfile.pdf',
+  image:        { type: 'jpeg', quality: 0.98 },
+  html2canvas:  { dpi: 192, letterRendering: true },
+  jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+});
+
+
 	html2canvas(document.getElementById("my-pdf-div"), {
 		onrendered: function (canvas) {
-			var img = canvas.toDataURL("image/url");
-			var doc = new jsPDF();
-			doc.addImage(img, 'JPEG', 20, 20);
+			var img = canvas.toDataURL("image/jpge",1.0);
+			var doc =new jsPDF("l", "mm", "a4");
+			doc.addImage(img, 'JPEG', 10, 10, 180, 150);
 			doc.save('test.pdf');
 		}
 	});
 }
-
+*/
 const DetailForm = Vue.component('detail', {
 	template: `
-	<section class="container" id="detail-print">
+	<section class="container" >
+  <div id="detail-print">
         {{ $route.params.id }} <br/>
+        <br/>
+        <div class="columns navbar is-primary" id="header_PDF" style="display:none;">
+          <a class="navbar-item" href="#" style="font-weight:bold; padding-left:50px;">
+              banregio  
+          </a>
+        </div>
         <br/>
         <div class="columns">
           <div class="column div-titulos" >
@@ -226,10 +244,16 @@ const DetailForm = Vue.component('detail', {
                 </tr>
               </table>
               <br/><br/><br/>
+              
           </div>
         </div>
-
-    </section>`,
+        </div>
+        <div id="editor" style="text-align:right;" >
+          <button class="button" @click = "genPDF" style="background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Descarga</button>
+        </div>
+        <br/>
+    </section>
+    `,
 	data () {
 		return {
 			id: null
@@ -237,17 +261,23 @@ const DetailForm = Vue.component('detail', {
 	},
 	methods: {
 		genPDF: function () {		
+      document.getElementById("header_PDF").style.display = "block";
 			html2canvas(document.getElementById("detail-print"), {
 				onrendered: function (canvas) {
-					var img = canvas.toDataURL("image/url");
-					var doc = new jsPDF();
-					doc.addImage(img, 'JPEG', 20, 20);
+          
+					var img = canvas.toDataURL("image/url",1.0);
+					var doc = new jsPDF('p', 'pt', 'letter')
+					doc.addImage(img, 'JPEG',30,20,550,500);
+          
 					doc.save('test.pdf');
+           document.getElementById("header_PDF").style.display = "none";
 				}
 			});
+    
 		},
 	},
 	beforeCreate: function() {
+
 
 	},
 	created: function () {
@@ -257,6 +287,7 @@ const DetailForm = Vue.component('detail', {
 
 	},
 	mounted: function() {
-		this.genPDF();
+	//	this.genPDF();
+   
 	}
-});
+}); 
