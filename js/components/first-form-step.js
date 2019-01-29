@@ -100,7 +100,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 						<div class="column">
 							<label class="label">Actividad: </label>
 							<b-select placeholder="Select a name" v-model="activity" expanded>
-                                <option v-for="activity in activities" :value="sucursal.id_oficina_full">{{ activity }} </option>
+                                <option v-for="activity in activities" :value="activity.id">{{ activity.nombre }} </option>
 	            			</b-select>
 						</div>
 						<div class="column">
@@ -160,7 +160,7 @@ const FirstFormStep = Vue.component('first-form-step', {
             .withFailureHandler(function(err){
               console.log(err);
             })
-            .read('actividad')
+            .readCatalog('actividad')
         },
 
         readRiskLevels: function () {
@@ -168,12 +168,12 @@ const FirstFormStep = Vue.component('first-form-step', {
           google.script.run
             .withSuccessHandler(function(response){
               console.log(response);
-              self.risk_lavels = response.records;
+              self.risk_levels = response.records;
             })
             .withFailureHandler(function(err){
               console.log(err);
             })
-            .read('nivel_riesgo')
+            .readCatalog('nivel_riesgo')
         },
 	}
 });

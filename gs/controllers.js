@@ -44,6 +44,12 @@ function readFKRelation(sheet_name, fk_field, fk) {
 	}
 }
 
+function readCatalog(sheet_name) {
+	 
+	return _authRead(sheet_name);
+
+}
+
 /*
  * Data wtiting
  *
