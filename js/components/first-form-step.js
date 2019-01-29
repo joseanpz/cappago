@@ -139,61 +139,61 @@ const FirstFormStep = Vue.component('first-form-step', {
 	},
 
 	watch: {
-		activity: function (val) {
+		id_actividad: function (val) {
 			this.$emit('activity-change', val);
 		},
-		risk_level: function (val) {
+		id_nivel_riesgo: function (val) {
 			this.$emit('risk-level-change', val);
 		},
-		solicitude_number: function (val) {
+		numero_solicitud: function (val) {
 			this.$emit('sol-number-change', val);
 		},
-		evaluation_type: function (val) {
+		tipo_comprobante: function (val) {
 			this.$emit('eval-type-change', val);
 		},
-		guarantee: function (val) {
+		garantia_hipotecaria: function (val) {
 			this.$emit('guarantee-change', val);
 		},
-		evaluation_type_profiler: function (val) {
+		tipo_evaluacion_perfilador: function (val) {
 			this.$emit('eval-type-prfl-change', val);
 		},
-		decree: function (val) {
+		decreto: function (val) {
 			this.$emit('decree-change', val);
 		},
 		score: function (val) {
 			this.$emit('score-change', val);
 		},
-		annual_sales: function (val) {
+		ventas_anuales: function (val) {
 			this.$emit('annual-sales-change', val);
 		},
 		uafir: function (val) {
 			this.$emit('uafir-change', val);
 		},
-		accounting_capital: function (val) {
+		capital_contable: function (val) {
 			this.$emit('acc-capital-change', val);
 		},
-		decree: function (val) {
+		destino_credito: function (val) {
 			this.$emit('credit-dest-change', val);
 		},
-		decree: function (val) {
+		antiguedad_actividad: function (val) {
 			this.$emit('act-seniority-change', val);
 		},
-		decree: function (val) {
+		aniguedad_operacion: function (val) {
 			this.$emit('oper-seniority-change', val);
 		},
-		decree: function (val) {
+		calificacion_deudor: function (val) {
 			this.$emit('debtor-qual-change', val);
 		},
-		decree: function (val) {
+		deuda_total: function (val) {
 			this.$emit('total-debt-change', val);
 		},
-		decree: function (val) {
+		MONTHS_ON_FILE_BANKING: function (val) {
 			this.$emit('monfile-banking-change', val);
 		},
-		decree: function (val) {
+		BK12_CLEAN: function (val) {
 			this.$emit('bk12-clean-change', val);
 		},
-		decree: function (val) {
+		BK12_MAX_CREDIT_AMT: function (val) {
 			this.$emit('bk12maxcred-amt-change', val);
 		},
 	},
