@@ -15,7 +15,6 @@ function read(sheet_name, filters) {
 	}
 	 
 	return _authRead(sheet_name, filters);
-
 }
 
 function readId(sheet_name, id) {
@@ -56,6 +55,8 @@ function readCatalog(sheet_name) {
  */
 
 function create(sheet_name, data, constrains) {
+	var user = new User(Session.getActiveUser());
+	data.user_name = user.getEmail()
 	return _authCreate(sheet_name, data, constrains);
 }
 
