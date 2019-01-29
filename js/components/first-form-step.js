@@ -7,11 +7,11 @@ const FirstFormStep = Vue.component('first-form-step', {
 					<div class="columns">
 						<div class="column is-3">
 							<label class="label">Numero solicitud: </label>
-							<input type="text" name="numero_solicitud" class="input" id="numero_solicitud"/>
+							<input type="text" v-model="numero_solicitud" class="input" id="numero_solicitud"/>
 						</div>
 						<div class="column is-5">
 							<label class="label">Tipo de comprobantes de ingresos: </label>
-								<b-radio v-model="evaluation_type" size="is-normal" 
+								<b-radio v-model="tipo_comprobante" size="is-normal" 
 						        native-value="account_statements"> 
 						        Estados de Cuenta 
 					    		</b-radio>
@@ -22,25 +22,25 @@ const FirstFormStep = Vue.component('first-form-step', {
 						</div>
 						<div class="column">
 							<label class="label">Garantia hipotecaria: </label>
-							<input type="text" name="garantia_hipotecaria" id="garantia_hipotecaria"  class="input"/>
+							<input type="text" v-model="garantia_hipotecaria" id="garantia_hipotecaria"  class="input"/>
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column is-3">
-							<label class="label">Tipo evaluacion: </label>
-							<input type="text" name="tipo_evaluacion" class="input" />
+							<label class="label">Tipo evaluacion del perfilador: </label>
+							<input type="text" v-model="tipo_evaluacion_perfilador" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Decreto: </label>
-							<input type="text" name="decreto" class="input" />
+							<input type="text" v-model="decreto" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Score: </label>
-							<input type="text" name="score" class="input" />
+							<input type="text" v-model="score" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Ventas anuales: </label>
-							<input type="text" name="ventas_anuales" class="input" />
+							<input type="text" v-model="ventas_anuales" class="input" />
 						</div>
 
 					</div>
@@ -52,60 +52,60 @@ const FirstFormStep = Vue.component('first-form-step', {
 						</div>
 						<div class="column is-3">
 							<label class="label">Uafir: </label>
-							<input type="text" name="uafir" class="input" />
+							<input type="text" v-model="uafir" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Capital contable: </label>
-							<input type="text" name="capital_contable" class="input" />
+							<input type="text" v-model="capital_contable" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Destino credito: </label>
-							<input type="text" name="destino_credito" class="input" />
+							<input type="text" v-model="destino_credito" class="input" />
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column is-3">
 							<label class="label">Antiguedad actividad: </label>
-							<input type="text" name="antiguedad_actividad" class="input" />
+							<input type="text" v-model="antiguedad_actividad" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Antiguedad operacion: </label>
-							<input type="text" name="antiguedad_operacion" class="input" />
+							<input type="text" v-model="aniguedad_operacion" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Calificacion deudor: </label>
-							<input type="text" name="calificacion_deudor" class="input" />
+							<input type="text" v-model="calificacion_deudor" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Deuda total: </label>
-							<input type="text" name="deuda_total" class="input" />
+							<input type="text" v-model="deuda_total" class="input" />
 						</div>
 					</div>
 
 					<div class="columns">
 						<div class="column is-4">
 							<label class="label">MONTHS_ON_FILE_CREDIT_AMT: </label>
-							<input type="text" name="month_onfile" class="input" />
+							<input type="text" v-model="MONTHS_ON_FILE_BANKING" class="input" />
 						</div>
 						<div class="column is-4">
 							<label class="label">BK12_CLEAN: </label>
-							<input type="text" name="bk12_clean" class="input" />
+							<input type="text" v-model="BK12_CLEAN" class="input" />
 						</div>
 						<div class="column is-4">
 							<label class="label">BK12_MAX_CREDIT_AMT: </label>
-							<input type="text" name="bl12_max" class="input" />
+							<input type="text" v-model="BK12_MAX_CREDIT_AMT" class="input" />
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column">
 							<label class="label">Actividad: </label>
-							<b-select placeholder="Select a name" v-model="activity" expanded>
+							<b-select placeholder="Select a name" v-model="id_actividad" expanded>
                                 <option v-for="activity in activities" :value="activity.id">{{ activity.nombre }} </option>
 	            			</b-select>
 						</div>
 						<div class="column">
 							<label class="label">Nivel de Riesgo: </label>
-							<b-select placeholder="Select a name" v-model="risk_level" expanded>	                			
+							<b-select placeholder="Select a name" v-model="id_nivel_riesgo" expanded>	                			
                                 <option v-for="risk_level in risk_levels" :value="risk_level.id">{{ risk_level.nombre }} </option>
 	            			</b-select>
 						</div>
@@ -113,35 +113,89 @@ const FirstFormStep = Vue.component('first-form-step', {
 				</section> `,
 	data () {
 		return {		
-			activity: null,
-			risk_level: null,
-			solicitude_number: null,
-			evaluation_type: "account_statements",
-			guarantee: null,
-			evaluation_type_profiler: null,
-			decree: null,
+			id_actividad: null,
+			id_nivel_riesgo: null,
+			numero_solicitud: null,
+			tipo_comprobante: "account_statements",
+			garantia_hipotecaria: null,
+			tipo_evaluacion_perfilador: null,
+			decreto: null,
 			score: null,
-			annual_sales: null,
+			ventas_anuales: null,
 			// flujo_disponible_mensual : null,  
 			uafir: null,
-			accounting_capital: null,
-			credit_destination: null,
-			activity_seniority: null,
-			operation_seniority: null,
-			debtor_qualification: null,
-			total_debt: null,
-			months_on_file_banking: null,
-			bk12_clean: null,
-			bk12_max_credit_amt: null, 
+			capital_contable: null,
+			destino_credito: null,
+			antiguedad_actividad: null,
+			aniguedad_operacion: null,
+			calificacion_deudor: null,
+			deuda_total: null,
+			MONTHS_ON_FILE_BANKING: null,
+			BK12_CLEAN: null,
+			BK12_MAX_CREDIT_AMT: null
 			activities: [],
 			risk_levels: []
 		}
 	},
 
 	watch: {
+		activity: function (val) {
+			this.$emit('activity-change', val);
+		},
+		risk_level: function (val) {
+			this.$emit('risk-level-change', val);
+		},
+		solicitude_number: function (val) {
+			this.$emit('sol-number-change', val);
+		},
 		evaluation_type: function (val) {
 			this.$emit('eval-type-change', val);
-		}
+		},
+		guarantee: function (val) {
+			this.$emit('guarantee-change', val);
+		},
+		evaluation_type_profiler: function (val) {
+			this.$emit('eval-type-prfl-change', val);
+		},
+		decree: function (val) {
+			this.$emit('decree-change', val);
+		},
+		score: function (val) {
+			this.$emit('score-change', val);
+		},
+		annual_sales: function (val) {
+			this.$emit('annual-sales-change', val);
+		},
+		uafir: function (val) {
+			this.$emit('uafir-change', val);
+		},
+		accounting_capital: function (val) {
+			this.$emit('acc-capital-change', val);
+		},
+		decree: function (val) {
+			this.$emit('credit-dest-change', val);
+		},
+		decree: function (val) {
+			this.$emit('act-seniority-change', val);
+		},
+		decree: function (val) {
+			this.$emit('oper-seniority-change', val);
+		},
+		decree: function (val) {
+			this.$emit('debtor-qual-change', val);
+		},
+		decree: function (val) {
+			this.$emit('total-debt-change', val);
+		},
+		decree: function (val) {
+			this.$emit('monfile-banking-change', val);
+		},
+		decree: function (val) {
+			this.$emit('bk12-clean-change', val);
+		},
+		decree: function (val) {
+			this.$emit('bk12maxcred-amt-change', val);
+		},
 	},
 
 	created: function() {

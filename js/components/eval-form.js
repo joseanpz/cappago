@@ -12,7 +12,10 @@ const EvalFormWizard = Vue.component('eval-form', {
 
            <tab-content title="Personal details" icon="" :before-change="beforeTabSwitch"> \
 
-			        <first-form-step v-on:eval-type-change="setEvalType"></first-form-step>\
+			        <first-form-step 
+                v-on:eval-type-change="setEvalType"
+              >
+              </first-form-step>
 
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
@@ -50,32 +53,34 @@ const EvalFormWizard = Vue.component('eval-form', {
                    <div class="wizard-footer-right" style = "padding-right: 10px;"> \
                      <wizard-button @click.native="saveForm" class="wizard-footer-right" :style="props.fillButtonStyle">Guardar</wizard-button> \
                    </div> \
-                 </template> \
+           </template> \
 			   </form-wizard>`,
     data () {
     	return {
 
-        id: null,
-        activity: null,
-        risk_level: null,
-        solicitude_number: null,
-        evaluation_type: "account_statements",
-        guarantee: null,
-        evaluation_type_profiler: null,
-        decree: null,
-        score: null,
-        annual_sales: null,
-        // flujo_disponible_mensual : null,  
-        uafir: null,
-        accounting_capital: null,
-        credit_destination: null,
-        activity_seniority: null,
-        operation_seniority: null,
-        debtor_qualification: null,
-        total_debt: null,
-        months_on_file_banking: null,
-        bk12_clean: null,
-        bk12_max_credit_amt: null, 
+        solicitude : {
+          id: null,
+          id_actividad: null,
+          id_nivel_riesgo: null,
+          numero_solicitud: null,
+          tipo_comprobante: "account_statements",
+          garantia_hipotecaria: null,
+          tipo_evaluacion_perfilador: null,
+          decreto: null,
+          score: null,
+          ventas_anuales: null,
+          // flujo_disponible_mensual : null,  
+          uafir: null,
+          capital_contable: null,
+          destino_credito: null,
+          antiguedad_actividad: null,
+          aniguedad_operacion: null,
+          calificacion_deudor: null,
+          deuda_total: null,
+          MONTHS_ON_FILE_BANKING: null,
+          BK12_CLEAN: null,
+          BK12_MAX_CREDIT_AMT: null
+        },        
     		account_statements: [],
     		simple_credits: [],
     		revolving_credits: [],
