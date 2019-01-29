@@ -96,19 +96,45 @@ const FirstFormStep = Vue.component('first-form-step', {
 							<input type="text" name="bl12_max" class="input" />
 						</div>
 					</div>
-					
-					<p class="content"> 
-					<br>
-					    <b>Selection:</b> 
-					    {{ evaluation_type }} 
-					</p> 
+					<div class="columns">
+						<div class="column">
+							<label class="label">Actividad: </label>
+							<b-select placeholder="Select a name" v-model="activity" expanded>
+                                <option v-for="activity in activities" :value="sucursal.id_oficina_full">{{ activity }} </option>
+	            			</b-select>
+						</div>
+						<div class="column">
+							<label class="label">Nivel de Riesgo: </label>
+							<b-select placeholder="Select a name" v-model="risk_level" expanded>	                			
+                                <option v-for="risk_level in risk_levels" :value="risk_level.id">{{ risk_level.nombre }} </option>
+	            			</b-select>
+						</div>
+					</div>
 				</section> `,
 	data () {
-		return {
+		return {		
+			activity: null,
+			risk_level: null,
+			solicitude_number: null,
 			evaluation_type: "account_statements",
-			model: {
-				radio: "Jack",
-			}
+			guarantee: null,
+			evaluation_type_profiler: null,
+			decree: null,
+			score: null,
+			annual_sales: null,
+			// flujo_disponible_mensual : null,  
+			uafir: null,
+			accounting_capital: null,
+			credit_destination: null,
+			activity_seniority: null,
+			operation_seniority: null,
+			debtor_qualification: null,
+			total_debt: null,
+			months_on_file_banking: null,
+			bk12_clean: null,
+			bk12_max_credit_amt: null, 
+			activities: [],
+			risk_levels: []
 		}
 	},
 
@@ -116,5 +142,38 @@ const FirstFormStep = Vue.component('first-form-step', {
 		evaluation_type: function (val) {
 			this.$emit('eval-type-change', val);
 		}
+	},
+
+	created: function() {
+		this.readActivities();
+		this.readRiskLevels();
+	},
+
+	methods: {
+		readActivities: function () {
+          var self = this;
+          /*google.script.run
+            .withSuccessHandler(function(response){
+              console.log(response);
+              self.activities = response.records;
+            })
+            .withFailureHandler(function(err){
+              console.log(err);
+            })
+            .read('actividad')*/
+        },
+
+        readRiskLevels: function () {
+          var self = this;
+          /*google.script.run
+            .withSuccessHandler(function(response){
+              console.log(response);
+              self.risk_lavels = response.records;
+            })
+            .withFailureHandler(function(err){
+              console.log(err);
+            })
+            .read('nivel_riesgo')*/
+        },
 	}
 });

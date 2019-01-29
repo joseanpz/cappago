@@ -8,28 +8,38 @@ const EvalFormWizard = Vue.component('eval-form', {
 	            color="#3a5fab"  errorColor="#8b0000" shape="circle" transition="" \
 	            > \
 	             <h1 slot="title">Evaluación</h1> \
-	             <tab-content title="Personal details" icon="" :before-change="beforeTabSwitch"> \
+	         
+
+           <tab-content title="Personal details" icon="" :before-change="beforeTabSwitch"> \
+
 			        <first-form-step v-on:eval-type-change="setEvalType"></first-form-step>\
-			        <p class="content"> \
-					    <b>Selection:</b> \
-					    {{ evaluation_type }} \
-					</p> \
+
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
+
 			       	<second-form-step :bank_list="bank_list" v-on:acc-statements-change="setAccountStatements"></second-form-step> \
 			       	<!--<pre>{{ account_statements | pretty }}</pre>--> 
+
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
+
 			       <third-form-step v-on:smpl-credits-change="setSimpleCredits" v-on:rvlg-credits-change="setRevolvingCredits" ></third-form-step> \
 			       <pre>{{ solicited_credits | pretty }}</pre>
+
 			     </tab-content> \
 			     <tab-content title="Additional Info"> \
+
 			       <fourth-form-step></fourth-form-step> \
+
 			     </tab-content> \
 			     <tab-content title="Last step"> \
+
 			       <fourth-form-step></fourth-form-step> \
+
 			     </tab-content> \
-			     <template slot="footer" slot-scope="props"> \
+			     
+
+           <template slot="footer" slot-scope="props"> \
                    <div class="wizard-footer-left"> \
                      <wizard-button v-if="props.activeTabIndex > 0 && !props.isLastStep" @click.native="props.prevTab()" :style="props.fillButtonStyle">Atras</wizard-button> \
                    </div> \
@@ -44,8 +54,28 @@ const EvalFormWizard = Vue.component('eval-form', {
 			   </form-wizard>`,
     data () {
     	return {
-    		evaluation_type: "account_statements",
-    		solicitation_number: null,
+
+        id: null,
+        activity: null,
+        risk_level: null,
+        solicitude_number: null,
+        evaluation_type: "account_statements",
+        guarantee: null,
+        evaluation_type_profiler: null,
+        decree: null,
+        score: null,
+        annual_sales: null,
+        // flujo_disponible_mensual : null,  
+        uafir: null,
+        accounting_capital: null,
+        credit_destination: null,
+        activity_seniority: null,
+        operation_seniority: null,
+        debtor_qualification: null,
+        total_debt: null,
+        months_on_file_banking: null,
+        bk12_clean: null,
+        bk12_max_credit_amt: null, 
     		account_statements: [],
     		simple_credits: [],
     		revolving_credits: [],
@@ -64,7 +94,8 @@ const EvalFormWizard = Vue.component('eval-form', {
     components : {
     	FirstFormStep,
     	SecondFormStep,
-    	ThirdFormStep
+    	ThirdFormStep,
+      FourthFormStep
     },
 
     computed: {

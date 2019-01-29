@@ -5,7 +5,7 @@ const ThirdFormStep = Vue.component('third-form-step', {
 	                      <b-field label="Tipo de crédito"></b-field>
 	                  	</div>
 	                  	<div class="column is-2">
-	                      <b-select placeholder="Select a name" v-model="selected_type">
+	                    <b-select placeholder="Select a name" v-model="selected_type">
                 			<option value="1" > Simple </option> 
                 			<option value="2" > Revolvente </option>
             			</b-select>
@@ -31,14 +31,14 @@ const ThirdFormStep = Vue.component('third-form-step', {
 								<div class="card-content">                     
 	                        		<div class="content">
                         				<label class="label_color" >Monto Solicitado</label>
-		  									<b-field v-for="credit in revolving_credits" :key="credit.id"> 
-				  								<b-input type="number" step="0.01" v-model="credit.amount" style="width:80%;"></b-input> &nbsp
-				  								<a class="button is-danger is-outlined "  style="justify-content: center;" @click="deleteCredit(credit.id, 'revolvente')">
-												    <span>Borrar</span>
-												    <span class="icon is-small">
-												      <i class="fas fa-times"></i>
-												    </span>
-												 </a>			 
+		  								<b-field v-for="credit in revolving_credits" :key="credit.id"> 
+			  								<b-input type="number" step="0.01" v-model="credit.amount" style="width:80%;"></b-input> &nbsp
+			  								<a class="button is-danger is-outlined "  style="justify-content: center;" @click="deleteCredit(credit.id, 'revolvente')">
+											    <span>Borrar</span>
+											    <span class="icon is-small">
+											      <i class="fas fa-times"></i>
+											    </span>
+											 </a>			 
 		  								</b-field>
 		  							</div>	 	
 		  						</div>	 			
@@ -67,8 +67,8 @@ const ThirdFormStep = Vue.component('third-form-step', {
 												    <span class="icon is-small">
 												      <i class="fas fa-times"></i>
 												    </span>
-												  </a>
-												  </div>
+												</a>
+											</div>
 			  							</b-field> 
 			  						</div>	 	
 		  						</div>	  							
