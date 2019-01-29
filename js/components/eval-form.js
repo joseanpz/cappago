@@ -92,7 +92,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           capital_contable: null,
           destino_credito: null,
           antiguedad_actividad: null,
-          aniguedad_operacion: null,
+          antiguedad_operacion: null,
           calificacion_deudor: null,
           deuda_total: null,
           MONTHS_ON_FILE_BANKING: null,
@@ -223,7 +223,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           this.solicitud.antiguedad_actividad = val;
         },
         setOperSeniority: function(val) {
-          this.solicitud.aniguedad_operacion = val;
+          this.solicitud.antiguedad_operacion = val;
         },
         setDebtorQual: function(val) {
         	this.solicitud.calificacion_deudor = val;
