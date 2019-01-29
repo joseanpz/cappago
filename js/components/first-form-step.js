@@ -15,7 +15,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 						        native-value="account_statements"> 
 						        Estados de Cuenta 
 					    		</b-radio>
-							<b-radio v-model="evaluation_type" size="is-normal" class="form-color" 
+							<b-radio v-model="tipo_comprobante" size="is-normal" class="form-color" 
 					        native-value="financial_statements"> 
 					        Estados Financieros  
 					    	</b-radio>
@@ -104,11 +104,29 @@ const FirstFormStep = Vue.component('first-form-step', {
 					</p> 
 				</section> `,
 	data () {
-		return {
-			evaluation_type: "account_statements",
-			model: {
-				radio: "Jack",
-			}
+		return {		
+			id_actividad: null,
+			id_nivel_riesgo: null,
+			numero_solicitud: null,
+			tipo_comprobante: "account_statements",
+			garantia_hipotecaria: null,
+			tipo_evaluacion_perfilador: null,
+			decreto: null,
+			score: null,
+			ventas_anuales: null,
+			// flujo_disponible_mensual : null,  
+			uafir: null,
+			capital_contable: null,
+			destino_credito: null,
+			antiguedad_actividad: null,
+			aniguedad_operacion: null,
+			calificacion_deudor: null,
+			deuda_total: null,
+			MONTHS_ON_FILE_BANKING: null,
+			BK12_CLEAN: null,
+			BK12_MAX_CREDIT_AMT: null,
+			activities: [],
+			risk_levels: []
 		}
 	},
 
@@ -180,7 +198,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 	methods: {
 		readActivities: function () {
           var self = this;
-          google.script.run
+          /*google.script.run
             .withSuccessHandler(function(response){
               console.log(response);
               self.activities = response.records;
@@ -188,12 +206,12 @@ const FirstFormStep = Vue.component('first-form-step', {
             .withFailureHandler(function(err){
               console.log(err);
             })
-            .readCatalog('actividad')
+            .readCatalog('actividad')*/
         },
 
         readRiskLevels: function () {
           var self = this;
-          google.script.run
+          /*google.script.run
             .withSuccessHandler(function(response){
               console.log(response);
               self.risk_levels = response.records;
@@ -201,7 +219,7 @@ const FirstFormStep = Vue.component('first-form-step', {
             .withFailureHandler(function(err){
               console.log(err);
             })
-            .readCatalog('nivel_riesgo')
+            .readCatalog('nivel_riesgo')*/
         },
 	}
 });
