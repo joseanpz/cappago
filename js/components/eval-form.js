@@ -32,7 +32,6 @@ const EvalFormWizard = Vue.component('eval-form', {
                 @monfile-banking-change="setMonfileBanking"
                 @bk12-clean-change="setBk12Clean"
                 @bk12maxcred-amt-change="setBk12maxcredAmt"
-
               >
               </first-form-step>
 
