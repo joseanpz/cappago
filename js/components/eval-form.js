@@ -131,6 +131,9 @@ const EvalFormWizard = Vue.component('eval-form', {
           account_statements: this.account_statements,
           solicited_credits: this.solicited_credits
         }
+      },
+      saved: function() {
+        return this.solicitud.id != null;
       }
     },
 
@@ -150,8 +153,35 @@ const EvalFormWizard = Vue.component('eval-form', {
           alert('Saving form!');
         },
         beforeTabSwitch: function(){
-           //alert("This is called before switchind tabs")
-           return true;
+          //alert("This is called before switchind tabs")
+          var self = this;
+          if (!this.saved) {
+            google.script.run
+            .withSuccessHandler(function(response){
+              console.log(response);
+              self.solicitud.id = response.id;
+            })
+            .withFailureHandler(function(err){
+              console.log('An error ocurred while saving a "solicitud"!')
+              console.log(err);
+            })
+            .create('solicitud', this.solicitud)
+          } else {
+            google.script.run
+            .withSuccessHandler(function(response){
+              console.log('Updating response!')
+              console.log(response);
+              //self.solicitud.id = response.id;
+            })
+            .withFailureHandler(function(err){
+              console.log('An error ocurred while updating')
+              console.log(err);
+            })
+            .update('solicitud', this.solicitud)
+
+          }
+          
+          return true;
         },
         setActivity: function(val) {
           this.solicitud.id_actividad = val;
