@@ -113,8 +113,95 @@ const FirstFormStep = Vue.component('first-form-step', {
 	},
 
 	watch: {
-		evaluation_type: function (val) {
+		id_actividad: function (val) {
+			this.$emit('activity-change', val);
+		},
+		id_nivel_riesgo: function (val) {
+			this.$emit('risk-level-change', val);
+		},
+		numero_solicitud: function (val) {
+			this.$emit('sol-number-change', val);
+		},
+		tipo_comprobante: function (val) {
 			this.$emit('eval-type-change', val);
-		}
+		},
+		garantia_hipotecaria: function (val) {
+			this.$emit('guarantee-change', val);
+		},
+		tipo_evaluacion_perfilador: function (val) {
+			this.$emit('eval-type-prfl-change', val);
+		},
+		decreto: function (val) {
+			this.$emit('decree-change', val);
+		},
+		score: function (val) {
+			this.$emit('score-change', val);
+		},
+		ventas_anuales: function (val) {
+			this.$emit('annual-sales-change', val);
+		},
+		uafir: function (val) {
+			this.$emit('uafir-change', val);
+		},
+		capital_contable: function (val) {
+			this.$emit('acc-capital-change', val);
+		},
+		destino_credito: function (val) {
+			this.$emit('credit-dest-change', val);
+		},
+		antiguedad_actividad: function (val) {
+			this.$emit('act-seniority-change', val);
+		},
+		aniguedad_operacion: function (val) {
+			this.$emit('oper-seniority-change', val);
+		},
+		calificacion_deudor: function (val) {
+			this.$emit('debtor-qual-change', val);
+		},
+		deuda_total: function (val) {
+			this.$emit('total-debt-change', val);
+		},
+		MONTHS_ON_FILE_BANKING: function (val) {
+			this.$emit('monfile-banking-change', val);
+		},
+		BK12_CLEAN: function (val) {
+			this.$emit('bk12-clean-change', val);
+		},
+		BK12_MAX_CREDIT_AMT: function (val) {
+			this.$emit('bk12maxcred-amt-change', val);
+		},
+	},
+
+	created: function() {
+		this.readActivities();
+		this.readRiskLevels();
+	},
+
+	methods: {
+		readActivities: function () {
+          var self = this;
+          google.script.run
+            .withSuccessHandler(function(response){
+              console.log(response);
+              self.activities = response.records;
+            })
+            .withFailureHandler(function(err){
+              console.log(err);
+            })
+            .readCatalog('actividad')
+        },
+
+        readRiskLevels: function () {
+          var self = this;
+          google.script.run
+            .withSuccessHandler(function(response){
+              console.log(response);
+              self.risk_levels = response.records;
+            })
+            .withFailureHandler(function(err){
+              console.log(err);
+            })
+            .readCatalog('nivel_riesgo')
+        },
 	}
 });
