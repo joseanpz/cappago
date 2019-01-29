@@ -2,17 +2,28 @@
 // require jsPDF
 
 // to be used
+/*
 function genPDF() {
+  var element = document.getElementById('my-pdf-div');
+html2pdf(element, {
+  margin:       1,
+  filename:     'myfile.pdf',
+  image:        { type: 'jpeg', quality: 0.98 },
+  html2canvas:  { dpi: 192, letterRendering: true },
+  jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+});
+
+
 	html2canvas(document.getElementById("my-pdf-div"), {
 		onrendered: function (canvas) {
-			var img = canvas.toDataURL("image/url");
-			var doc = new jsPDF();
-			doc.addImage(img, 'JPEG', 20, 20);
+			var img = canvas.toDataURL("image/jpge",1.0);
+			var doc =new jsPDF("l", "mm", "a4");
+			doc.addImage(img, 'JPEG', 10, 10, 180, 150);
 			doc.save('test.pdf');
 		}
 	});
 }
-
+*/
 const DetailForm = Vue.component('detail', {
 	template: `
 	<section class="container" id="detail-print">
@@ -226,6 +237,7 @@ const DetailForm = Vue.component('detail', {
                 </tr>
               </table>
               <br/><br/><br/>
+              <div id="editor" style="display:none;">Hola</div>
           </div>
         </div>
 
@@ -239,15 +251,17 @@ const DetailForm = Vue.component('detail', {
 		genPDF: function () {		
 			html2canvas(document.getElementById("detail-print"), {
 				onrendered: function (canvas) {
-					var img = canvas.toDataURL("image/url");
-					var doc = new jsPDF();
-					doc.addImage(img, 'JPEG', 20, 20);
+					var img = canvas.toDataURL("image/url",1.0);
+					var doc = new jsPDF('p', 'pt', 'letter')
+					doc.addImage(img, 'JPEG',30,20,550,500);
 					doc.save('test.pdf');
 				}
 			});
+      
 		},
 	},
 	beforeCreate: function() {
+
 
 	},
 	created: function () {
