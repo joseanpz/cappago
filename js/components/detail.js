@@ -135,13 +135,26 @@ const DetailForm = Vue.component('detail', {
 			});
     
 		},
+    readDetailForm:function(){
+      var self = this;
+      google.script.run
+          .withSuccessHandler(function(response){
+            console.log(response);
+            self.details = response.records;
+          })
+          withFailureHandler(function(err){
+            console.log(err);
+          })
+          .readDetails('solicitud',id)
+
+    }
 	},
 	beforeCreate: function() {
 
 
 	},
 	created: function () {
-
+    this.readDetailForm();
 	},
 	beforeMount: function() {
 
