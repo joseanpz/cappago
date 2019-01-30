@@ -8,8 +8,8 @@ const routes = [
   { path: '/', component: HomeController, name: 'home' },
   { path: '/evaluaciones', component: EvalListController, name: 'evaluaciones' },
   { path: '/evaluar', component: EvalFormController, name: 'evaluar' },
-  { path: '/evaluaciones/:id', component: EvalDetailController, name: 'evaluaciones-detalle' },
-  { path: '/evaluar/:id', component: EvalUpdateFormController, name: 'reevaluar' }
+  { path: '/evaluaciones/:id', component: EvalDetailController, name: 'evaluaciones-detalle', props:true },
+  { path: '/evaluar/:id', component: EvalUpdateFormController, name: 'reevaluar', props:true }
 ]
 
 // 3. Create the router instance and pass the `routes` option
