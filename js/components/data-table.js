@@ -36,30 +36,24 @@ const DataTable = Vue.component('data-table', {
             default-sort="user.first_name">
 
             <template slot-scope="props">
-                <b-table-column field="id" label="ID" width="40" sortable numeric>
-                    {{ props.row.id }}
+                <b-table-column field="numero_solicitud" label="#Solicitud" width="40" sortable>
+                    {{ props.row.numero_solicitud }}
                 </b-table-column>
 
-                <b-table-column field="user.first_name" label="First Name" sortable>
-                    {{ props.row.user.first_name }}
+                <b-table-column field="tipo_comprobante" label="Comprobantes">
+                    {{ props.row.tipo_comprobante }}
                 </b-table-column>
 
-                <b-table-column field="user.last_name" label="Last Name" sortable>
-                    {{ props.row.user.last_name }}
+                <b-table-column field="garantia_hipotecaria" label="Garantía">
+                    {{ props.row.garantia_hipotecaria }}
                 </b-table-column>
-
+                <!--
                 <b-table-column field="date" label="Date" sortable centered>
                     <span class="tag is-success">
                         {{ new Date(props.row.date).toLocaleDateString() }}
                     </span>
                 </b-table-column>
-
-                <b-table-column label="Gender">
-                    <b-icon pack="fas"
-                        :icon="props.row.gender === 'Male' ? 'mars' : 'venus'">
-                    </b-icon>
-                    {{ props.row.gender }}
-                </b-table-column>
+                -->
                 <b-table-column label="Acciones">
                     <router-link :to="{ name: 'evaluaciones-detalle', params: { id: props.row.id }}">
 	                    <a class="button btn_detalles"  title="Detalles">
