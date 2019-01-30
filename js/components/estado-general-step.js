@@ -1,6 +1,6 @@
 var EstadoGeneralStep = Vue.component('estado-general-step',{
 	template: `
-		<section class="container">
+		<section class="container formulario">
 			<div class="columns">
 				<div class="column">
 					<label class="label">Ventas anuales: </label>

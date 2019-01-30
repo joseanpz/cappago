@@ -1,7 +1,7 @@
 var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	props: ["bank_list"],
 	template: `
-		<section> 
+		<section class="container formulario"> 
 			<div class="columns">
 				<div  class="column is-2">
 					<b-field label="Seleccione un Banco"></b-field>

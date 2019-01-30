@@ -1,6 +1,6 @@
 var BuroCreditoStep = Vue.component('buro-credito-step',{
 	template: `
-		<section class="container">
+		<section class="container formulario">
 			<div class="columns">
 				<div class="column">
 					<label class="label">Deuda total: </label>
