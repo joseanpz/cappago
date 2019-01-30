@@ -183,3 +183,8 @@ select:focus select:before {
 .input:after, .input:focus{
 	border-color: #3a5fab !important;
 }
+
+.footer{
+	background-color: #3a5fab !important;
+	color:white;
+}
