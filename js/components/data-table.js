@@ -142,11 +142,11 @@ const DataTable = Vue.component('data-table', {
     },
     
     created: function () {
-
+        this.readSolicitudes();
     },
 
     methods: {
-        readActivities: function () {
+        readSolicitudes: function () {
             var self = this;
             google.script.run
             .withSuccessHandler(function(response){
@@ -158,7 +158,7 @@ const DataTable = Vue.component('data-table', {
                 console.log('An error ocurred while fetching "solicitudes".')
                 console.log(err);
             })
-            .read('solicitud')
+            .read('solicitud');
         },
     }
 
