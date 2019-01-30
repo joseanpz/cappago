@@ -1,29 +1,3 @@
-// require html2canvas
-// require jsPDF
-
-// to be used
-/*
-function genPDF() {
-  var element = document.getElementById('my-pdf-div');
-html2pdf(element, {
-  margin:       1,
-  filename:     'myfile.pdf',
-  image:        { type: 'jpeg', quality: 0.98 },
-  html2canvas:  { dpi: 192, letterRendering: true },
-  jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-});
-
-
-	html2canvas(document.getElementById("my-pdf-div"), {
-		onrendered: function (canvas) {
-			var img = canvas.toDataURL("image/jpge",1.0);
-			var doc =new jsPDF("l", "mm", "a4");
-			doc.addImage(img, 'JPEG', 10, 10, 180, 150);
-			doc.save('test.pdf');
-		}
-	});
-}
-*/
 const DetailForm = Vue.component('detail', {
   props: ['id'],
 	template: `

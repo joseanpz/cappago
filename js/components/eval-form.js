@@ -1,63 +1,82 @@
 Vue.use(VueFormWizard);
+Vue.use(VueFormGenerator);
 
 
 const EvalFormWizard = Vue.component('eval-form', {
-	template: `<form-wizard @on-complete="onComplete" \
-	             subtitle="subtitulo" nextButtonText="Siguiente" \
-	            backButtonText="Atras" finishButtonText="Guardar" stepSize="sm" \
-	            color="#3a5fab"  errorColor="#8b0000" shape="circle" transition="" \
-	            > \
-	             <h1 slot="title">Evaluación</h1> \
-	         
+	template: `
+    <form-wizard @on-complete="onComplete" \
+      subtitle="subtitulo" nextButtonText="Siguiente" \
+      backButtonText="Atras" finishButtonText="Guardar" stepSize="sm" \
+      color="#3a5fab"  errorColor="#8b0000" shape="circle" transition="" \
+    > \
+      <h1 slot="title">Evaluación</h1> \
+        <tab-content>
+          <solicitud-step 
+          @sol-number-change="setSolNumber" 
+          > 
+          </solicitud-step>
+        </tab-content>
 
-           <tab-content title="Personal details" icon="" :before-change="beforeTabSwitch"> \
+        <tab-content>
+          <credito-step
+          @credit-dest-change="setCreditDest"
+          @guarantee-change="setGuarantee"
+          @smpl-credits-change="setSimpleCredits" 
+          @rvlg-credits-change="setRevolvingCredits"
+          > 
+          </credito-step>
+        </tab-content>
 
-			        <first-form-step
-                @activity-change="setActivity"
-                @risk-level-change="setRiskLevel"
-                @sol-number-change="setSolNumber"
-                @eval-type-change="setEvalType"
-                @guarantee-change="setGuarantee"
-                @eval-type-prfl-change="setPrfEvalType"
-                @decree-change="setDecree"
-                @score-change="setScore"
-                @annual-sales-change="setAnnualSales"
-                @uafir-change="setUafir"
-                @acc-capital-change="setAccCapital"
-                @credit-dest-change="setCreditDest"
-                @act-seniority-change="setActSeniority"
-                @oper-seniority-change="setOperSeniority"
-                @debtor-qual-change="setDebtorQual"
-                @total-debt-change="setTotalDebt"
-                @monfile-banking-change="setMonfileBanking"
-                @bk12-clean-change="setBk12Clean"
-                @bk12maxcred-amt-change="setBk12maxcredAmt"
-              >
-              </first-form-step>
+        <tab-content>
+          <laboral-step
+          @act-seniority-change="setActSeniority"
+          @oper-seniority-change="setOperSeniority"
+          @activity-change="setActivity"
+          @eval-type-change="setEvalType"
+          > 
+          </laboral-step>
+        </tab-content>
 
-			     </tab-content> \
-			     <tab-content title="Additional Info"> \
+        <tab-content>
+          <saldos-depositos-step
+          :bank_list="bank_list"
+          @acc-statements-change="setAccountStatements"
+          > 
+          </saldos-depositos-step>
+        </tab-content>
 
-			       	<second-form-step :bank_list="bank_list" v-on:acc-statements-change="setAccountStatements"></second-form-step> \
-			       	<!--<pre>{{ account_statements | pretty }}</pre>--> 
+        <tab-content>
+          <buro-credito-step
+          @total-debt-change="setTotalDebt"
+          @monfile-banking-change="setMonfileBanking"
+          @bk12-clean-change="setBk12Clean"
+          @bk12maxcred-amt-change="setBk12maxcredAmt"
+          > 
+          </buro-credito-step>
+        </tab-content>
 
-			     </tab-content> \
-			     <tab-content title="Additional Info"> \
+        <tab-content>
+          <estado-general-step
+          @uafir-change="setUafir"
+          @acc-capital-change="setAccCapital"
+          @debtor-qual-change="setDebtorQual"
+          @annual-sales-change="setAnnualSales"
+          > 
+          </estado-general-step>
+        </tab-content>
 
-			       <third-form-step v-on:smpl-credits-change="setSimpleCredits" v-on:rvlg-credits-change="setRevolvingCredits" ></third-form-step> \
-			       
+        <tab-content>
+          <resultado-perfilador-step
+          @decree-change="setDecree"
+          @risk-level-change="setRiskLevel"
+          @score-change="setScore"
+          @eval-type-prfl-change="setPrfEvalType"
+          > 
+          </resultado-perfilador-step>
+        </tab-content>
 
-			     </tab-content> \
-			     <tab-content title="Additional Info"> \
+         
 
-			       <fourth-form-step></fourth-form-step> \
-
-			     </tab-content> \
-			     <tab-content title="Last step"> \
-
-			       <fourth-form-step></fourth-form-step> \
-
-			     </tab-content> \
 			     <pre>{{ data | pretty }}</pre>
 
            <template slot="footer" slot-scope="props"> \
@@ -115,10 +134,18 @@ const EvalFormWizard = Vue.component('eval-form', {
         }
     },
     components : {
-    	FirstFormStep,
+      SolicitudStep,
+      CreditoStep,
+      LaboralStep,
+      SaldosDepositosStep,
+      BuroCreditoStep,
+      EstadoGeneralStep,
+      ResultadoPerfiladorStep
+
+    	/*FirstFormStep,
     	SecondFormStep,
     	ThirdFormStep,
-      FourthFormStep
+      FourthFormStep]*/
     },
 
     computed: {
