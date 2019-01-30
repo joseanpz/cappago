@@ -33,16 +33,10 @@ const EvalFormWizard = Vue.component('eval-form', {
           @oper-seniority-change="setOperSeniority"
           @activity-change="setActivity"
           @eval-type-change="setEvalType"
-          > 
-          </laboral-step>
-        </tab-content>
-
-        <tab-content>
-          <saldos-depositos-step
           :bank_list="bank_list"
           @acc-statements-change="setAccountStatements"
           > 
-          </saldos-depositos-step>
+          </laboral-step>
         </tab-content>
 
         <tab-content>
@@ -77,7 +71,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
          
 
-			     <!--<pre>{{ data | pretty }}</pre>-->
+			     <pre>{{ data | pretty }}</pre>
 
            <template slot="footer" slot-scope="props"> \
                    <div class="wizard-footer-left"> \

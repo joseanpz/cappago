@@ -6,8 +6,9 @@ var js_paths = [
 	'js/components/data-table.js',
 	'js/components/solicitud-step.js',
 	'js/components/credito-step.js',
-	'js/components/laboral-step.js',
 	'js/components/saldos-depositos-step.js',
+	'js/components/laboral-step.js',
+	
 	'js/components/buro-credito-step.js',
 	'js/components/estado-general-step.js',
 	'js/components/resultado-perfilador-step.js',
