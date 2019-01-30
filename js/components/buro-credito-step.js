@@ -18,8 +18,61 @@ var BuroCreditoStep = Vue.component('buro-credito-step',{
 					<label class="label">BK12_MAX_CREDIT_AMT: </label>
 					<input type="text" v-model="BK12_MAX_CREDIT_AMT" class="input" />
 				</div>
+			</div>
+			<div class="columns">
 				<div class="column">
+					<label class="label">Numero creditos activos arrendamiento: </label>
+					<input type="text" v-model="creditos_act_arren" class="input" />
+				</div>
+				<div class="column">
+					<label class="label">Numero creditos activos factoraje: </label>
+					<input type="text" v-model="creditos_act_factorare" class="input" />
+				</div>
+				<div class="column">
+					<label class="label">Numero creditos activos revolventes: </label>
+					<input type="text" v-model="creditos_act_revolventes" class="input" />
+				</div>
+				<div class="column">
+					<label class="label">Numero creditos activos simples: </label>
+					<input type="text" v-model="creditos_act_simples" class="input" />
+				</div>
+			</div>
 
+			<div class="columns">
+				<div class="column">
+					<label class="label">Saldo original creditos activos arrendamiento: </label>
+					<input type="text" v-model="saldo_act_arren" class="input" />
+				</div>
+				<div class="column">
+					<label class="label">Saldo original creditos activos factoraje: </label>
+					<input type="text" v-model="saldo_act_factorare" class="input" />
+				</div>
+				<div class="column">
+					<label class="label">Saldo original creditos activos revolventes: </label>
+					<input type="text" v-model="saldo_act_revolventes" class="input" />
+				</div>
+				<div class="column">
+					<label class="label">Saldo original creditos activos simples: </label>
+					<input type="text" v-model="saldo_act_simples" class="input" />
+				</div>
+			</div>
+
+			<div class="columns">
+				<div class="column">
+					<label class="label">Saldo vigente creditos activos arrendamiento: </label>
+					<input type="text" v-model="saldo_vigente_act_arren" class="input" />
+				</div>
+				<div class="column">
+					<label class="label">Saldo vigente creditos activos factoraje: </label>
+					<input type="text" v-model="saldo_vigente_act_factorare" class="input" />
+				</div>
+				<div class="column">
+					<label class="label">Saldo vigente creditos activos revolventes: </label>
+					<input type="text" v-model="saldo_vigente_act_revolventes" class="input" />
+				</div>
+				<div class="column">
+					<label class="label">Saldo vigente creditos activos simples: </label>
+					<input type="text" v-model="saldo_vigente_act_simples" class="input" />
 				</div>
 			</div>
 		</section>
