@@ -25,6 +25,7 @@ html2pdf(element, {
 }
 */
 const DetailForm = Vue.component('detail', {
+  props: ['id'],
 	template: `
 	<section class="container" >
   <div id="detail-print">
@@ -47,7 +48,7 @@ const DetailForm = Vue.component('detail', {
                     <td><label class="label">RFC:</label></td>
                     <td>MECJ890724KJ3</td>
                     <td><label class="label">Solicitud:</label></td>
-                    <td>00009</td>
+                    <td>{{solicitud.numero_solicitud}}</td>
                   </tr>
                   <tr>
                     <td><label class="label">Tipo evaluacion:</label></td>
@@ -116,7 +117,7 @@ const DetailForm = Vue.component('detail', {
     `,
 	data () {
 		return {
-			id: null
+			solicitud: null
 		}
 	},
 	methods: {
@@ -135,17 +136,22 @@ const DetailForm = Vue.component('detail', {
 			});
     
 		},
-    readDetailForm:function(){
+    readDetail:function(){
       var self = this;
+      console.log('Reading detail');
+      console.log(this);
+      console.log(this.$parent);
       google.script.run
           .withSuccessHandler(function(response){
+            console.log('Response from solicitud ');
             console.log(response);
-            self.details = response.records;
+            self.solicitud = response;
           })
-          withFailureHandler(function(err){
+          .withFailureHandler(function(err){
+            console.log('An error ocurred while fetching a "solicitud"');
             console.log(err);
           })
-          .readDetails('solicitud',id)
+          .readId('solicitud',this.id)
 
     }
 	},
@@ -154,7 +160,7 @@ const DetailForm = Vue.component('detail', {
 
 	},
 	created: function () {
-    this.readDetailForm();
+    this.readDetail();
 	},
 	beforeMount: function() {
 

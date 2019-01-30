@@ -61,7 +61,8 @@ const EvalFormController = {
 	} 
 };
 
-const EvalDetailController = { 
+const EvalDetailController = {
+  props: ['id'],
   template: '#detail-template',
   components: {
     DetailForm,
