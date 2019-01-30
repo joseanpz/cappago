@@ -52,28 +52,28 @@ const DetailForm = Vue.component('detail', {
                   </tr>
                   <tr>
                     <td><label class="label">Tipo evaluacion:</label></td>
-                    <td>Nuevo</td>
+                    <td>{{solicitud.tipo_evaluacion_perfilador}}</td>
                     <td><label class="label">Calificación deudor:</label></td>
-                    <td>AA</td>
+                    <td>{{solicitud.calificacion_deudor}}</td>
                   </tr>
                   <tr>
                     <td><label class="label">Tipo comprobante:</label></td>
-                    <td>Nomina</td>
+                    <td>{{solicitud.tipo_comprobante}}</td>
                     <td><label class="label">Actividad:</label></td>
-                    <td>Pesca</td>
+                    <td>{{solicitud.id_actividad}}</td>
                   </tr>
                   <tr>
                     <td colspan="4" class="div-titulos">Perfil</td>
                   <tr>
                   <tr>
                     <td><label class="label">Decreto:</label></td>
-                    <td class="">PREAPROBADO</td>
+                    <td class="">{{solicitud.decreto}}</td>
                     <td><label class="label">Score:</label></td>
-                    <td class="">878</td>
+                    <td class="">{{solicitud.score}}</td>
                   </tr>
                   <tr>
                     <td><label class="label">Nivel de riesgo:</label></td>
-                    <td class="">AAA</td>
+                    <td class="">{{solicitud.id_nivel_riesgo}}</td>
                     <td><label class="label"></label></td>
                     <td class=""></td>
                   </tr>
@@ -106,6 +106,17 @@ const DetailForm = Vue.component('detail', {
               </table>
           </div>    
         </div>
+        <br/><br/>
+        <div class="footer columns"> 
+          <div style="font-weight:bold; font-size: 26px; text-align: center;" class="column is-3">banregio | Riesgos</div>
+          <div class="column" style="text-align: right;">
+            <p><b>Banco Regional, S.A</b></p>
+            <p><b>Institución de Banca Múltiple, Banregio Grupo Financiero. </b></p>
+            <p>Todos los Derechos Reservados</p>
+
+          </div>
+       
+        </div>
 
         <br/><br/>
         </div>
@@ -122,6 +133,20 @@ const DetailForm = Vue.component('detail', {
 	},
 	methods: {
 		genPDF: function () {		
+      var doc = new jsPDF();
+      var specialElementHandlers = {
+          '#editor': function (element, renderer) {
+              return true;
+          }
+      };
+
+      doc.fromHTML(document.getElementById("detail-print"), 15, 15, {
+        'width': 170,
+            'elementHandlers': specialElementHandlers
+    });
+    doc.save('sample-file.pdf');
+
+      /* 
       document.getElementById("header_PDF").style.display = "block";
 			html2canvas(document.getElementById("detail-print"), {
 				onrendered: function (canvas) {
@@ -134,7 +159,7 @@ const DetailForm = Vue.component('detail', {
            document.getElementById("header_PDF").style.display = "none";
 				}
 			});
-    
+    */
 		},
     readDetail:function(){
       var self = this;
