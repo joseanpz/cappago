@@ -13,6 +13,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         <tab-content>
           <solicitud-step 
           @sol-number-change="setSolNumber" 
+          :before-change="beforeTabSwitch"
           > 
           </solicitud-step>
         </tab-content>
