@@ -3,21 +3,20 @@ var CreditoStep = Vue.component('credito-step',{
 		<section class="container formulario">
 			<div class="columns">
 				<div class="column">
-					<div class="column">
-						<label class="label">Garantia: </label>
-						<input type="text" v-model="garantia" id="garantia"  class="input"/>
-					</div>
-					<div class="column">
-						<label class="label">Destino credito: </label>
-						<input type="text" v-model="destino_credito" class="input" />
-					</div>
+					<label class="label">Destino credito: </label>
+					<input type="text" v-model="destino_credito" class="input" />
 				</div>
+				<div class="column">
+					<label class="label">Garantia: </label>
+					<input type="text" v-model="garantia" id="garantia"  class="input"/>
+				</div>
+				
 			</div>
 			<div class="columns">
               	<div  class="column is-2">
                   <b-field label="Tipo de crédito"></b-field>
               	</div>
-              	<div class="column is-2">
+              	<div class="column is-2 select">
 	                <b-select placeholder="Select a name" v-model="selected_type">
 	        			<option value="1" > Simple </option> 
 	        			<option value="2" > Revolvente </option>
