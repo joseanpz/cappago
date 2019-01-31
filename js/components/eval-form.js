@@ -13,6 +13,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         <tab-content>
           <solicitud-step 
           @sol-number-change="setSolNumber" 
+          :before-change="beforeTabSwitch"
           > 
           </solicitud-step>
         </tab-content>
@@ -45,6 +46,18 @@ const EvalFormWizard = Vue.component('eval-form', {
           @monfile-banking-change="setMonfileBanking"
           @bk12-clean-change="setBk12Clean"
           @bk12maxcred-amt-change="setBk12maxcredAmt"
+          @num-arren-change="setNumArren"
+          @num-fact-change="setNumFact"
+          @num-revol-change="setNumRevol"
+          @num-simp-change="setNumSimp"
+          @sal-vig-arren-change="setSalVigArren"
+          @sal-vig-fact-change="setSalVigFact"
+          @sal-vig-revol-change="setSalVigRevol"
+          @sal-vig-simp-change="setSalVigSimp"
+          @sal-orig-arren-change="setSalOrigArren"
+          @sal-orig-fact-change="setSalOrigFact"
+          @sal-orig-revol-change="setSalOrigRevol"
+          @sal-orig-simp-change="setSalOrigSimp"
           > 
           </buro-credito-step>
         </tab-content>
@@ -110,7 +123,19 @@ const EvalFormWizard = Vue.component('eval-form', {
           deuda_total: null,
           MONTHS_ON_FILE_BANKING: null,
           BK12_CLEAN: null,
-          BK12_MAX_CREDIT_AMT: null
+          BK12_MAX_CREDIT_AMT: null,
+          num_cred_act_arren: null,
+          num_cred_act_fact: null,
+          num_cred_act_revol: null,
+          num_cred_act_simp: null,
+          sal_vig_cred_act_arren: null,
+          sal_vig_cred_act_fact: null,
+          sal_vig_cred_act_revol: null,
+          sal_vig_cred_act_simp: null,
+          sal_orig_cred_act_arren: null,
+          sal_orig_cred_act_fact: null,
+          sal_orig_cred_act_revol: null,
+          sal_orig_cred_act_simp: null
         },        
     		account_statements: [],
     		simple_credits: [],
@@ -260,6 +285,42 @@ const EvalFormWizard = Vue.component('eval-form', {
         },
         setBk12maxcredAmt: function(val) {
           this.solicitud.BK12_MAX_CREDIT_AMT = val;
+        },
+        setNumArren: function(val) {
+          this.solicitud.num_cred_act_arren = val;
+        },
+        setNumFact: function(val) {
+          this.solicitud.num_cred_act_fact = val;
+        },
+        setNumRevol: function(val) {
+          this.solicitud.num_cred_act_revol = val;
+        },
+        setNumSimp: function(val) {
+          this.solicitud.num_cred_act_simp = val;
+        },
+        setSalVigArren: function(val) {
+          this.solicitud.sal_vig_cred_act_arren = val;
+        },
+        setSalVigFact: function(val) {
+          this.solicitud.sal_vig_cred_act_fact = val;
+        },
+        setSalVigRevol: function(val) {
+          this.solicitud.sal_vig_cred_act_revol = val;
+        },
+        setSalVigSimp: function(val) {
+          this.solicitud.sal_vig_cred_act_simp = val;
+        },
+        setSalOrigArren: function(val) {
+          this.solicitud.sal_orig_cred_act_arren = val;
+        },
+        setSalOrigFact: function(val) {
+          this.solicitud.sal_orig_cred_act_fact = val;
+        },
+        setSalOrigRevol: function(val) {
+          this.solicitud.sal_orig_cred_act_revol = val;
+        },
+        setSalOrigSimp: function(val) {
+          this.solicitud.sal_orig_cred_act_simp = val;
         },
         setAccountStatements: function(val) {
         	this.account_statements = val;

@@ -19,62 +19,64 @@ var BuroCreditoStep = Vue.component('buro-credito-step',{
 					<input type="text" v-model="BK12_MAX_CREDIT_AMT" class="input" />
 				</div>
 			</div>
+			
 			<div class="columns">
 				<div class="column">
 					<label class="label">Numero creditos activos arrendamiento: </label>
-					<input type="text" v-model="creditos_act_arren" class="input" />
+					<input type="text" v-model="num_cred_act_arren" class="input" />
 				</div>
 				<div class="column">
 					<label class="label">Numero creditos activos factoraje: </label>
-					<input type="text" v-model="creditos_act_factorare" class="input" />
+					<input type="text" v-model="num_cred_act_fact" class="input" />
 				</div>
 				<div class="column">
 					<label class="label">Numero creditos activos revolventes: </label>
-					<input type="text" v-model="creditos_act_revolventes" class="input" />
+					<input type="text" v-model="num_cred_act_revol" class="input" />
 				</div>
 				<div class="column">
 					<label class="label">Numero creditos activos simples: </label>
-					<input type="text" v-model="creditos_act_simples" class="input" />
+					<input type="text" v-model="num_cred_act_simp" class="input" />
 				</div>
 			</div>
 
 			<div class="columns">
 				<div class="column">
 					<label class="label">Saldo original creditos activos arrendamiento: </label>
-					<input type="text" v-model="saldo_act_arren" class="input" />
+					<input type="text" v-model="sal_vig_cred_act_arren" class="input" />
 				</div>
 				<div class="column">
 					<label class="label">Saldo original creditos activos factoraje: </label>
-					<input type="text" v-model="saldo_act_factorare" class="input" />
+					<input type="text" v-model="sal_vig_cred_act_fact" class="input" />
 				</div>
 				<div class="column">
 					<label class="label">Saldo original creditos activos revolventes: </label>
-					<input type="text" v-model="saldo_act_revolventes" class="input" />
+					<input type="text" v-model="sal_vig_cred_act_revol" class="input" />
 				</div>
 				<div class="column">
 					<label class="label">Saldo original creditos activos simples: </label>
-					<input type="text" v-model="saldo_act_simples" class="input" />
+					<input type="text" v-model="sal_vig_cred_act_simp" class="input" />
 				</div>
 			</div>
 
 			<div class="columns">
 				<div class="column">
 					<label class="label">Saldo vigente creditos activos arrendamiento: </label>
-					<input type="text" v-model="saldo_vigente_act_arren" class="input" />
+					<input type="text" v-model="sal_orig_cred_act_arren" class="input" />
 				</div>
 				<div class="column">
 					<label class="label">Saldo vigente creditos activos factoraje: </label>
-					<input type="text" v-model="saldo_vigente_act_factorare" class="input" />
+					<input type="text" v-model="sal_orig_cred_act_fact" class="input" />
 				</div>
 				<div class="column">
 					<label class="label">Saldo vigente creditos activos revolventes: </label>
-					<input type="text" v-model="saldo_vigente_act_revolventes" class="input" />
+					<input type="text" v-model="sal_orig_cred_act_revol" class="input" />
 				</div>
 				<div class="column">
 					<label class="label">Saldo vigente creditos activos simples: </label>
-					<input type="text" v-model="saldo_vigente_act_simples" class="input" />
+					<input type="text" v-model="sal_orig_cred_act_simp" class="input" />
 				</div>
 			</div>
+			
 		</section>
 	`,
 	data () {
@@ -83,7 +85,18 @@ var BuroCreditoStep = Vue.component('buro-credito-step',{
 			MONTHS_ON_FILE_BANKING: null,
 			BK12_CLEAN: null,
 			BK12_MAX_CREDIT_AMT: null,
-
+			num_cred_act_arren: null,
+			num_cred_act_fact: null,
+			num_cred_act_revol: null,
+			num_cred_act_simp: null,
+			sal_vig_cred_act_arren: null,
+			sal_vig_cred_act_fact: null,
+			sal_vig_cred_act_revol: null,
+			sal_vig_cred_act_simp: null,
+			sal_orig_cred_act_arren: null,
+			sal_orig_cred_act_fact: null,
+			sal_orig_cred_act_revol: null,
+			sal_orig_cred_act_simp: null
 		}
 	},
 
@@ -99,6 +112,42 @@ var BuroCreditoStep = Vue.component('buro-credito-step',{
 		},
 		BK12_MAX_CREDIT_AMT: function (val) {
 			this.$emit('bk12maxcred-amt-change', val);
+		},
+		num_cred_act_arren: function (val) {
+			this.$emit('num-arren-change', val);
+		},
+		num_cred_act_fact: function (val) {
+			this.$emit('num-fact-change', val);
+		},
+		num_cred_act_revol: function (val) {
+			this.$emit('num-revol-change', val);
+		},
+		num_cred_act_simp: function (val) {
+			this.$emit('num-simp-change', val);
+		},
+		sal_vig_cred_act_arren: function (val) {
+			this.$emit('sal-vig-arren-change', val);
+		},
+		sal_vig_cred_act_fact: function (val) {
+			this.$emit('sal-vig-fact-change', val);
+		},
+		sal_vig_cred_act_revol: function (val) {
+			this.$emit('sal-vig-revol-change', val);
+		},
+		sal_vig_cred_act_simp: function (val) {
+			this.$emit('sal-vig-simp-change', val);
+		},
+		sal_orig_cred_act_arren: function (val) {
+			this.$emit('sal-orig-arren-change', val);
+		},
+		sal_orig_cred_act_fact: function (val) {
+			this.$emit('sal-orig-fact-change', val);
+		},
+		sal_orig_cred_act_revol: function (val) {
+			this.$emit('sal-orig-revol-change', val);
+		},
+		sal_orig_cred_act_simp: function (val) {
+			this.$emit('sal-orig-simp-change', val);
 		},
 		
 	}

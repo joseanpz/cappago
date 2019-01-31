@@ -9,11 +9,11 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 				<div class="column is-2">
  					<b-select placeholder="Select a name" v-model="selected_bank"> 
 						<option 
-						v-for="option in bank_list" 
-						:value="option" 
-						:key="option" 
+						v-for="bank in banks" 
+						:value="bank.id" 
+						:key="bank.id" 
 						> 
-							{{ option}} 
+							{{ bank.nombre}} 
 						</option> 
 					</b-select> 
                       
@@ -66,8 +66,13 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 			acc_stmnt_count: 0,
 			account_statements: [],
     		selected_bank: null,
+    		banks: []
 		}
 	},
+	created: function () {
+		this.readBanks();
+	},
+
 	filters: {
 		pretty: function(value) {
 			console.log('pretty');
@@ -79,6 +84,21 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 		
 	},
 	methods: {
+
+		readBanks: function () {
+          var self = this;
+          google.script.run
+            .withSuccessHandler(function(response){
+            	
+              	console.log(response);
+              	self.banks = response.records;
+            })
+            .withFailureHandler(function(err){
+            	console.log('An error ocurred while fetching banks!')
+              	console.log(err);
+            })
+            .readCatalog('banco')
+        },
 	    addAccountStetment: function () {
 	    	console.log("adding acc statement");
 	    	console.log(this.account_statements);
