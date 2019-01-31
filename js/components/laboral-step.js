@@ -1,8 +1,8 @@
 var LaboralStep = Vue.component('laboral-step',{
 	props: ['bank_list'],
 	template: `
-		<section>
-			<section class="container">
+		<section class="container formulario">
+			<section >
 				<div class="columns">
 					<div class="column">
 						<label class="label">Tipo de comprobantes de ingresos: </label>
