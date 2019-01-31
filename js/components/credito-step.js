@@ -1,6 +1,6 @@
 var CreditoStep = Vue.component('credito-step',{
 	template: `
-		<section class="container">
+		<section class="container formulario">
 			<div class="columns">
 				<div class="column">
 					<div class="column">
@@ -11,7 +11,6 @@ var CreditoStep = Vue.component('credito-step',{
 						<label class="label">Destino credito: </label>
 						<input type="text" v-model="destino_credito" class="input" />
 					</div>
-
 				</div>
 			</div>
 			<div class="columns">
