@@ -115,15 +115,36 @@
     </div>
   </script>
   <script type="text/x-template" id="detail-template">
-    <detail></detail>
+    <detail v-bind="$props"></detail>
     
   </script>
+  <br/>
+  <div class="footer columns"> 
+    <div style="font-weight:bold; font-size: 26px; text-align: center;" class="column is-2">banregio</div>
+    <div class="column" style="text-align: right;">
+      <p><b>Banco Regional, S.A</b></p>
+      <p><b>Institución de Banca Múltiple, Banregio Grupo Financiero. </b></p>
+      <p>Todos los Derechos Reservados</p>
+
+    </div>
+ 
+  </div> 
 
   <!-- build:js -->
   <script src="js/components/data-table.js"></script>
+  <script src="js/components/solicitud-step.js"></script>
+  <script src="js/components/credito-step.js"></script>
+  <script src="js/components/laboral-step.js"></script>
+  <script src="js/components/saldos-depositos-step.js"></script>
+  <script src="js/components/buro-credito-step.js"></script>
+  <script src="js/components/estado-general-step.js"></script>
+  <script src="js/components/resultado-perfiladorstep.js"></script>
+  <!--
   <script src="js/components/first-form-step.js"></script>
   <script src="js/components/second-form-step.js"></script>
   <script src="js/components/third-form-step.js"></script>
+  <script src="js/components/fourth-form-step.js"></script>
+  -->
   <script src="js/components/eval-form.js"></script>
   <script src="js/components/detail.js"></script>
   <script src="js/controllers.js"></script>

@@ -1,57 +1,76 @@
 Vue.use(VueFormWizard);
+Vue.use(VueFormGenerator);
 
 
 const EvalFormWizard = Vue.component('eval-form', {
-	template: `<form-wizard @on-complete="onComplete" \
-	             subtitle="subtitulo" nextButtonText="Siguiente" \
-	            backButtonText="Atras" finishButtonText="Guardar" stepSize="sm" \
-	            color="#3a5fab"  errorColor="#8b0000" shape="circle" transition="" \
-	            > \
-	             <h1 slot="title">Evaluación</h1> \
-	         
+	template: `
+    <form-wizard @on-complete="onComplete" \
+      subtitle="subtitulo" nextButtonText="Siguiente" \
+      backButtonText="Atras" finishButtonText="Guardar" stepSize="sm" \
+      color="#3a5fab"  errorColor="#8b0000" shape="circle" transition="" \
+    > \
+      <h1 slot="title">Evaluación</h1> \
+        <tab-content>
+          <solicitud-step 
+          @sol-number-change="setSolNumber" 
+          > 
+          </solicitud-step>
+        </tab-content>
 
-           <tab-content title="Personal details" icon="" :before-change="beforeTabSwitch"> \
+        <tab-content>
+          <credito-step
+          @credit-dest-change="setCreditDest"
+          @guarantee-change="setGuarantee"
+          @smpl-credits-change="setSimpleCredits" 
+          @rvlg-credits-change="setRevolvingCredits"
+          > 
+          </credito-step>
+        </tab-content>
 
-			        <first-form-step
-                @activity-change="setActivity"
-                @risk-level-change="setRiskLevel"
-                @sol-number-change="setSolNumber"
-                @eval-type-change="setEvalType"
-                @guarantee-change="setGuarantee"
-                @eval-type-prfl-change="setPrfEvalType"
-                @decree-change="setDecree"
-                @score-change="setScore"
-                @annual-sales-change="setAnnualSales"
-                @uafir-change="setUafir"
-                @acc-capital-change="setAccCapital"
-                @credit-dest-change="setCreditDest"
-                @act-seniority-change="setActSeniority"
-                @oper-seniority-change="setOperSeniority"
-                @debtor-qual-change="setDebtorQual"
-                @total-debt-change="setTotalDebt"
-                @monfile-banking-change="setMonfileBanking"
-                @bk12-clean-change="setBk12Clean"
-                @bk12maxcred-amt-change="setBk12maxcredAmt"
+        <tab-content>
+          <laboral-step
+          @act-seniority-change="setActSeniority"
+          @oper-seniority-change="setOperSeniority"
+          @activity-change="setActivity"
+          @eval-type-change="setEvalType"
+          :bank_list="bank_list"
+          @acc-statements-change="setAccountStatements"
+          > 
+          </laboral-step>
+        </tab-content>
 
-              >
-              </first-form-step>
+        <tab-content>
+          <buro-credito-step
+          @total-debt-change="setTotalDebt"
+          @monfile-banking-change="setMonfileBanking"
+          @bk12-clean-change="setBk12Clean"
+          @bk12maxcred-amt-change="setBk12maxcredAmt"
+          > 
+          </buro-credito-step>
+        </tab-content>
 
-			     </tab-content> \
-			     <tab-content title="Additional Info"> \
-			       	<second-form-step :bank_list="bank_list" v-on:acc-statements-change="setAccountStatements"></second-form-step> \
-			       	<!--<pre>{{ account_statements | pretty }}</pre>--> 
-			     </tab-content> \
-			     <tab-content title="Additional Info"> \
-			       <third-form-step v-on:smpl-credits-change="setSimpleCredits" v-on:rvlg-credits-change="setRevolvingCredits" ></third-form-step> \
-			       
+        <tab-content>
+          <estado-general-step
+          @uafir-change="setUafir"
+          @acc-capital-change="setAccCapital"
+          @debtor-qual-change="setDebtorQual"
+          @annual-sales-change="setAnnualSales"
+          > 
+          </estado-general-step>
+        </tab-content>
 
-			     </tab-content> \
-			     <tab-content title="Additional Info"> \
-			       <fourth-form-step></fourth-form-step> \
-			     </tab-content> \
-			     <tab-content title="Last step"> \
-			       <fourth-form-step></fourth-form-step> \
-			     </tab-content> \
+        <tab-content>
+          <resultado-perfilador-step
+          @decree-change="setDecree"
+          @risk-level-change="setRiskLevel"
+          @score-change="setScore"
+          @eval-type-prfl-change="setPrfEvalType"
+          > 
+          </resultado-perfilador-step>
+        </tab-content>
+
+         
+
 			     <pre>{{ data | pretty }}</pre>
 
            <template slot="footer" slot-scope="props"> \
@@ -65,7 +84,7 @@ const EvalFormWizard = Vue.component('eval-form', {
                    <div class="wizard-footer-right" style = "padding-right: 10px;"> \
                      <wizard-button @click.native="saveForm" class="wizard-footer-right" :style="props.fillButtonStyle">Guardar</wizard-button> \
                    </div> \
-                 </template> \
+           </template> \
 			   </form-wizard>`,
     data () {
     	return {
@@ -86,7 +105,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           capital_contable: null,
           destino_credito: null,
           antiguedad_actividad: null,
-          aniguedad_operacion: null,
+          antiguedad_operacion: null,
           calificacion_deudor: null,
           deuda_total: null,
           MONTHS_ON_FILE_BANKING: null,
@@ -109,9 +128,18 @@ const EvalFormWizard = Vue.component('eval-form', {
         }
     },
     components : {
-    	FirstFormStep,
+      SolicitudStep,
+      CreditoStep,
+      LaboralStep,
+      SaldosDepositosStep,
+      BuroCreditoStep,
+      EstadoGeneralStep,
+      ResultadoPerfiladorStep
+
+    	/*FirstFormStep,
     	SecondFormStep,
-    	ThirdFormStep
+    	ThirdFormStep,
+      FourthFormStep]*/
     },
 
     computed: {
@@ -124,6 +152,9 @@ const EvalFormWizard = Vue.component('eval-form', {
           account_statements: this.account_statements,
           solicited_credits: this.solicited_credits
         }
+      },
+      saved: function() {
+        return this.solicitud.id != null;
       }
     },
 
@@ -143,8 +174,35 @@ const EvalFormWizard = Vue.component('eval-form', {
           alert('Saving form!');
         },
         beforeTabSwitch: function(){
-           //alert("This is called before switchind tabs")
-           return true;
+          //alert("This is called before switchind tabs")
+          var self = this;
+          if (!this.saved) {
+            google.script.run
+            .withSuccessHandler(function(response){
+              console.log(response);
+              self.solicitud.id = response.id;
+            })
+            .withFailureHandler(function(err){
+              console.log('An error ocurred while saving a "solicitud"!')
+              console.log(err);
+            })
+            .create('solicitud', this.solicitud)
+          } else {
+            google.script.run
+            .withSuccessHandler(function(response){
+              console.log('Updating response!')
+              console.log(response);
+              //self.solicitud.id = response.id;
+            })
+            .withFailureHandler(function(err){
+              console.log('An error ocurred while updating')
+              console.log(err);
+            })
+            .update('solicitud', this.solicitud)
+
+          }
+          
+          return true;
         },
         setActivity: function(val) {
           this.solicitud.id_actividad = val;
@@ -186,7 +244,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           this.solicitud.antiguedad_actividad = val;
         },
         setOperSeniority: function(val) {
-          this.solicitud.aniguedad_operacion = val;
+          this.solicitud.antiguedad_operacion = val;
         },
         setDebtorQual: function(val) {
         	this.solicitud.calificacion_deudor = val;

@@ -15,7 +15,6 @@ function read(sheet_name, filters) {
 	}
 	 
 	return _authRead(sheet_name, filters);
-
 }
 
 function readId(sheet_name, id) {
@@ -44,12 +43,20 @@ function readFKRelation(sheet_name, fk_field, fk) {
 	}
 }
 
+function readCatalog(sheet_name) {
+	 
+	return _authRead(sheet_name);
+
+}
+
 /*
  * Data wtiting
  *
  */
 
 function create(sheet_name, data, constrains) {
+	var user = new User(Session.getActiveUser());
+	data.user_name = user.getEmail()
 	return _authCreate(sheet_name, data, constrains);
 }
 

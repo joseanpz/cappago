@@ -7,11 +7,11 @@ const FirstFormStep = Vue.component('first-form-step', {
 					<div class="columns">
 						<div class="column is-3">
 							<label class="label">Numero solicitud: </label>
-							<input type="text" name="numero_solicitud" class="input" id="numero_solicitud"/>
+							<input type="text" v-model="numero_solicitud" class="input" id="numero_solicitud"/>
 						</div>
 						<div class="column is-5">
 							<label class="label">Tipo de comprobantes de ingresos: </label>
-								<b-radio v-model="evaluation_type" size="is-normal" 
+								<b-radio v-model="tipo_comprobante" size="is-normal" 
 						        native-value="account_statements"> 
 						        Estados de Cuenta 
 					    		</b-radio>
@@ -22,25 +22,25 @@ const FirstFormStep = Vue.component('first-form-step', {
 						</div>
 						<div class="column">
 							<label class="label">Garantia hipotecaria: </label>
-							<input type="text" name="garantia_hipotecaria" id="garantia_hipotecaria"  class="input"/>
+							<input type="text" v-model="garantia_hipotecaria" id="garantia_hipotecaria"  class="input"/>
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column is-3">
-							<label class="label">Tipo evaluacion: </label>
-							<input type="text" name="tipo_evaluacion" class="input" />
+							<label class="label">Tipo evaluacion del perfilador: </label>
+							<input type="text" v-model="tipo_evaluacion_perfilador" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Decreto: </label>
-							<input type="text" name="decreto" class="input" />
+							<input type="text" v-model="decreto" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Score: </label>
-							<input type="text" name="score" class="input" />
+							<input type="text" v-model="score" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Ventas anuales: </label>
-							<input type="text" name="ventas_anuales" class="input" />
+							<input type="text" v-model="ventas_anuales" class="input" />
 						</div>
 
 					</div>
@@ -52,56 +52,64 @@ const FirstFormStep = Vue.component('first-form-step', {
 						</div>
 						<div class="column is-3">
 							<label class="label">Uafir: </label>
-							<input type="text" name="uafir" class="input" />
+							<input type="text" v-model="uafir" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Capital contable: </label>
-							<input type="text" name="capital_contable" class="input" />
+							<input type="text" v-model="capital_contable" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Destino credito: </label>
-							<input type="text" name="destino_credito" class="input" />
+							<input type="text" v-model="destino_credito" class="input" />
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column is-3">
 							<label class="label">Antiguedad actividad: </label>
-							<input type="text" name="antiguedad_actividad" class="input" />
+							<input type="text" v-model="antiguedad_actividad" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Antiguedad operacion: </label>
-							<input type="text" name="antiguedad_operacion" class="input" />
+							<input type="text" v-model="antiguedad_operacion" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Calificacion deudor: </label>
-							<input type="text" name="calificacion_deudor" class="input" />
+							<input type="text" v-model="calificacion_deudor" class="input" />
 						</div>
 						<div class="column is-3">
 							<label class="label">Deuda total: </label>
-							<input type="text" name="deuda_total" class="input" />
+							<input type="text" v-model="deuda_total" class="input" />
 						</div>
 					</div>
 
 					<div class="columns">
 						<div class="column is-4">
 							<label class="label">MONTHS_ON_FILE_CREDIT_AMT: </label>
-							<input type="text" name="month_onfile" class="input" />
+							<input type="text" v-model="MONTHS_ON_FILE_BANKING" class="input" />
 						</div>
 						<div class="column is-4">
 							<label class="label">BK12_CLEAN: </label>
-							<input type="text" name="bk12_clean" class="input" />
+							<input type="text" v-model="BK12_CLEAN" class="input" />
 						</div>
 						<div class="column is-4">
 							<label class="label">BK12_MAX_CREDIT_AMT: </label>
-							<input type="text" name="bl12_max" class="input" />
+							<input type="text" v-model="BK12_MAX_CREDIT_AMT" class="input" />
 						</div>
 					</div>
-					
-					<p class="content"> 
-					<br>
-					    <b>Selection:</b> 
-					    {{ evaluation_type }} 
-					</p> 
+					<div class="columns">
+						<div class="column">
+							<label class="label">Actividad: </label>
+							<b-select placeholder="Select a name" v-model="id_actividad" expanded>
+                                <option v-for="activity in activities" :value="activity.id">{{ activity.nombre }} </option>
+	            			</b-select>
+						</div>
+						<div class="column">
+							<label class="label">Nivel de Riesgo: </label>
+							<b-select placeholder="Select a name" v-model="id_nivel_riesgo" expanded>	                			
+                                <option v-for="risk_level in risk_levels" :value="risk_level.id">{{ risk_level.nombre }} </option>
+	            			</b-select>
+						</div>
+					</div>
 				</section> `,
 	data () {
 		return {		
@@ -119,7 +127,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 			capital_contable: null,
 			destino_credito: null,
 			antiguedad_actividad: null,
-			aniguedad_operacion: null,
+			antiguedad_operacion: null,
 			calificacion_deudor: null,
 			deuda_total: null,
 			MONTHS_ON_FILE_BANKING: null,
@@ -170,7 +178,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 		antiguedad_actividad: function (val) {
 			this.$emit('act-seniority-change', val);
 		},
-		aniguedad_operacion: function (val) {
+		antiguedad_operacion: function (val) {
 			this.$emit('oper-seniority-change', val);
 		},
 		calificacion_deudor: function (val) {
@@ -198,7 +206,7 @@ const FirstFormStep = Vue.component('first-form-step', {
 	methods: {
 		readActivities: function () {
           var self = this;
-          /*google.script.run
+          google.script.run
             .withSuccessHandler(function(response){
               console.log(response);
               self.activities = response.records;
@@ -206,12 +214,12 @@ const FirstFormStep = Vue.component('first-form-step', {
             .withFailureHandler(function(err){
               console.log(err);
             })
-            .readCatalog('actividad')*/
+            .readCatalog('actividad')
         },
 
         readRiskLevels: function () {
           var self = this;
-          /*google.script.run
+          google.script.run
             .withSuccessHandler(function(response){
               console.log(response);
               self.risk_levels = response.records;
@@ -219,7 +227,7 @@ const FirstFormStep = Vue.component('first-form-step', {
             .withFailureHandler(function(err){
               console.log(err);
             })
-            .readCatalog('nivel_riesgo')*/
+            .readCatalog('nivel_riesgo')
         },
 	}
 });

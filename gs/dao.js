@@ -7,8 +7,7 @@ function _read(sheet_name, filters) {
     	for (var r = 0, l = filters.length; r < l; r++) {
   			data.records = data.records.filter(filters[r]);
   		}
-    }
-  	  	
+    }  	  	
   	return data; 	
 }
 
@@ -16,19 +15,19 @@ function _create(sheet_name, data, constrains) {
 	var sheet = db.getSheetByName(sheet_name);
 	var properties = _getHeaderRow(sheet);
 	// set id as string
-	var ms_id = "'" + (new Date).getTime();  // - 1546344000000;  // set epoch origin at 2019-01-01 00:00
-	var new_row = [ms_id];
+	var ms_id = (new Date).getTime().toString();  // - 1546344000000;  // set epoch origin at 2019-01-01 00:00
+	var new_row = ["'" + ms_id];
 
 	for (var r = 1, l = properties.length; r < l; r++) {
 		var field_data = data[properties[r]];
 		var is_not_undefined = typeof field_data != "undefined";
 		
-		new_row.push(is_not_undefined && field_data != null  ? data[properties[r]]: '');
+		new_row.push(is_not_undefined && field_data != null  ? "'" + field_data: '');
     }
 
-	var rowData = sheet.appendRow(new_row);
+	sheet.appendRow(new_row);
 
-	return rowData;
+	return {id: ms_id};
 }
 
 function _update(sheet_name, data, constrains) {
@@ -48,7 +47,10 @@ function _update(sheet_name, data, constrains) {
 	var update_row = [ "'" + data.id ];
 	// set row
 	for (var r = 1, l = properties.length; r < l; r++) {
-         update_row.push((typeof data[properties[r]] != "undefined") ? data[properties[r]]: record[properties[r]]);
+		var field_data = data[properties[r]];
+		var is_not_undefined = typeof field_data != "undefined";
+		
+        update_row.push(is_not_undefined && field_data != null  ? "'" + field_data: record[properties[r]]);
     }
 
 	return _updateData(sheet, data.id, update_row)
