@@ -2,7 +2,7 @@ var EstadoGeneralStep = Vue.component('estado-general-step',{
 	template: `
 		<section class="container card">
 			<header class="card-header">
-				<p class="card-header-title">Información de buro</p>
+				<p class="card-header-title">Información de estados financieros</p>
 			</header>
 			<div class="card-content">	
 				<div class="content">

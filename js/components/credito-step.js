@@ -58,16 +58,26 @@ var CreditoStep = Vue.component('credito-step',{
 		              			</header>
 							<div class="card-content">                     
 		                		<div class="content">
-		            				<label class="label_color" >Monto Solicitado</label>
-										<b-field v-for="credit in revolving_credits" :key="credit.id_local"> 
-		  								<b-input type="number" step="0.01" v-model="credit.monto" style="width:80%;"></b-input> &nbsp
-		  								<a class="button is-danger is-outlined "  style="justify-content: center;" @click="deleteCredit(credit.id_local, 'revolvente')">
-										    <span>Borrar</span>
-										    <span class="icon is-small">
-										      <i class="fas fa-times"></i>
-										    </span>
-										 </a>			 
-										</b-field>
+		                			<div class="columns">
+		                				<div class="column">
+		                					<label class="label_color" >Monto Solicitado</label>
+		                				</div>
+		                			</div>		            				
+									<b-field v-for="credit in revolving_credits" :key="credit.id_local"> 
+		  								<div class="columns">
+			                				<div class="column is-9">
+			                				<b-input type="number" step="0.01" v-model="credit.monto"></b-input>
+			                				</div>
+			                				<div class="column">
+			                					<a class="button is-danger is-outlined "  style="justify-content: center;" @click="deleteCredit(credit.id_local, 'revolvente')">
+											    <span>Borrar</span>
+											    <span class="icon is-small">
+											      <i class="fas fa-times"></i>
+											    </span>
+											 </a>
+			                				</div>
+			                			</div>			  							
+									</b-field>
 									</div>	 	
 								</div>	 			
 							</div> 
@@ -83,18 +93,24 @@ var CreditoStep = Vue.component('credito-step',{
 		                		<div class="columns">
 		                			<label class="label_color column is-5"  >Monto solicitado</label>
 		            				<label class="label_color column is-5" >Plazo</label>
-		            				<div class="column"></div>					
+		            				<label class="column"></label>					
 		                		</div>                		
 		  							<b-field v-for="credit in simple_credits"  :key="credit.id_local"> 
 		  								<div class="columns">
-			  								<b-input type="number" step="0.01"  v-model="credit.monto" class="column is-5"></b-input> &nbsp
-			  								<b-input type="number" step="0.01"  v-model="credit.plazo" class="column is-5"></b-input> &nbsp
-			  								<a class="button is-danger is-outlined"  @click="deleteCredit(credit.id_local, 'simple')">
+		  									<div class="column is-5">
+		  										<b-input type="number" step="0.01"  v-model="credit.monto"></b-input>
+		  									</div>
+			  								<div class="column is-5">
+		  										<b-input type="number" step="0.01"  v-model="credit.plazo"></b-input>
+		  									</div>
+		  									<div class="column is-5">
+		  										<a class="button is-danger is-outlined"  @click="deleteCredit(credit.id_local, 'simple')">
 											    <span >Borrar</span>
 											    <span class="icon is-small">
 											      <i class="fas fa-times"></i>
 											    </span>
 											</a>
+		  									</div>			  											  							
 										</div>
 		  							</b-field> 
 		  						</div>	 	
