@@ -185,7 +185,7 @@ var CreditoStep = Vue.component('credito-step',{
 			} else {
 				google.script.run
 				.withSuccessHandler(function(response){
-					console.log('Updating response!')
+					console.log('Updating credito_solicitado response!')
 					console.log(response);
 					//self.solicitud.id = response.id;
 				})
@@ -199,7 +199,7 @@ var CreditoStep = Vue.component('credito-step',{
 			k +=1;
 
 			if (k < m+n) {
-				// console.log('inside recurrence');
+				console.log('inside recurrence');
 				// console.log(k);				
 				setTimeout(function() {self.saveCredit(self, k, delay, m, n);}, delay)
 			}
@@ -210,7 +210,7 @@ var CreditoStep = Vue.component('credito-step',{
 			var m = self.simple_credits.length;
 			var n = self.revolving_credits.length
 			
-			setTimeout(function(){self.saveCredit(self, 0, 500, m, n)});  // 500 ms no data corruption
+			setTimeout(function(){self.saveCredit(self, 0, 5000, m, n);}, 1000);  // 500 ms no data corruption
 		},
 
 		deleteCredit: function(id, crd_type) {
