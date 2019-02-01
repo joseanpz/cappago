@@ -60,9 +60,9 @@ var CreditoStep = Vue.component('credito-step',{
 							<div class="card-content">                     
 		                		<div class="content">
 		            				<label class="label_color" >Monto Solicitado</label>
-										<b-field v-for="credit in revolving_credits" :key="credit.id"> 
-		  								<b-input type="number" step="0.01" v-model="credit.amount" style="width:80%;"></b-input> &nbsp
-		  								<a class="button is-danger is-outlined "  style="justify-content: center;" @click="deleteCredit(credit.id, 'revolvente')">
+										<b-field v-for="credit in revolving_credits" :key="credit.id_local"> 
+		  								<b-input type="number" step="0.01" v-model="credit.monto" style="width:80%;"></b-input> &nbsp
+		  								<a class="button is-danger is-outlined "  style="justify-content: center;" @click="deleteCredit(credit.id_local, 'revolvente')">
 										    <span>Borrar</span>
 										    <span class="icon is-small">
 										      <i class="fas fa-times"></i>
@@ -86,11 +86,11 @@ var CreditoStep = Vue.component('credito-step',{
 		            				<label class="label_color column is-5" >Plazo</label>
 		            				<div class="column"></div>					
 		                		</div>                		
-		  							<b-field v-for="credit in simple_credits"  :key="credit.id"> 
+		  							<b-field v-for="credit in simple_credits"  :key="credit.id_local"> 
 		  								<div class="columns">
-			  								<b-input type="number" step="0.01"  v-model="credit.amount" class="column is-5"></b-input> &nbsp
-			  								<b-input type="number" step="0.01"  v-model="credit.term" class="column is-5"></b-input> &nbsp
-			  								<a class="button is-danger is-outlined"  @click="deleteCredit(credit.id, 'simple')">
+			  								<b-input type="number" step="0.01"  v-model="credit.monto" class="column is-5"></b-input> &nbsp
+			  								<b-input type="number" step="0.01"  v-model="credit.plazo" class="column is-5"></b-input> &nbsp
+			  								<a class="button is-danger is-outlined"  @click="deleteCredit(credit.id_local, 'simple')">
 											    <span >Borrar</span>
 											    <span class="icon is-small">
 											      <i class="fas fa-times"></i>
@@ -151,9 +151,9 @@ var CreditoStep = Vue.component('credito-step',{
 	    			saved: false
 	    		});	  
 			}
-			console.log(this.selected_type);
-			console.log(this.revolving_credits);
-			console.log(this.simple_credits);
+			// console.log(this.selected_type);
+			// console.log(this.revolving_credits);
+			// console.log(this.simple_credits);
 			  	
 	    	this.credits_count++;
 		},
@@ -199,8 +199,8 @@ var CreditoStep = Vue.component('credito-step',{
 			k +=1;
 
 			if (k < m+n) {
-				console.log('inside recurrence');
-				console.log(k);				
+				// console.log('inside recurrence');
+				// console.log(k);				
 				setTimeout(function() {self.saveCredit(self, k, delay, m, n);}, delay)
 			}
 
@@ -210,15 +210,7 @@ var CreditoStep = Vue.component('credito-step',{
 			var m = self.simple_credits.length;
 			var n = self.revolving_credits.length
 			
-			setTimeout(function(){self.saveCredit(self, 0, 500, m, n)});  // 50 ms data corruption
-
-			//for (var i = 0; i < this.simple_credits.length; i++) {
-			//	setTimeout(function() {self.saveCredit(self.simple_credits[i])}, (i+1) * 1000); // output: hello
-			//}
-
-			//for (var j = 0; j < this.revolving_credits.length; j++) {
-			//	setTimeout(function() {self.saveCredit(self.revolving_credits[j])}, (j+1) * 1000); // output: hello
-			//}
+			setTimeout(function(){self.saveCredit(self, 0, 500, m, n)});  // 500 ms no data corruption
 		},
 
 		deleteCredit: function(id, crd_type) {
