@@ -1,91 +1,110 @@
 var CreditoStep = Vue.component('credito-step',{
 	props:['id_solicitud'],
 	template: `
-		<section class="container formulario">
-			<div class="columns">
-				<div class="column">
-					<div class="column">
-						<label class="label">Garantia: </label>
-						<input type="text" v-model="garantia" id="garantia"  class="input"/>
+		<section class="container card">
+			<header class="card-header">
+				<p class="card-header-title">Datos del credito</p>
+			</header>
+			<div class="card-content">
+				<br/>
+				<div class="content">
+					<div class="columns">
+						<div class="column is-2">
+							<label class="label titulos">Destino credito: </label>
+						</div>
+						<div class="column is-4">
+							<input type="text" v-model="destino_credito" class="input" />
+						</div>
+						<div class="column is-2">
+							<label class="label titulos">Garantia: </label>
+						</div>
+						<div class="column is-4">
+							<div class="select is-fullwidth">
+								<select v-model="garantia" id="garantia" class="select">
+									<option value="0" selected>--Seleccione--</option>
+									<option value="1">Fondo</option>
+									<option value="2">Hipotecaria</option>
+									<option value="3">Líquidas</option>
+									<option value="4">Personal</option>
+									<option value="5">Prendaria</option>
+								</select>
+							</div>
+						</div>				
 					</div>
-					<div class="column">
-						<label class="label">Destino credito: </label>
-						<input type="text" v-model="destino_credito" class="input" />
-					</div>
-				</div>
-			</div>
-			<div class="columns">
-              	<div  class="column is-2">
-                  <b-field label="Tipo de crédito"></b-field>
-              	</div>
-              	<div class="column is-2">
-	                <b-select placeholder="Select a name" v-model="selected_type">
-	        			<option value="1" > Simple </option> 
-	        			<option value="2" > Revolvente </option>
-	    			</b-select>                  
-              	</div>
-              	<div class="column is-2">
-	              	<a class="button is-info is-outlined" @click="addCredit">
-						<span class="icon is-small">
-						<i class="fas fa-check"></i>
-						</span>
-						<span>Agregar Cr&eacute;dito</span>
-	              	</a>
-              	</div>
-	        </div>
-	        <hr/>  					
-			<div class="columns" >
-				<div v-if="revolving_credits.length" class="column is-5">
-					<div class="column card ">
-						<header class="card-header" >
-                	<p class="card-header-title title-color">Créditos Revolvente</p>
-              		</header>
-					<div class="card-content">                     
-                		<div class="content">
-            				<label class="label_color" >Monto Solicitado</label>
-								<b-field v-for="credit in revolving_credits" :key="credit.id_local"> 
-  								<b-input type="number" step="0.01" v-model="credit.monto" style="width:80%;"></b-input> &nbsp
-  								<a class="button is-danger is-outlined "  style="justify-content: center;" @click="deleteCredit(credit.id_local, 'revolvente')">
-								    <span>Borrar</span>
-								    <span class="icon is-small">
-								      <i class="fas fa-times"></i>
-								    </span>
-								 </a>			 
-								</b-field>
-							</div>	 	
-						</div>	 			
-					</div> 
-				</div>
+					<div class="columns">
+		              	<div  class="column is-2">
+		                  <label class="label titulos">Tipo de crédito</label>
+		              	</div>
+		              	<div class="column is-2">
+			                <b-select class="select" placeholder="Select a name" v-model="selected_type">
+			        			<option value="1" > Simple </option> 
+			        			<option value="2" > Revolvente </option>
+			    			</b-select>                  
+		              	</div>
+		              	<div class="column is-2">
+			              	<a class="button is-info is-outlined" @click="addCredit">
+								<span class="icon is-small">
+								<i class="fas fa-check"></i>
+								</span>
+								<span>Agregar Cr&eacute;dito</span>
+			              	</a>
+		              	</div>
+			        </div>
+			        <br/>
+			        <div class="columns" >
+						<div v-if="revolving_credits.length" class="column is-5">
+							<div class="column card ">
+								<header class="header-sec-card" >
+		                			<p class="card-header-title title-color">Créditos Revolvente</p>
+		              			</header>
+							<div class="card-content">                     
+		                		<div class="content">
+		            				<label class="label_color" >Monto Solicitado</label>
+										<b-field v-for="credit in revolving_credits" :key="credit.id"> 
+		  								<b-input type="number" step="0.01" v-model="credit.amount" style="width:80%;"></b-input> &nbsp
+		  								<a class="button is-danger is-outlined "  style="justify-content: center;" @click="deleteCredit(credit.id, 'revolvente')">
+										    <span>Borrar</span>
+										    <span class="icon is-small">
+										      <i class="fas fa-times"></i>
+										    </span>
+										 </a>			 
+										</b-field>
+									</div>	 	
+								</div>	 			
+							</div> 
+						</div>
 
-				<div v-if="simple_credits.length" class="column is-7">
-					<div class="column card"> 
-						<header class="card-header" >
-							<p class="card-header-title title-color">Créditos Simple </p>
-						</header>
-						 <div class="card-content">                     
-                		<div class="content"> 	
-                		<div class="columns">
-                			<label class="label_color column is-5"  >Monto solicitado</label>
-            				<label class="label_color column is-5" >Plazo</label>
-            				<div class="column"></div>					
-                		</div>                		
-  							<b-field v-for="credit in simple_credits"  :key="credit.id_local"> 
-  								<div class="columns">
-	  								<b-input type="number" step="0.01"  v-model="credit.monto" class="column is-5"></b-input> &nbsp
-	  								<b-input type="number" step="0.01"  v-model="credit.plazo" class="column is-5"></b-input> &nbsp
-	  								<a class="button is-danger is-outlined"  @click="deleteCredit(credit.id_local, 'simple')">
-									    <span >Borrar</span>
-									    <span class="icon is-small">
-									      <i class="fas fa-times"></i>
-									    </span>
-									</a>
-								</div>
-  							</b-field> 
-  						</div>	 	
-						</div>	  							
+						<div v-if="simple_credits.length" class="column is-7">
+							<div class="column card"> 
+								<header class="header-sec-card" >
+									<p class="card-header-title title-color">Créditos Simple </p>
+								</header>
+								 <div class="card-content">                     
+		                		<div class="content"> 	
+		                		<div class="columns">
+		                			<label class="label_color column is-5"  >Monto solicitado</label>
+		            				<label class="label_color column is-5" >Plazo</label>
+		            				<div class="column"></div>					
+		                		</div>                		
+		  							<b-field v-for="credit in simple_credits"  :key="credit.id"> 
+		  								<div class="columns">
+			  								<b-input type="number" step="0.01"  v-model="credit.amount" class="column is-5"></b-input> &nbsp
+			  								<b-input type="number" step="0.01"  v-model="credit.term" class="column is-5"></b-input> &nbsp
+			  								<a class="button is-danger is-outlined"  @click="deleteCredit(credit.id, 'simple')">
+											    <span >Borrar</span>
+											    <span class="icon is-small">
+											      <i class="fas fa-times"></i>
+											    </span>
+											</a>
+										</div>
+		  							</b-field> 
+		  						</div>	 	
+								</div>	  							
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
+			</div>			
 		</section>
 	`,
 	data () {

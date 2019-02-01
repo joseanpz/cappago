@@ -91,8 +91,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         </tab-content>
 
          
-          <pre>{{ {saved: saved} | pretty }}</pre>
-			     <pre>{{ data | pretty }}</pre>
+
+			    <!-- <pre>{{ data | pretty }}</pre>-->
 
            <template slot="footer" slot-scope="props"> \
                    <div class="wizard-footer-left"> \
