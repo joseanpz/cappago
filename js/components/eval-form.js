@@ -10,10 +10,9 @@ const EvalFormWizard = Vue.component('eval-form', {
       color="#3a5fab"  errorColor="#8b0000" shape="circle" transition="" \
     > \
       <h1 slot="title">Evaluación</h1> \
-        <tab-content>
+        <tab-content :before-change="saveSolicitude">
           <solicitud-step 
-          @sol-number-change="setSolNumber" 
-          :before-change="beforeTabSwitch"
+          @sol-number-change="setSolNumber"          
           > 
           </solicitud-step>
         </tab-content>
@@ -24,23 +23,26 @@ const EvalFormWizard = Vue.component('eval-form', {
           @guarantee-change="setGuarantee"
           @smpl-credits-change="setSimpleCredits" 
           @rvlg-credits-change="setRevolvingCredits"
+          :before-change="saveSolicitude"
           > 
           </credito-step>
         </tab-content>
 
-        <tab-content>
+        <tab-content :before-change="saveSolicitude">
           <laboral-step
           @act-seniority-change="setActSeniority"
           @oper-seniority-change="setOperSeniority"
           @activity-change="setActivity"
-          @eval-type-change="setEvalType"
-          :bank_list="bank_list"
+          @eval-type-change="setEvalType"          
           @acc-statements-change="setAccountStatements"
+
+          :bank_list="bank_list"
+          
           > 
           </laboral-step>
         </tab-content>
 
-        <tab-content>
+        <tab-content :before-change="saveSolicitude">
           <buro-credito-step
           @total-debt-change="setTotalDebt"
           @monfile-banking-change="setMonfileBanking"
@@ -58,16 +60,20 @@ const EvalFormWizard = Vue.component('eval-form', {
           @sal-orig-fact-change="setSalOrigFact"
           @sal-orig-revol-change="setSalOrigRevol"
           @sal-orig-simp-change="setSalOrigSimp"
+
+          
           > 
           </buro-credito-step>
         </tab-content>
 
-        <tab-content>
+        <tab-content :before-change="saveSolicitude">
           <estado-general-step
           @uafir-change="setUafir"
           @acc-capital-change="setAccCapital"
           @debtor-qual-change="setDebtorQual"
           @annual-sales-change="setAnnualSales"
+
+          
           > 
           </estado-general-step>
         </tab-content>
@@ -193,144 +199,149 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     methods: {
     	onComplete: function(){
-          alert('Yay. Done!');
-        },
-        saveForm: function(){
-          alert('Saving form!');
-        },
-        beforeTabSwitch: function(){
-          //alert("This is called before switchind tabs")
-          var self = this;
-          if (!this.saved) {
-            google.script.run
-            .withSuccessHandler(function(response){
-              console.log(response);
-              self.solicitud.id = response.id;
-            })
-            .withFailureHandler(function(err){
-              console.log('An error ocurred while saving a "solicitud"!')
-              console.log(err);
-            })
-            .create('solicitud', this.solicitud)
-          } else {
-            google.script.run
-            .withSuccessHandler(function(response){
-              console.log('Updating response!')
-              console.log(response);
-              //self.solicitud.id = response.id;
-            })
-            .withFailureHandler(function(err){
-              console.log('An error ocurred while updating')
-              console.log(err);
-            })
-            .update('solicitud', this.solicitud)
+        this.saveSolicitude();
+        alert('Yay. Done!');
+      },
+      saveForm: function(){
+        alert('Saving form!');
+      },
+      saveSolicitude: function(){
+        //alert("This is called before switchind tabs")
+        var self = this;
+        console.log('saveSolicitude')
+        if (!this.saved) {
+          google.script.run
+          .withSuccessHandler(function(response){
+            // TODO: handle different success response
+            console.log('Creating "solicitud"!')
+            console.log(response);
+            self.solicitud.id = response.id;
+          })
+          .withFailureHandler(function(err){
+            console.log('An error ocurred while saving a "solicitud"!')
+            console.log(err);
+          })
+          .create('solicitud', this.solicitud)
+        } else {
 
-          }
+          google.script.run
+          .withSuccessHandler(function(response){
+            console.log('Updating response!')
+            console.log(response);
+            //self.solicitud.id = response.id;
+          })
+          .withFailureHandler(function(err){
+            console.log('An error ocurred while updating')
+            console.log(err);
+          })
+          .update('solicitud', this.solicitud)
+
+        }
           
-          return true;
-        },
-        setActivity: function(val) {
-          this.solicitud.id_actividad = val;
-        },
-        setRiskLevel: function(val) {
-          this.solicitud.id_nivel_riesgo = val;
-        },
-        setSolNumber: function(val) {
-          this.solicitud.numero_solicitud = val;
-        },
-        setEvalType: function(val) {
-          this.solicitud.tipo_comprobante = val;
-        },
-        setGuarantee: function(val) {
-          this.solicitud.garantia_hipotecaria = val;
-        },
-        setPrfEvalType: function(val) {
-          this.solicitud.tipo_evaluacion_perfilador = val;
-        },
-        setDecree: function(val) {
-          this.solicitud.decreto = val;
-        },
-        setScore: function(val) {
-          this.solicitud.score = val;
-        },
-        setAnnualSales: function(val) {
-          this.solicitud.ventas_anuales = val;
-        },
-        setUafir: function(val) {
-          this.solicitud.uafir = val;
-        },
-        setAccCapital: function(val) {
-          this.solicitud.capital_contable = val;
-        },
-        setCreditDest: function(val) {
-          this.solicitud.destino_credito = val;
-        },
-        setActSeniority: function(val) {
-          this.solicitud.antiguedad_actividad = val;
-        },
-        setOperSeniority: function(val) {
-          this.solicitud.antiguedad_operacion = val;
-        },
-        setDebtorQual: function(val) {
-        	this.solicitud.calificacion_deudor = val;
-        },
-        setTotalDebt: function(val) {
-          this.solicitud.deuda_total = val;
-        },
-        setMonfileBanking: function(val) {
-          this.solicitud.MONTHS_ON_FILE_BANKING = val;
-        },
-        setBk12Clean: function(val) {
-          this.solicitud.BK12_CLEAN = val;
-        },
-        setBk12maxcredAmt: function(val) {
-          this.solicitud.BK12_MAX_CREDIT_AMT = val;
-        },
-        setNumArren: function(val) {
-          this.solicitud.num_cred_act_arren = val;
-        },
-        setNumFact: function(val) {
-          this.solicitud.num_cred_act_fact = val;
-        },
-        setNumRevol: function(val) {
-          this.solicitud.num_cred_act_revol = val;
-        },
-        setNumSimp: function(val) {
-          this.solicitud.num_cred_act_simp = val;
-        },
-        setSalVigArren: function(val) {
-          this.solicitud.sal_vig_cred_act_arren = val;
-        },
-        setSalVigFact: function(val) {
-          this.solicitud.sal_vig_cred_act_fact = val;
-        },
-        setSalVigRevol: function(val) {
-          this.solicitud.sal_vig_cred_act_revol = val;
-        },
-        setSalVigSimp: function(val) {
-          this.solicitud.sal_vig_cred_act_simp = val;
-        },
-        setSalOrigArren: function(val) {
-          this.solicitud.sal_orig_cred_act_arren = val;
-        },
-        setSalOrigFact: function(val) {
-          this.solicitud.sal_orig_cred_act_fact = val;
-        },
-        setSalOrigRevol: function(val) {
-          this.solicitud.sal_orig_cred_act_revol = val;
-        },
-        setSalOrigSimp: function(val) {
-          this.solicitud.sal_orig_cred_act_simp = val;
-        },
-        setAccountStatements: function(val) {
-        	this.account_statements = val;
-        },
-        setSimpleCredits: function(val) {
-        	this.simple_credits = val;
-        },
-        setRevolvingCredits: function(val) {
-        	this.revolving_credits = val;
-        } 
+        return true;
+      },
+      setActivity: function(val) {
+        this.solicitud.id_actividad = val;
+      },
+      setRiskLevel: function(val) {
+        this.solicitud.id_nivel_riesgo = val;
+      },
+      setSolNumber: function(val) {
+        this.solicitud.numero_solicitud = val;
+      },
+      setEvalType: function(val) {
+        this.solicitud.tipo_comprobante = val;
+      },
+      setGuarantee: function(val) {
+        this.solicitud.garantia_hipotecaria = val;
+      },
+      setPrfEvalType: function(val) {
+        this.solicitud.tipo_evaluacion_perfilador = val;
+      },
+      setDecree: function(val) {
+        this.solicitud.decreto = val;
+      },
+      setScore: function(val) {
+        this.solicitud.score = val;
+      },
+      setAnnualSales: function(val) {
+        this.solicitud.ventas_anuales = val;
+      },
+      setUafir: function(val) {
+        this.solicitud.uafir = val;
+      },
+      setAccCapital: function(val) {
+        this.solicitud.capital_contable = val;
+      },
+      setCreditDest: function(val) {
+        this.solicitud.destino_credito = val;
+      },
+      setActSeniority: function(val) {
+        this.solicitud.antiguedad_actividad = val;
+      },
+      setOperSeniority: function(val) {
+        this.solicitud.antiguedad_operacion = val;
+      },
+      setDebtorQual: function(val) {
+      	this.solicitud.calificacion_deudor = val;
+      },
+      setTotalDebt: function(val) {
+        this.solicitud.deuda_total = val;
+      },
+      setMonfileBanking: function(val) {
+        this.solicitud.MONTHS_ON_FILE_BANKING = val;
+      },
+      setBk12Clean: function(val) {
+        this.solicitud.BK12_CLEAN = val;
+      },
+      setBk12maxcredAmt: function(val) {
+        this.solicitud.BK12_MAX_CREDIT_AMT = val;
+      },
+      setNumArren: function(val) {
+        this.solicitud.num_cred_act_arren = val;
+      },
+      setNumFact: function(val) {
+        this.solicitud.num_cred_act_fact = val;
+      },
+      setNumRevol: function(val) {
+        this.solicitud.num_cred_act_revol = val;
+      },
+      setNumSimp: function(val) {
+        this.solicitud.num_cred_act_simp = val;
+      },
+      setSalVigArren: function(val) {
+        this.solicitud.sal_vig_cred_act_arren = val;
+      },
+      setSalVigFact: function(val) {
+        this.solicitud.sal_vig_cred_act_fact = val;
+      },
+      setSalVigRevol: function(val) {
+        this.solicitud.sal_vig_cred_act_revol = val;
+      },
+      setSalVigSimp: function(val) {
+        this.solicitud.sal_vig_cred_act_simp = val;
+      },
+      setSalOrigArren: function(val) {
+        this.solicitud.sal_orig_cred_act_arren = val;
+      },
+      setSalOrigFact: function(val) {
+        this.solicitud.sal_orig_cred_act_fact = val;
+      },
+      setSalOrigRevol: function(val) {
+        this.solicitud.sal_orig_cred_act_revol = val;
+      },
+      setSalOrigSimp: function(val) {
+        this.solicitud.sal_orig_cred_act_simp = val;
+      },
+      setAccountStatements: function(val) {
+      	this.account_statements = val;
+      },
+      setSimpleCredits: function(val) {
+      	this.simple_credits = val;
+      },
+      setRevolvingCredits: function(val) {
+      	this.revolving_credits = val;
+      } 
     }
 });
 
