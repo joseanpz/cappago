@@ -2,74 +2,86 @@ var BuroCreditoStep = Vue.component('buro-credito-step',{
 	template: `
 		<section class="container card">
 			<header class="card-header">
-				<p class="card-header-title">Información de buro <b> - Creditos activos</b></p>
+				<p class="card-header-title">Información de buro</p>
 			</header>
 			<div class="card-content">	
 				<div class="content">
 					<div class="columns">
 						<div class="column">
-							<table>
-								<tr>
-									<td><label class="label">Indicadora de Acreditados Sin Atraso(<b>BK12_CLEAN</b>): </label></td>
-									<td><input type="text" v-model="BK12_CLEAN" class="input" /> </td>
-								</tr>
-							</table>
-							<div class="columns">
-								<div class="column">
-									<label class="label">Deuda total: </label>
-									<input type="text" v-model="deuda_total" class="input" />
-								</div>
-								<div class="column">
-									<label class="label">MONTHS_ON_FILE_CREDIT_AMT: </label>
-									<input type="text" v-model="MONTHS_ON_FILE_BANKING" class="input" />
-								</div>
-								<div class="column">
-									<label class="label">BK12_CLEAN: </label>
-									<input type="text" v-model="BK12_CLEAN" class="input" />
-								</div>
-								<div class="column">
-									<label class="label">BK12_MAX_CREDIT_AMT: </label>
-									<input type="text" v-model="BK12_MAX_CREDIT_AMT" class="input" />
+							<div class="card">
+								<header class="card-header">
+									<p class="card-header-title">Segmento calificación</p>
+								</header>
+								<div class="card-content">	
+									<div class="content">
+										<table class="table is-bordered">
+											<tr>
+												<td><label class="label">Indicadora de Acreditados Sin Atraso (<b>BK12_CLEAN</b>): </label></td>
+												<td><input type="text" v-model="BK12_CLEAN" class="input" /> </td>
+											</tr>
+											<tr>
+												<td><label class="label">Monto máximo de crédito otorgado por instituciones financieras bancarias en los ultimos 12 meses. (<b>BK12_MAX_CREDIT_AMT</b>): </label></td>
+												<td><input type="text" v-model="BK12_MAX_CREDIT_AMT" class="input" /> </td>
+											</tr>
+											<tr>
+												<td><label class="label">Deuda Total de Acreditado (<b>BK_DEUDA_TOT</b>): </label></td>
+												<td><input type="text" v-model="deuda_total" class="input" /> </td>
+											</tr>
+											<tr>
+												<td><label class="label">Antigüedad en sociedad de informacion crediticia (<b>MONTHS_ON_FILE_BANKING</b>): </label></td>
+												<td><input type="text" v-model="MONTHS_ON_FILE_BANKING" class="input" /> </td>
+											</tr>
+										</table>
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="column">
-						<table class="column table is-bordered">
-							<thead>
-								<tr>
-									<th>Tipo de credito</th>
-									<th>Numero de creditos</th>
-									<th>Original</th>
-									<th>Vigente</th>
-								</tr>								
-							</thead>
-							<tbody>
-								<tr>
-									<td><b>Revolvente</b></td>
-									<td><input type="text" v-model="num_cred_act_revol" class="input" /></td>
-									<td><input type="text" v-model="sal_vig_cred_act_revol" class="input" /></td>
-									<td><input type="text" v-model="sal_orig_cred_act_revol" class="input" /></td>
-								</tr>
-								<tr>
-									<td><b>Factorajes</b></td>
-									<td><input type="text" v-model="num_cred_act_fact" class="input" /></td>
-									<td><input type="text" v-model="sal_vig_cred_act_fact" class="input" /></td>
-									<td><input type="text" v-model="sal_orig_cred_act_fact" class="input" /></td>
-								</tr>
-								<tr>
-									<td><b>Arrendamientos</b></td>
-									<td><input type="text" v-model="num_cred_act_arren" class="input" /></td>
-									<td><input type="text" v-model="sal_vig_cred_act_arren" class="input" /></td>
-									<td><input type="text" v-model="sal_orig_cred_act_arren" class="input" /></td>
-								</tr>
-								<tr>
-									<td><b>Simples</b></td>
-									<td><input type="text" v-model="num_cred_act_simp" class="input" /></td>
-									<td><input type="text" v-model="sal_vig_cred_act_simp" class="input" /></td>
-									<td><input type="text" v-model="sal_orig_cred_act_simp" class="input" /></td>
-								</tr>
-							</tbody>
-						</table>
+							<div class="card">
+								<header class="card-header">
+									<p class="card-header-title">Reporte de buro de credito (Resumen)</p>
+								</header>
+								<div class="card-content">	
+									<div class="content">								
+										<table class="table is-bordered">
+											<thead>
+												<tr>
+													<th style="border: 1px solid #3a5fab;">Tipo de credito</th>
+													<th style="border: 1px solid #3a5fab;">Numero de creditos</th>
+													<th style="border: 1px solid #3a5fab;">Original</th>
+													<th style="border: 1px solid #3a5fab;">Vigente</th>
+												</tr>								
+											</thead>
+											<tbody>
+												<tr>
+													<td><b>Revolvente</b></td>
+													<td><input type="text" v-model="num_cred_act_revol" class="input" /></td>
+													<td><input type="text" v-model="sal_vig_cred_act_revol" class="input" /></td>
+													<td><input type="text" v-model="sal_orig_cred_act_revol" class="input" /></td>
+												</tr>
+												<tr>
+													<td><b>Factorajes</b></td>
+													<td><input type="text" v-model="num_cred_act_fact" class="input" /></td>
+													<td><input type="text" v-model="sal_vig_cred_act_fact" class="input" /></td>
+													<td><input type="text" v-model="sal_orig_cred_act_fact" class="input" /></td>
+												</tr>
+												<tr>
+													<td><b>Arrendamientos</b></td>
+													<td><input type="text" v-model="num_cred_act_arren" class="input" /></td>
+													<td><input type="text" v-model="sal_vig_cred_act_arren" class="input" /></td>
+													<td><input type="text" v-model="sal_orig_cred_act_arren" class="input" /></td>
+												</tr>
+												<tr>
+													<td><b>Simples</b></td>
+													<td><input type="text" v-model="num_cred_act_simp" class="input" /></td>
+													<td><input type="text" v-model="sal_vig_cred_act_simp" class="input" /></td>
+													<td><input type="text" v-model="sal_orig_cred_act_simp" class="input" /></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>					
 				</div>

@@ -1,28 +1,49 @@
 var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-step',{
 	template: `
-		<section class="container formulario">
-			<div class="columns">
-				<div class="column">
-					<label class="label">Nivel de Riesgo: </label>
-					<b-select placeholder="Select a name" v-model="id_nivel_riesgo" expanded>	                			
-						<option v-for="risk_level in risk_levels" :value="risk_level.id">{{ risk_level.nombre }} </option>
-					</b-select>
+		<section class="container">
+				<div class="card">
+					<header class="card-header">
+						<p class="card-header-title">Resultado perfilador</p>
+					</header>
+					<div class="card-content">	
+						<div class="content">
+							<div class="columns">
+								<div class="column is-2"><label class="label">Decreto:</label></div>
+								<div class="column is-4">
+									<input type="text" v-model="decreto" class="input" />
+								</div>
+								<div class="column is-2"><label>Nivel de riesgo:</label></div>
+								<div class="column is-4">
+									<b-select placeholder="Select a name" v-model="id_nivel_riesgo" expanded>	                			
+										<option v-for="risk_level in risk_levels" :value="risk_level.id">{{ risk_level.nombre }} </option>
+									</b-select>
+								</div>
+							</div>
+						</div>
+						<div class="content">
+							<div class="columns">
+								<div class="column is-2"><label>Score:</label></div>
+								<div class="column is-4">
+									<input type="text" v-model="score" class="input" />
+								</div>
+								<div class="column is-2"><label>Tipo evaluacion del perfilador:</label></div>
+								<div class="column is-4">
+									<input type="text" v-model="tipo_evaluacion_perfilador" class="input" />
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="column">
-					<label class="label">Tipo evaluacion del perfilador: </label>
-					<input type="text" v-model="tipo_evaluacion_perfilador" class="input" />
+				<div class="card">
+					<header class="card-header">
+						<p class="card-header-title">Resultado capacidad de pago</p>
+					</header>
+					<div class="card-content">	
+						<div class="content">
 
+						</div>
+					</div>
 				</div>
-				<div class="column">
-					<label class="label">Score: </label>
-					<input type="text" v-model="score" class="input" />
-				</div>
-				<div class="column">
-					<label class="label">Decreto: </label>
-					<input type="text" v-model="decreto" class="input" />
-
-				</div>
-			</div>
 		</section>
 	`,
 	data () {

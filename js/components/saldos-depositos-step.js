@@ -2,11 +2,6 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	props: ["bank_list"],
 	template: `
 		<section> 		
-			<div class="header-sec-card" style="border:2px solid #3a5fab;">
-				<div class="column">
-					<b>Saldos y depositos</b>
-				</div>
-			</div>
 			<div class="columns">
 				<div  class="column is-2">
 					<label class="label titulos">Seleccione un Banco</label>
