@@ -17,13 +17,15 @@ const EvalFormWizard = Vue.component('eval-form', {
           </solicitud-step>
         </tab-content>
 
-        <tab-content>
+        <tab-content :before-change="saveSolicitudeCredit">
           <credito-step
           @credit-dest-change="setCreditDest"
           @guarantee-change="setGuarantee"
           @smpl-credits-change="setSimpleCredits" 
           @rvlg-credits-change="setRevolvingCredits"
-          :before-change="saveSolicitude"
+
+          :id_solicitud="solicitud.id"
+          ref="credito"
           > 
           </credito-step>
         </tab-content>
@@ -191,8 +193,8 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     filters: {
     	pretty: function(value) {
-    		console.log('pretty');
-    		console.log(value);
+    		//console.log('pretty');
+    		//console.log(value);
       		return JSON.stringify(value, null, 2);
     	}
   	},
@@ -205,6 +207,13 @@ const EvalFormWizard = Vue.component('eval-form', {
       saveForm: function(){
         alert('Saving form!');
       },
+
+      saveSolicitudeCredit: function () {
+        this.saveSolicitude();
+        this.$refs.credito.saveCredits();
+        return true;
+      },
+
       saveSolicitude: function(){
         //alert("This is called before switchind tabs")
         var self = this;
