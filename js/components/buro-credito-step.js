@@ -1,83 +1,135 @@
 var BuroCreditoStep = Vue.component('buro-credito-step',{
 	template: `
-		<section class="container formulario">
-			<div class="columns">
-				<div class="column">
-					<label class="label">Deuda total: </label>
-					<input type="text" v-model="deuda_total" class="input" />
-				</div>
-				<div class="column">
-					<label class="label">MONTHS_ON_FILE_CREDIT_AMT: </label>
-					<input type="text" v-model="MONTHS_ON_FILE_BANKING" class="input" />
-				</div>
-				<div class="column">
-					<label class="label">BK12_CLEAN: </label>
-					<input type="text" v-model="BK12_CLEAN" class="input" />
-				</div>
-				<div class="column">
-					<label class="label">BK12_MAX_CREDIT_AMT: </label>
-					<input type="text" v-model="BK12_MAX_CREDIT_AMT" class="input" />
-				</div>
-			</div>
-			
-			<div class="columns">
-				<div class="column">
-					<label class="label">Numero creditos activos arrendamiento: </label>
-					<input type="text" v-model="num_cred_act_arren" class="input" />
-				</div>
-				<div class="column">
-					<label class="label">Numero creditos activos factoraje: </label>
-					<input type="text" v-model="num_cred_act_fact" class="input" />
-				</div>
-				<div class="column">
-					<label class="label">Numero creditos activos revolventes: </label>
-					<input type="text" v-model="num_cred_act_revol" class="input" />
-				</div>
-				<div class="column">
-					<label class="label">Numero creditos activos simples: </label>
-					<input type="text" v-model="num_cred_act_simp" class="input" />
-				</div>
-			</div>
+		<section class="container card">
+			<header class="card-header">
+				<p class="card-header-title">Información de buro <b> - Creditos activos</b></p>
+			</header>
+			<div class="card-content">
+			<br/>
+				<div class="content">
+					<div class="columns">
+						<div class="column">
+							<div class="columns">
+								<div class="column">
+									<label class="label">Deuda total: </label>
+									<input type="text" v-model="deuda_total" class="input" />
+								</div>
+								<div class="column">
+									<label class="label">MONTHS_ON_FILE_CREDIT_AMT: </label>
+									<input type="text" v-model="MONTHS_ON_FILE_BANKING" class="input" />
+								</div>
+								<div class="column">
+									<label class="label">BK12_CLEAN: </label>
+									<input type="text" v-model="BK12_CLEAN" class="input" />
+								</div>
+								<div class="column">
+									<label class="label">BK12_MAX_CREDIT_AMT: </label>
+									<input type="text" v-model="BK12_MAX_CREDIT_AMT" class="input" />
+								</div>
+							</div>
+						</div>
+						<div class="column">
+						<table class="column table is-bordered">
+							<thead>
+								<tr>
+									<th>Tipo de credito</th>
+									<th>Numero de creditos</th>
+									<th>Original</th>
+									<th>Vigente</th>
+								</tr>								
+							</thead>
+							<tbody>
+								<tr>
+									<td><b>Revolvente</b></td>
+									<td><input type="text" v-model="num_cred_act_revol" class="input" /></td>
+									<td><input type="text" v-model="sal_vig_cred_act_revol" class="input" /></td>
+									<td><input type="text" v-model="sal_orig_cred_act_revol" class="input" /></td>
+								</tr>
+								<tr>
+									<td><b>Factorajes</b></td>
+									<td><input type="text" v-model="num_cred_act_fact" class="input" /></td>
+									<td><input type="text" v-model="sal_vig_cred_act_fact" class="input" /></td>
+									<td><input type="text" v-model="sal_orig_cred_act_fact" class="input" /></td>
+								</tr>
+								<tr>
+									<td><b>Arrendamientos</b></td>
+									<td><input type="text" v-model="num_cred_act_arren" class="input" /></td>
+									<td><input type="text" v-model="sal_vig_cred_act_arren" class="input" /></td>
+									<td><input type="text" v-model="sal_orig_cred_act_arren" class="input" /></td>
+								</tr>
+								<tr>
+									<td><b>Simples</b></td>
+									<td><input type="text" v-model="num_cred_act_simp" class="input" /></td>
+									<td><input type="text" v-model="sal_vig_cred_act_simp" class="input" /></td>
+									<td><input type="text" v-model="sal_orig_cred_act_simp" class="input" /></td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
+					</div>
 
-			<div class="columns">
-				<div class="column">
-					<label class="label">Saldo original creditos activos arrendamiento: </label>
-					<input type="text" v-model="sal_vig_cred_act_arren" class="input" />
-				</div>
-				<div class="column">
-					<label class="label">Saldo original creditos activos factoraje: </label>
-					<input type="text" v-model="sal_vig_cred_act_fact" class="input" />
-				</div>
-				<div class="column">
-					<label class="label">Saldo original creditos activos revolventes: </label>
-					<input type="text" v-model="sal_vig_cred_act_revol" class="input" />
-				</div>
-				<div class="column">
-					<label class="label">Saldo original creditos activos simples: </label>
-					<input type="text" v-model="sal_vig_cred_act_simp" class="input" />
-				</div>
-			</div>
-
-			<div class="columns">
-				<div class="column">
-					<label class="label">Saldo vigente creditos activos arrendamiento: </label>
-					<input type="text" v-model="sal_orig_cred_act_arren" class="input" />
-				</div>
-				<div class="column">
-					<label class="label">Saldo vigente creditos activos factoraje: </label>
-					<input type="text" v-model="sal_orig_cred_act_fact" class="input" />
-				</div>
-				<div class="column">
-					<label class="label">Saldo vigente creditos activos revolventes: </label>
-					<input type="text" v-model="sal_orig_cred_act_revol" class="input" />
-				</div>
-				<div class="column">
-					<label class="label">Saldo vigente creditos activos simples: </label>
-					<input type="text" v-model="sal_orig_cred_act_simp" class="input" />
-				</div>
-			</div>
+					
 			
+					<div class="columns">
+						<div class="column">
+							<label class="label">Numero creditos activos arrendamiento: </label>
+							<input type="text" v-model="num_cred_act_arren" class="input" />
+						</div>
+						<div class="column">
+							<label class="label">Numero creditos activos factoraje: </label>
+							<input type="text" v-model="num_cred_act_fact" class="input" />
+						</div>
+						<div class="column">
+							<label class="label">Numero creditos activos revolventes: </label>
+							<input type="text" v-model="num_cred_act_revol" class="input" />
+						</div>
+						<div class="column">
+							<label class="label">Numero creditos activos simples: </label>
+							<input type="text" v-model="num_cred_act_simp" class="input" />
+						</div>
+					</div>
+
+					<div class="columns">
+						<div class="column">
+							<label class="label">Saldo original creditos activos arrendamiento: </label>
+							<input type="text" v-model="sal_vig_cred_act_arren" class="input" />
+						</div>
+						<div class="column">
+							<label class="label">Saldo original creditos activos factoraje: </label>
+							<input type="text" v-model="sal_vig_cred_act_fact" class="input" />
+						</div>
+						<div class="column">
+							<label class="label">Saldo original creditos activos revolventes: </label>
+							<input type="text" v-model="sal_vig_cred_act_revol" class="input" />
+						</div>
+						<div class="column">
+							<label class="label">Saldo original creditos activos simples: </label>
+							<input type="text" v-model="sal_vig_cred_act_simp" class="input" />
+						</div>
+					</div>
+
+					<div class="columns">
+						<div class="column">
+							<label class="label">Saldo vigente creditos activos arrendamiento: </label>
+							<input type="text" v-model="sal_orig_cred_act_arren" class="input" />
+						</div>
+						<div class="column">
+							<label class="label">Saldo vigente creditos activos factoraje: </label>
+							<input type="text" v-model="sal_orig_cred_act_fact" class="input" />
+						</div>
+						<div class="column">
+							<label class="label">Saldo vigente creditos activos revolventes: </label>
+							<input type="text" v-model="sal_orig_cred_act_revol" class="input" />
+						</div>
+						<div class="column">
+							<label class="label">Saldo vigente creditos activos simples: </label>
+							<input type="text" v-model="sal_orig_cred_act_simp" class="input" />
+						</div>
+					</div>
+				</div>
+			</div>			
 		</section>
+		</br>
 	`,
 	data () {
 		return {

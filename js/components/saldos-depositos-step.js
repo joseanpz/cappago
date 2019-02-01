@@ -2,9 +2,16 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	props: ["bank_list"],
 	template: `
 		<section> 
+		<br/>
+			<div class="header-sec-card" style="border:2px solid #3a5fab;">
+				<div class="column">
+					<b>Saldos y depositos</b>
+				</div>
+			</div>
+			<br/><br/>			
 			<div class="columns">
 				<div  class="column is-2">
-					<b-field label="Seleccione un Banco"></b-field>
+					<label class="label titulos">Seleccione un Banco</label>
 				</div>
 				<div class="column is-2">
  					<b-select placeholder="Select a name" v-model="selected_bank"> 
@@ -32,7 +39,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 				<div class="columns" >
 					<div class="column" v-for="acc_smnt in account_statements" :key="acc_smnt.id">
 						<div v-bind:class="{ 'is-6': account_statements.length===1 }" class="card column">
-							<header class="card-header" >
+							<header class="header-sec-card" >
 								<p class="card-header-title title-color">{{acc_smnt.bank_name}}</p>
 							</header>  
 
