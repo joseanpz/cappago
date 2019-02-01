@@ -1,5 +1,5 @@
 var LaboralStep = Vue.component('laboral-step',{
-	props: ['bank_list'],
+	props: ['id_solicitud'],
 	template: `
 		<section class="container card">
 			<header class="card-header">
@@ -57,14 +57,14 @@ var LaboralStep = Vue.component('laboral-step',{
 						</div>														
 					</div>
 				
-					<div class="card container">	
+					<div class="card container" v-if="tipo_comprobante=='account_statements'">	
 						<header class="card-header">
 							<p class="card-header-title">Saldos y depositos</p>
 						</header>
 						<div class="card-content">		
 							<div class="content">
 								<saldos-depositos-step
-								:bank_list="bank_list"
+								:id_solicitud="id_solicitud"
 								@acc-statements-change="emmitAccountStatements"> 
 								</saldos-depositos-step>
 							</div>

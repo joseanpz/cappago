@@ -1,5 +1,5 @@
 var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
-	props: ["bank_list"],
+	props: ["bank_list", "id_solicitud"],
 	template: `
 		<section> 		
 			<div class="columns">
@@ -30,7 +30,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 			<hr/>
 			<div v-if="account_statements.length">
 				<div class="columns" >
-					<div class="column" v-for="acc_smnt in account_statements" :key="acc_smnt.id">
+					<div class="column" v-for="acc_smnt in account_statements" :key="acc_smnt.id_local">
 						<div v-bind:class="{ 'is-6': account_statements.length===1 }" class="card column">
 							<header class="header-sec-card" >
 								<p class="card-header-title title-color">{{acc_smnt.bank_name}}</p>
@@ -43,18 +43,18 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 									<label class="label_color column" >Saldos</label>
 								</div>
 								<div class="content">
-									<b-field v-for="statement in acc_smnt.statements" :key="statement.id">
+									<b-field v-for="statement in acc_smnt.statements" :key="statement.id_local">
 									<div class="columns">
-										<label class="lbl_months column is-2">{{statement.month}}</label>
-										<b-input type="number" class="column" step="0.01" v-model="statement.deposits"></b-input> &nbsp
-										<b-input type="number" class="column" step="0.01" v-model="statement.balance"></b-input>
+										<label class="lbl_months column is-2">{{statement.mes}}</label>
+										<b-input type="number" class="column" step="0.01" v-model="statement.deposito"></b-input> &nbsp
+										<b-input type="number" class="column" step="0.01" v-model="statement.saldo"></b-input>
 									</div>
 									</b-field>
 								</div>
 							</div>
 							<footer class="card-footer">
-								<!--<a class="card-footer-item" @click="addStatement(acc_smnt.id)">Agregar registro</a> -->
-								<a class="card-footer-item button is-danger is-outlined" @click="deleteAccountStatement(acc_smnt.id)">Borrar banco</a>
+								<!--<a class="card-footer-item" @click="addStatement(acc_smnt.id_local)">Agregar registro</a> -->
+								<a class="card-footer-item button is-danger is-outlined" @click="deleteAccountStatement(acc_smnt.id_local)">Borrar banco</a>
 							</footer>
 						</div>
 					</div>						
@@ -69,6 +69,12 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
     		banks: []
 		}
 	},
+	computed: {
+		selected_bank_name : function () {
+			var bank_selected = this.banks.find(bank => bank.id === this.selected_bank);
+			return bank_selected.nombre;
+		}
+	}, 
 	created: function () {
 		this.readBanks();
 	},
@@ -107,8 +113,8 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	    	if (this.account_statements.length < 3) {
 	    		this.acc_stmnt_count++;
 	    		this.account_statements.push({
-	        		id: count,
-    				bank_name: this.selected_bank,
+	        		id_local: count,
+    				bank_name: this.selected_bank_name,
     				statements: statements
     			});    			
 	    	}	        
@@ -133,10 +139,13 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	    	var stmnts = []
 	    	for (var i = 0; i < n; i++) {
 	    			stmnts.push({
-			    		id: i,
-		    			month: '2019-01',
-		    			deposits: null,
-		    			balance: null
+	    				id: null,
+			    		id_local: i,
+			    		id_solicitud: this.id_solicitud,
+			    		id_banco: this.selected_bank,
+		    			mes: '2019-01',
+		    			deposito: null,
+		    			saldo: null
 		    		});
 	    	  	}
 	    	return stmnts;
