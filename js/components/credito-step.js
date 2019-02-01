@@ -4,8 +4,7 @@ var CreditoStep = Vue.component('credito-step',{
 			<header class="card-header">
 				<p class="card-header-title">Datos del credito</p>
 			</header>
-			<div class="card-content">
-				<br/>
+			<div class="card-content">				
 				<div class="content">
 					<div class="columns">
 						<div class="column is-2">
@@ -49,7 +48,7 @@ var CreditoStep = Vue.component('credito-step',{
 			              	</a>
 		              	</div>
 			        </div>
-			        <br/>
+			        
 			        <div class="columns" >
 						<div v-if="revolving_credits.length" class="column is-5">
 							<div class="column card ">

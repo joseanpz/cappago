@@ -4,14 +4,13 @@ var SolicitudStep = Vue.component('solicitud-step',{
 			<header class="card-header">
 				<p class="card-header-title">Datos de la solicitud</p>
 			</header>
-			<div class="card-content">
-			<br/>
+			<div class="card-content">			
 				<div class="content">
 					<div class="columns">
 						<div class="column is-2">
 							<label class="label titulos">Numero solicitud: </label>
 						</div>
-						<div class="column is-4" >
+						<div class="column is-4" > 
 							<input type="text" v-model="numero_solicitud" class="input" id="numero_solicitud"/>
 						</div>
 						<div class="column is-2">
@@ -21,11 +20,9 @@ var SolicitudStep = Vue.component('solicitud-step',{
 							<input type="text"  class="input" id="fecha_solicitud"/>
 						</div>
 					</div>
-				</div>
-				<br/>
+				</div>			
 			</div>
-		</section>
-		<br/>
+		</section>		
 	`,
 	data () {
 		return {

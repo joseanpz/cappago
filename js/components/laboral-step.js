@@ -5,8 +5,7 @@ var LaboralStep = Vue.component('laboral-step',{
 			<header class="card-header">
 				<p class="card-header-title">Información laboral</p>
 			</header>
-			<div class="card-content">
-			<br/>
+			<div class="card-content">		
 				<div class="content">
 					<section>
 						<div class="columns">
@@ -67,7 +66,6 @@ var LaboralStep = Vue.component('laboral-step',{
 				</div>
 			</div>
 		</section>
-		<br/>
 	`,
 
 	components: {
