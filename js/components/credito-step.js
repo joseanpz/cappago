@@ -1,4 +1,5 @@
 var CreditoStep = Vue.component('credito-step',{
+	props:['id_solicitud'],
 	template: `
 		<section class="container card">
 			<header class="card-header">
@@ -58,9 +59,9 @@ var CreditoStep = Vue.component('credito-step',{
 							<div class="card-content">                     
 		                		<div class="content">
 		            				<label class="label_color" >Monto Solicitado</label>
-										<b-field v-for="credit in revolving_credits" :key="credit.id"> 
-		  								<b-input type="number" step="0.01" v-model="credit.amount" style="width:80%;"></b-input> &nbsp
-		  								<a class="button is-danger is-outlined "  style="justify-content: center;" @click="deleteCredit(credit.id, 'revolvente')">
+										<b-field v-for="credit in revolving_credits" :key="credit.id_local"> 
+		  								<b-input type="number" step="0.01" v-model="credit.monto" style="width:80%;"></b-input> &nbsp
+		  								<a class="button is-danger is-outlined "  style="justify-content: center;" @click="deleteCredit(credit.id_local, 'revolvente')">
 										    <span>Borrar</span>
 										    <span class="icon is-small">
 										      <i class="fas fa-times"></i>
@@ -84,11 +85,11 @@ var CreditoStep = Vue.component('credito-step',{
 		            				<label class="label_color column is-5" >Plazo</label>
 		            				<div class="column"></div>					
 		                		</div>                		
-		  							<b-field v-for="credit in simple_credits"  :key="credit.id"> 
+		  							<b-field v-for="credit in simple_credits"  :key="credit.id_local"> 
 		  								<div class="columns">
-			  								<b-input type="number" step="0.01"  v-model="credit.amount" class="column is-5"></b-input> &nbsp
-			  								<b-input type="number" step="0.01"  v-model="credit.term" class="column is-5"></b-input> &nbsp
-			  								<a class="button is-danger is-outlined"  @click="deleteCredit(credit.id, 'simple')">
+			  								<b-input type="number" step="0.01"  v-model="credit.monto" class="column is-5"></b-input> &nbsp
+			  								<b-input type="number" step="0.01"  v-model="credit.plazo" class="column is-5"></b-input> &nbsp
+			  								<a class="button is-danger is-outlined"  @click="deleteCredit(credit.id_local, 'simple')">
 											    <span >Borrar</span>
 											    <span class="icon is-small">
 											      <i class="fas fa-times"></i>
@@ -117,36 +118,109 @@ var CreditoStep = Vue.component('credito-step',{
 		}
 	},
 
+	computed: {
+		solicited_credits: function () {
+    		return this.simple_credits.concat(this.revolving_credits);
+    	},
+    	tempdelay : function() {
+    		return parseInt(this.garantia);
+    	},
+	},
+
 	methods: {
 		addCredit: function () {
 			if (this.selected_type === "1") {
 				this.simple_credits.push({
-		    		id: this.credits_count,
-	    			type: this.selected_type,
-	    			amount: null,
-	    			term: null
+					id: null,
+		    		id_local: this.credits_count,
+		    		id_solicitud: this.id_solicitud,
+	    			tipo: this.selected_type,
+	    			monto: null,
+	    			plazo: null,
+	    			saved: false
 	    		});	 
 			} else if (this.selected_type === "2") {
 				this.revolving_credits.push({
-		    		id: this.credits_count,
-	    			type: this.selected_type,
-	    			amount: null,
-	    			term: null
+					id: null,
+		    		id_local: this.credits_count,
+	    			id_solicitud: this.id_solicitud,
+	    			tipo: this.selected_type,
+	    			monto: null,
+	    			plazo: null,
+	    			saved: false
 	    		});	  
 			}
-			console.log(this.selected_type);
-			console.log(this.revolving_credits);
-			console.log(this.simple_credits);
+			// console.log(this.selected_type);
+			// console.log(this.revolving_credits);
+			// console.log(this.simple_credits);
 			  	
 	    	this.credits_count++;
 		},
+		saveCredit: function (self, k, delay, m, n) {
+
+			var that = self;
+			console.log('saveCredit')
+
+			if (k<m) {
+				var credit = self.simple_credits[k];
+			} else {
+				var credit = self.revolving_credits[k-m];
+			}			
+
+			if (!credit.saved) {
+				google.script.run
+				.withSuccessHandler(function(response){
+					// TODO: handle different success response
+					console.log('Creating "credit"!')
+					console.log(response);
+					credit.id = response.id;
+					credit.saved = true;
+				})
+				.withFailureHandler(function(err){
+					console.log('An error ocurred while saving a "credit"!')
+					console.log(err);
+				})
+				.create('credito_solicitado', credit);
+			} else {
+				google.script.run
+				.withSuccessHandler(function(response){
+					console.log('Updating response!')
+					console.log(response);
+					//self.solicitud.id = response.id;
+				})
+				.withFailureHandler(function(err){
+					console.log('An error ocurred while updating')
+					console.log(err);
+				})
+				.update('credito_solicitado', credit)
+			}
+
+			k +=1;
+
+			if (k < m+n) {
+				// console.log('inside recurrence');
+				// console.log(k);				
+				setTimeout(function() {self.saveCredit(self, k, delay, m, n);}, delay)
+			}
+
+		},
+		saveCredits: function () {
+			var self = this;
+			var m = self.simple_credits.length;
+			var n = self.revolving_credits.length
+			
+			setTimeout(function(){self.saveCredit(self, 0, 500, m, n)});  // 500 ms no data corruption
+		},
+
 		deleteCredit: function(id, crd_type) {
+			// TODO: delete in  database
+
 			if (crd_type === 'simple') {
-				var index = this.simple_credits.indexOf(this.simple_credits.find(elm => elm.id == id));
+				var index = this.simple_credits.indexOf(this.simple_credits.find(elm => elm.id_local == id));
 	        	if (index >= 0) this.simple_credits.splice(index, 1);
 				 
 			} else if (crd_type === 'revolvente') {
-				var index = this.revolving_credits.indexOf(this.revolving_credits.find(elm => elm.id == id));
+				var index = this.revolving_credits.indexOf(this.revolving_credits.find(elm => elm.id_local == id));
 	        	if (index >= 0) this.revolving_credits.splice(index, 1);
 			}
 	    },
