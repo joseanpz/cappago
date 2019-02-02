@@ -172,10 +172,80 @@ var CreditoStep = Vue.component('credito-step',{
 			  	
 	    	this.credits_count++;
 		},
+
+		saveCreditFuture: function(instance, params) {
+			//var that = self;
+			console.log('saveCredit')
+			console.log(params);
+
+
+			if (params.incr < params.simple) {
+				console.log('incr < simple');
+				var credit = instance.simple_credits[params.simple];
+			} else {
+				var credit = instance.revolving_credits[params.incr-params.simple];
+			}	
+			console.log(credit);		
+
+			if (!credit.saved) {
+				google.script.run
+				.withSuccessHandler(function(response){
+					// TODO: handle different success response
+					console.log('Creating "credit"!')
+					console.log(response);
+					credit.id = response.id;
+					credit.saved = true;
+				})
+				.withFailureHandler(function(err){
+					console.log('An error ocurred while saving a "credit"!')
+					console.log(err);
+				})
+				.create('credito_solicitado', credit);
+			} else {
+				google.script.run
+				.withSuccessHandler(function(response){
+					console.log('Updating credito_solicitado response!')
+					console.log(response);
+					//self.solicitud.id = response.id;
+				})
+				.withFailureHandler(function(err){
+					console.log('An error ocurred while updating')
+					console.log(err);
+				})
+				.update('credito_solicitado', credit);
+			}
+		},
+
+		mutate: function (params) {
+			params.incr +=1;
+			return params;
+
+		},
+
+		conditionFuture: function (params) {
+			return params.incr < params.simple + params.revolving;
+		},
+
+		future: function (instance, fn, delay, params, condition, mutation) {
+			var self = this;
+			// execute function
+			fn(instance, params);
+
+
+			// mutate parameters
+			params = mutation(params);
+
+			// exchedule next execution
+			if (condition(params)) {
+				setTimeout(function(){self.future(instance, fn, delay, params, condition, mutation)}, delay);
+			}
+
+		},
+
 		saveCredit: function (self, k, delay, m, n) {
 
 			var that = self;
-			console.log('saveCredit')
+			console.log('saveCredit');
 
 			if (k<m) {
 				var credit = self.simple_credits[k];
@@ -216,16 +286,26 @@ var CreditoStep = Vue.component('credito-step',{
 			if (k < m+n) {
 				console.log('inside recurrence');
 				// console.log(k);				
-				setTimeout(function() {self.saveCredit(self, k, delay, m, n);}, delay)
+				setTimeout(function() {self.saveCredit(self, k, delay, m, n);}, delay);
 			}
 
 		},
+
+
+
 		saveCredits: function () {
-			var self = this;
+			/*var self = this;
 			var m = self.simple_credits.length;
 			var n = self.revolving_credits.length
 			
-			setTimeout(function(){self.saveCredit(self, 0, 5000, m, n);}, 1000);  // 500 ms no data corruption
+			setTimeout(function(){self.saveCredit(self, 0, 5000, m, n);}, 1000);  // 500 ms no data corruption*/
+
+			var params = {
+				incr: 0,
+				simple: this.simple_credits.length,
+				revolving: this.revolving_credits.length
+			}
+			this.future(this, this.saveCreditFuture, 3000, params, this.conditionFuture, this.mutate);
 		},
 
 		deleteCredit: function(id, crd_type) {
