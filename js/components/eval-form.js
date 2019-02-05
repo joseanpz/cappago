@@ -184,9 +184,19 @@ const EvalFormWizard = Vue.component('eval-form', {
       
       data: function() {
         return {
-          solicitud: this.solicitud,
-          account_statements: this.account_statements,
-          solicited_credits: this.solicited_credits
+          // solicitud: this.solicitud,
+          // account_statements: this.account_statements,
+          // solicited_credits: this.solicited_credits,
+          balances_sum: this.balances_sum,
+          deposits_sum: this.deposits_sum,
+          max_balance: this.max_balance,
+          min_balance: this.min_balance,
+          max_deposit: this.max_deposit,
+          min_deposit: this.min_deposit,
+          deposits_month_avg: this.deposits_month_avg,
+          balances_month_avg: this.balances_month_avg
+
+
         }
       },
       
