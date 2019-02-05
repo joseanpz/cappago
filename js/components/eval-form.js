@@ -198,7 +198,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (this.account_statements.length > 0) {
           var balances = new Array(12).fill(0);
           for (var i=0; i<this.account_statements.length; i++) {
-            balances = balances.map((balance, idx) => parseInt(balance) + parseInt(this.account_statements[i].statements[idx].saldo))
+            balances = balances.map((balance, idx) => parseInt(balance, 10) + parseInt(this.account_statements[i].statements[idx].saldo, 10))
           }
           return balances;
         } else {
@@ -210,11 +210,48 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (this.account_statements.length > 0) {
           var deposits = new Array(12).fill(0);
           for (var i=0; i<this.account_statements.length; i++) {
-            deposits = deposits.map((deposit, idx) => parseInt(deposit) + parseInt(this.account_statements[i].statements[idx].deposito))
+            deposits = deposits.map((deposit, idx) => parseInt(deposit, 10) + parseInt(this.account_statements[i].statements[idx].deposito, 10))
           }
           return deposits;
         } else {
           return [];
+        }
+      },
+
+      max_balance: function () {
+        return this.balances_sum.reduce((a,b) => Math.max(a,b));
+      },
+
+      min_balance: function () {
+        return this.balances_sum.reduce((a,b) => Math.min(a,b));
+      },
+
+      max_deposit: function () {
+        return this.deposits_sum.reduce((a,b) => Math.max(a,b));
+      },
+
+      min_deposit: function () {
+        return this.deposits_sum.reduce((a,b) => Math.min(a,b));
+      },
+
+      deposits_month_avg: function () {
+        var self = this;
+        var val_deposits = this.deposits_sum.find(a => a != self.max_deposit && a != self.min_deposit);
+        return val_deposits.reduce((a,b) => parseInt(a, 10) + parseInt(b, 10)) / val_deposits.length;
+      },
+
+      deposits_tendency: function () {
+        return -1;
+      },
+
+      balances_month_avg: function () {
+        var self = this;
+        
+        if (this.deposits_tendency < 0) {
+          return this.balances_sum.reduce((a,b) => parseInt(a, 10) + parseInt(b, 10)) / 12
+        } else {
+          var val_balances = this.balances_sum.find((a, idx) => a != self.max_deposit && a != self.min_deposit && (a/this.deposits_sum[idx] <= 0.3));  
+          return val_balances.reduce((a,b) => parseInt(a, 10) + parseInt(b, 10)) / val_balances.length;
         }
       },
 
