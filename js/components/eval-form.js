@@ -93,7 +93,7 @@ const EvalFormWizard = Vue.component('eval-form', {
          
 
 			    <!--<pre>{{ data | pretty }}</pre>-->
-          <pre>{{ balances_sum | pretty }}</pre>
+          <pre>{{ data | pretty }}</pre>
 
            <template slot="footer" slot-scope="props"> \
                    <div class="wizard-footer-left"> \
@@ -185,7 +185,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       data: function() {
         return {
           // solicitud: this.solicitud,
-          // account_statements: this.account_statements,
+          //account_statements: this.account_statements,
           // solicited_credits: this.solicited_credits,
           balances_sum: this.balances_sum,
           deposits_sum: this.deposits_sum,
@@ -229,39 +229,42 @@ const EvalFormWizard = Vue.component('eval-form', {
       },
 
       max_balance: function () {
-        return this.balances_sum.reduce((a,b) => Math.max(a,b));
+        return Math.max.apply(null, this.balances_sum);  // return this.balances_sum.reduce((a,b) => Math.max(a,b), 0);
       },
 
       min_balance: function () {
-        return this.balances_sum.reduce((a,b) => Math.min(a,b));
+        return Math.min.apply(null, this.balances_sum);  // this.balances_sum.reduce((a,b) => Math.min(a,b), 0);
       },
 
       max_deposit: function () {
-        return this.deposits_sum.reduce((a,b) => Math.max(a,b));
+        return Math.max.apply(null, this.deposits_sum);  // return this.deposits_sum.reduce((a,b) => Math.max(a,b), 0);
       },
 
       min_deposit: function () {
-        return this.deposits_sum.reduce((a,b) => Math.min(a,b));
+        return Math.min.apply(null, this.deposits_sum);  // return this.deposits_sum.reduce((a,b) => Math.min(a,b), 0);
       },
 
       deposits_month_avg: function () {
         var self = this;
-        var val_deposits = this.deposits_sum.find(a => a != self.max_deposit && a != self.min_deposit);
-        return val_deposits.reduce((a,b) => parseInt(a, 10) + parseInt(b, 10)) / val_deposits.length;
+        var val_deposits = this.deposits_sum.filter(a => a != self.max_deposit && a != self.min_deposit);
+        console.log(val_deposits);
+        if (typeof val_deposits === "undefined" ) return 0;
+        return val_deposits.reduce((a,b) => parseInt(a, 10) + parseInt(b, 10), 0) / val_deposits.length;
       },
 
       deposits_tendency: function () {
-        return -1;
+        return 1;
       },
 
       balances_month_avg: function () {
         var self = this;
         
         if (this.deposits_tendency < 0) {
-          return this.balances_sum.reduce((a,b) => parseInt(a, 10) + parseInt(b, 10)) / 12
+          return this.balances_sum.reduce((a,b) => parseInt(a, 10) + parseInt(b, 10), 0) / 12
         } else {
-          var val_balances = this.balances_sum.find((a, idx) => a != self.max_deposit && a != self.min_deposit && (a/this.deposits_sum[idx] <= 0.3));  
-          return val_balances.reduce((a,b) => parseInt(a, 10) + parseInt(b, 10)) / val_balances.length;
+          var val_balances = this.balances_sum.filter((a, idx) => a != self.max_deposit && a != self.min_deposit && (a/this.deposits_sum[idx] <= 0.3));
+          if (typeof val_balances === "undefinded") return 0;
+          return val_balances.reduce((a,b) => parseInt(a, 10) + parseInt(b, 10), 0) / val_balances.length;
         }
       },
 
