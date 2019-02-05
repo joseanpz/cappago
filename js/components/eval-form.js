@@ -39,7 +39,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           @acc-statements-change="setAccountStatements"
 
           :id_solicitud="solicitud.id"
-          
+          ref="laboral"          
           > 
           </laboral-step>
         </tab-content>
@@ -117,7 +117,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           id_nivel_riesgo: null,
           numero_solicitud: null,
           tipo_comprobante: "account_statements",
-          garantia_hipotecaria: null,
+          garantia: null,
           tipo_evaluacion_perfilador: null,
           decreto: null,
           score: null,
@@ -149,6 +149,7 @@ const EvalFormWizard = Vue.component('eval-form', {
     		account_statements: [],
     		simple_credits: [],
     		revolving_credits: [],
+        config: null,
     		//solicited_credits: [],
     		
     		// static, must be loaded from backend
@@ -176,6 +177,10 @@ const EvalFormWizard = Vue.component('eval-form', {
       FourthFormStep]*/
     },
 
+    created: function () {
+      this.readConfig();
+    },
+
     computed: {
     	
       solicited_credits: function () {
@@ -195,8 +200,12 @@ const EvalFormWizard = Vue.component('eval-form', {
           min_deposit: this.min_deposit,
           deposits_month_avg: this.deposits_month_avg,
           balances_month_avg: this.balances_month_avg,
-          deposits_tendency: this.deposits_tendency
-
+          deposits_tendency: this.deposits_tendency,
+          config: this.config,
+          guarantee_factor: this.guarantee_factor,
+          INGRESO_MENSUAL: this.INGRESO_MENSUAL,
+          INGRESO_ANUAL: this.INGRESO_ANUAL,
+          factor_uafir: this.factor_uafir,
 
         }
       },
@@ -274,6 +283,59 @@ const EvalFormWizard = Vue.component('eval-form', {
         }
       },
 
+      guarantee_factor: function () {
+        if (!this.solicitud.garantia) {
+          return null;
+        } else if (this.solicitud.garantia === "1" || this.solicitud.garantia === "2" || this.solicitud.garantia === "3") {
+          return 1;
+        } else if (this.solicitud.garantia === "4" || this.solicitud.garantia === "5") {
+          return 0.8;
+        }
+      },
+
+      INGRESO_MENSUAL: function () {        
+        if (this.solicitud.tipo_comprobante === "account_statements" ) {
+          if (!this.deposits_month_avg || !this.balances_month_avg) return null;
+          return Math.min(this.deposits_month_avg * this.guarantee_factor, this.balances_month_avg * this.guarantee_factor / this.config.factor1) ; 
+        } else {
+          return null;
+        }        
+      },
+
+      INGRESO_ANUAL: function () {
+        if (this.solicitud.tipo_comprobante === "account_statements" ) {
+          return   12 * this.INGRESO_MENSUAL;
+        } else {
+          return null;          
+        } 
+      },
+
+      factor_uafir: function () {
+        if (!this.id_actividad) return null;
+        var selected_activity = this.$refs.laboral.activities.find( act => act.id === this.id_actividad);
+        return selected_activity.factor_uafir
+      },
+
+      FLUJO_MENSUAL: function () {
+        if (this.solicitud.tipo_comprobante === "account_statements" ) {
+          if (!this.deposits_month_avg || !this.balances_month_avg) return null;
+          return Math.min(this.deposits_month_avg * this.factor_uafir, this.balances_month_avg * this.guarantee_factor) ; 
+        } else {
+          return null;
+        } 
+      },
+
+      FLUJO_ANUAL: function () {
+        if (this.solicitud.tipo_comprobante === "account_statements" ) {
+          return   12 * this.FLUJO_MENSUAL;
+        } else {
+          return null;          
+        } 
+      },
+
+
+
+
     },
 
     filters: {
@@ -291,6 +353,20 @@ const EvalFormWizard = Vue.component('eval-form', {
       },
       saveForm: function(){
         alert('Saving form!');
+      },
+      readConfig: function () {
+        var self = this;
+        google.script.run
+        .withSuccessHandler(function(response){
+          console.log('Reading config');
+          console.log(response);
+          self.config = response.records[0];
+        })
+        .withFailureHandler(function(err){
+          console.log('An error ocurred while reading config');
+          console.log(err);
+        })
+        .readCatalog('config')
       },
 
       saveSolicitudeCredit: function () {
@@ -408,7 +484,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         this.solicitud.tipo_comprobante = val;
       },
       setGuarantee: function(val) {
-        this.solicitud.garantia_hipotecaria = val;
+        this.solicitud.garantia = val;
       },
       setPrfEvalType: function(val) {
         this.solicitud.tipo_evaluacion_perfilador = val;
