@@ -46,8 +46,8 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 									<b-field v-for="statement in acc_smnt.statements" :key="statement.id_local">
 									<div class="columns">
 										<label class="lbl_months column is-2">{{statement.mes}}</label>
-										<b-input type="number" class="column" step="0.01" v-model="statement.deposito"></b-input> &nbsp
-										<b-input type="number" class="column" step="0.01" v-model="statement.saldo"></b-input>
+										<b-input type="number" class="column"  v-model="statement.deposito"></b-input> &nbsp
+										<b-input type="number" class="column"  v-model="statement.saldo"></b-input>
 									</div>
 									</b-field>
 								</div>
@@ -60,6 +60,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 					</div>						
 				</div>	  						
 			</div> 
+
 		</section> `,
 	data () {
 		return {
@@ -144,8 +145,8 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 			    		id_solicitud: this.id_solicitud,
 			    		id_banco: this.selected_bank,
 		    			mes: '2019-01',
-		    			deposito: null,
-		    			saldo: null
+		    			deposito: 0,
+		    			saldo: 0
 		    		});
 	    	  	}
 	    	return stmnts;

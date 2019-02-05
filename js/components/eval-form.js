@@ -92,7 +92,8 @@ const EvalFormWizard = Vue.component('eval-form', {
 
          
 
-			    <pre>{{ data | pretty }}</pre>
+			    <!--<pre>{{ data | pretty }}</pre>-->
+          <pre>{{ balances_sum | pretty }}</pre>
 
            <template slot="footer" slot-scope="props"> \
                    <div class="wizard-footer-left"> \
@@ -176,9 +177,11 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     computed: {
-    	solicited_credits: function () {
+    	
+      solicited_credits: function () {
     		return this.simple_credits.concat(this.revolving_credits);
     	},
+      
       data: function() {
         return {
           solicitud: this.solicitud,
@@ -186,9 +189,35 @@ const EvalFormWizard = Vue.component('eval-form', {
           solicited_credits: this.solicited_credits
         }
       },
+      
       saved: function() {
         return this.solicitud.id != null;
-      }
+      },
+
+      balances_sum: function() {
+        if (this.account_statements.length > 0) {
+          var balances = new Array(12).fill(0);
+          for (var i=0; i<this.account_statements.length; i++) {
+            balances = balances.map((balance, idx) => parseInt(balance) + parseInt(this.account_statements[i].statements[idx].saldo))
+          }
+          return balances;
+        } else {
+          return [];
+        }
+      },
+
+      deposits_sum: function() {
+        if (this.account_statements.length > 0) {
+          var deposits = new Array(12).fill(0);
+          for (var i=0; i<this.account_statements.length; i++) {
+            deposits = deposits.map((deposit, idx) => parseInt(deposit) + parseInt(this.account_statements[i].statements[idx].deposito))
+          }
+          return deposits;
+        } else {
+          return [];
+        }
+      },
+
     },
 
     filters: {

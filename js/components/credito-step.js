@@ -181,7 +181,7 @@ var CreditoStep = Vue.component('credito-step',{
 
 			if (params.incr < params.simple) {
 				console.log('incr < simple');
-				var credit = instance.simple_credits[params.simple];
+				var credit = instance.simple_credits[params.incr];
 			} else {
 				var credit = instance.revolving_credits[params.incr-params.simple];
 			}	
