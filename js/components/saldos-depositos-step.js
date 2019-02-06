@@ -133,7 +133,10 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	    	}	
 	    },
 	    deleteAccountStatement: function(id) {
-	    	var index = this.account_statements.indexOf(this.account_statements.find(elm => elm.id == id));
+	    	var index = this.account_statements.indexOf(this.account_statements.find(elm => elm.id_local == id));
+	    	//console.log('deleting deposits');
+	    	//console.log(index);
+	    	//console.log(this.account_statements);
 	        if (index >= 0) this.account_statements.splice(index, 1);
 	    },
 

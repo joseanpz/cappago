@@ -294,8 +294,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (this.deposits_sum.length == 0) return null;
         var y_values = this.deposits_sum.slice(8), x_values = [0, 1, 2, 3];
         var line = this.findLineByLeastSquares(x_values, y_values);
-        console.log('testing!!!');
-        console.log(line);
+        //console.log('testing!!!');
+        //console.log(line);
         return line[0];
       },
 
@@ -307,8 +307,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         } else {
           var val_balances = this.balances_sum.filter((a, idx) => a != self.max_balance && a != self.min_balance && (a/this.deposits_sum[idx] <= 0.3));
           if (typeof val_balances === "undefinded") return 0;
-          console.log('var_valances');
-          console.log(val_balances);
+          //console.log('var_valances');
+          //console.log(val_balances);
           return val_balances.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / val_balances.length;
         }
       },
