@@ -200,16 +200,16 @@ const EvalFormWizard = Vue.component('eval-form', {
           // min_balance: this.min_balance,
           // max_deposit: this.max_deposit,
           // min_deposit: this.min_deposit,
-          simple_credits: this.simple_credits,
-          revolving_credits: this.revolving_credits,
-          id_nivel_riesgo: this.solicitud.id_nivel_riesgo,
+          //simple_credits: this.simple_credits,
+          //revolving_credits: this.revolving_credits,
+          //id_nivel_riesgo: this.solicitud.id_nivel_riesgo,
           //niveles_riesgo: this.niveles_riesgo,
           
 
           deposits_month_avg: this.deposits_month_avg,
           balances_month_avg: this.balances_month_avg,
           deposits_tendency: this.deposits_tendency,
-          config: this.config,
+          //config: this.config,
           guarantee_factor: this.guarantee_factor,
           INGRESO_MENSUAL: this.INGRESO_MENSUAL,
           INGRESO_ANUAL: this.INGRESO_ANUAL,
@@ -246,7 +246,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (this.account_statements.length > 0) {
           var balances = new Array(12).fill(0);
           for (var i=0; i<this.account_statements.length; i++) {
-            balances = balances.map((balance, idx) => parseInt(balance, 10) + parseInt(this.account_statements[i].statements[idx].saldo, 10))
+            balances = balances.map((balance, idx) => parseFloat(balance) + parseFloat(this.account_statements[i].statements[idx].saldo))
           }
           return balances;
         } else {
@@ -258,7 +258,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (this.account_statements.length > 0) {
           var deposits = new Array(12).fill(0);
           for (var i=0; i<this.account_statements.length; i++) {
-            deposits = deposits.map((deposit, idx) => parseInt(deposit, 10) + parseInt(this.account_statements[i].statements[idx].deposito, 10))
+            deposits = deposits.map((deposit, idx) => parseFloat(deposit) + parseFloat(this.account_statements[i].statements[idx].deposito))
           }
           return deposits;
         } else {
@@ -287,7 +287,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         var val_deposits = this.deposits_sum.filter(a => a != self.max_deposit && a != self.min_deposit);
         console.log(val_deposits);
         if (typeof val_deposits === "undefined" ) return 0;
-        return val_deposits.reduce((a,b) => parseInt(a, 10) + parseInt(b, 10), 0) / val_deposits.length;
+        return val_deposits.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / val_deposits.length;
       },
 
       deposits_tendency: function () {
@@ -303,11 +303,13 @@ const EvalFormWizard = Vue.component('eval-form', {
         var self = this;
         
         if (this.deposits_tendency < 0) {
-          return this.balances_sum.reduce((a,b) => parseInt(a, 10) + parseInt(b, 10), 0) / 12
+          return this.balances_sum.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / 12
         } else {
-          var val_balances = this.balances_sum.filter((a, idx) => a != self.max_deposit && a != self.min_deposit && (a/this.deposits_sum[idx] <= 0.3));
+          var val_balances = this.balances_sum.filter((a, idx) => a != self.max_balance && a != self.min_balance && (a/this.deposits_sum[idx] <= 0.3));
           if (typeof val_balances === "undefinded") return 0;
-          return val_balances.reduce((a,b) => parseInt(a, 10) + parseInt(b, 10), 0) / val_balances.length;
+          console.log('var_valances');
+          console.log(val_balances);
+          return val_balances.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / val_balances.length;
         }
       },
 
@@ -383,7 +385,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (this.simple_credits.length === 0) return null;
         var ret = 0;
         for(var i=0; i<this.simple_credits.length; i++) {
-          ret += parseInt(this.simple_credits[i].monto, 10);
+          ret += parseFloat(this.simple_credits[i].monto);
         }
         return ret;
       },
@@ -391,7 +393,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (this.simple_credits.length === 0) return null;
         var ret = 0;
         for(var i=0; i<this.simple_credits.length; i++) {
-          ret += parseInt(this.simple_credits[i].plazo, 10) * parseInt(this.simple_credits[i].monto, 10);
+          ret += parseFloat(this.simple_credits[i].plazo) * parseFloat(this.simple_credits[i].monto);
         }
         return Math.ceil((ret / this.monto_simple) / 6) * 6;
       },
@@ -399,7 +401,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (this.revolving_credits.length === 0) return null;
         var ret = 0;
         for(var i=0; i<this.revolving_credits.length; i++) {
-          ret += parseInt(this.revolving_credits[i].monto, 10);
+          ret += parseFloat(this.revolving_credits[i].monto);
         }
         return ret;
       },
@@ -568,66 +570,66 @@ const EvalFormWizard = Vue.component('eval-form', {
         return true;
       },
       findLineByLeastSquares: function(values_x, values_y) {
-      var sum_x = 0;
-      var sum_y = 0;
-      var sum_xy = 0;
-      var sum_xx = 0;
-      var count = 0;
+        var sum_x = 0;
+        var sum_y = 0;
+        var sum_xy = 0;
+        var sum_xx = 0;
+        var count = 0;
 
-      /*
-       * We'll use those variables for faster read/write access.
-       */
-      var x = 0;
-      var y = 0;
-      var values_length = values_x.length;
+        /*
+         * We'll use those variables for faster read/write access.
+         */
+        var x = 0;
+        var y = 0;
+        var values_length = values_x.length;
 
-      if (values_length != values_y.length) {
-        throw new Error('The parameters values_x and values_y need to have same size!');
-      }
+        if (values_length != values_y.length) {
+          throw new Error('The parameters values_x and values_y need to have same size!');
+        }
 
-      /*
-      * Nothing to do.
-      */
-      if (values_length === 0) {
-        return [ [], [] ];
-      }
+        /*
+        * Nothing to do.
+        */
+        if (values_length === 0) {
+          return [ [], [] ];
+        }
 
-      /*
-       * Calculate the sum for each of the parts necessary.
-       */
-      for (var v = 0; v < values_length; v++) {
-        x = values_x[v];
-        y = values_y[v];
-        sum_x += x;
-        sum_y += y;
-        sum_xx += x*x;
-        sum_xy += x*y;
-        count++;
-      }
+        /*
+         * Calculate the sum for each of the parts necessary.
+         */
+        for (var v = 0; v < values_length; v++) {
+          x = values_x[v];
+          y = values_y[v];
+          sum_x += x;
+          sum_y += y;
+          sum_xx += x*x;
+          sum_xy += x*y;
+          count++;
+        }
 
-      /*
-       * Calculate m and b for the formular:
-       * y = x * m + b
-       */
-      var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
-      var b = (sum_y/count) - (m*sum_x)/count;
+        /*
+         * Calculate m and b for the formular:
+         * y = x * m + b
+         */
+        var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
+        var b = (sum_y/count) - (m*sum_x)/count;
 
-      /*
-       * We will make the x and y result line now
-       */
-      /*var result_values_x = [];
-      var result_values_y = [];
+        /*
+         * We will make the x and y result line now
+         */
+        /*var result_values_x = [];
+        var result_values_y = [];
 
-      for (var v = 0; v &lt; values_length; v++) {
-        x = values_x[v];
-        y = x * m + b;
-        result_values_x.push(x);
-        result_values_y.push(y);
-      }
+        for (var v = 0; v &lt; values_length; v++) {
+          x = values_x[v];
+          y = x * m + b;
+          result_values_x.push(x);
+          result_values_y.push(y);
+        }
 
-      return [result_values_x, result_values_y];*/
-      return [m, b]
-    },
+        return [result_values_x, result_values_y];*/
+        return [m, b]
+      },
       setActivity: function(val) {
         this.solicitud.id_actividad = val;
       },
