@@ -304,7 +304,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         var self = this;
         
         if (this.deposits_tendency < 0) {
-          return this.balances_sum..slice(8).reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / 4
+          return this.balances_sum.slice(8).reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / 4
         } else {
           var val_balances = this.balances_sum.filter((a, idx) => a != self.max_balance && a != self.min_balance && (a/this.deposits_sum[idx] <= 0.3));
           if (typeof val_balances === "undefinded") return 0;
