@@ -150,6 +150,7 @@ const EvalFormWizard = Vue.component('eval-form', {
     		simple_credits: [],
     		revolving_credits: [],
         config: null,
+        niveles_riesgo: [],
     		//solicited_credits: [],
     		
     		// static, must be loaded from backend
@@ -179,6 +180,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     created: function () {
       this.readConfig();
+      this.readNivelesRiesgo();
     },
 
     computed: {
@@ -333,6 +335,22 @@ const EvalFormWizard = Vue.component('eval-form', {
         } 
       },
 
+      nivel_riesgo: function () {
+        if (!this.id_nivel_riesgo) return null;
+        return this.niveles_riesgo.find( nivrie => nivrie.id === this.id_nivel_riesgo);
+      },
+
+      factor_monto_tope: function () {
+        if (!this.solicitud.score || this.solicitud.score < 0) return null;
+
+        if (this.solicitud.score <= 450) {
+          return 0.5;
+        } else if (this.solicitud.score >= 900) {
+          return 1.5
+        } else {
+          return 0.00523910480286183 * 0.000126666 * Math.exp( 0.016576983 * this.solicitud.score  ) + 0.5;
+        }
+      },
 
 
 
@@ -367,6 +385,20 @@ const EvalFormWizard = Vue.component('eval-form', {
           console.log(err);
         })
         .readCatalog('config')
+      },
+      readNivelesRiesgo: function () {
+        var self = this;
+        google.script.run
+        .withSuccessHandler(function(response){
+          console.log('Reading nivel_riesgo');
+          console.log(response);
+          self.niveles_riesgo = response.records;
+        })
+        .withFailureHandler(function(err){
+          console.log('An error ocurred while reading nivel_riesgo');
+          console.log(err);
+        })
+        .readCatalog('nivel_riesgo')
       },
 
       saveSolicitudeCredit: function () {
