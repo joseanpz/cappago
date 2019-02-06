@@ -22,7 +22,7 @@ var CreditoStep = Vue.component('credito-step',{
 								<select v-model="garantia"  id="garantia" class="select">
 									<option value selected>-- Seleccione--</option>
 									<option value="1">Hipotecaria</option>
-									<option value="2">Líquidas</option>								
+									<option value="2">Líquida</option>								
 									<option value="3">Prendaria</option>
 									<option value="4">Otras</option>
 									<option value="5">No tiene</option>

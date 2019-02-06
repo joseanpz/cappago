@@ -194,12 +194,18 @@ const EvalFormWizard = Vue.component('eval-form', {
           // solicitud: this.solicitud,
           //account_statements: this.account_statements,
           // solicited_credits: this.solicited_credits,
-          balances_sum: this.balances_sum,
-          deposits_sum: this.deposits_sum,
-          max_balance: this.max_balance,
-          min_balance: this.min_balance,
-          max_deposit: this.max_deposit,
-          min_deposit: this.min_deposit,
+          // balances_sum: this.balances_sum,
+          // deposits_sum: this.deposits_sum,
+          // max_balance: this.max_balance,
+          // min_balance: this.min_balance,
+          // max_deposit: this.max_deposit,
+          // min_deposit: this.min_deposit,
+          simple_credits: this.simple_credits,
+          revolving_credits: this.revolving_credits,
+          id_nivel_riesgo: this.solicitud.id_nivel_riesgo,
+          //niveles_riesgo: this.niveles_riesgo,
+          
+
           deposits_month_avg: this.deposits_month_avg,
           balances_month_avg: this.balances_month_avg,
           deposits_tendency: this.deposits_tendency,
@@ -208,6 +214,26 @@ const EvalFormWizard = Vue.component('eval-form', {
           INGRESO_MENSUAL: this.INGRESO_MENSUAL,
           INGRESO_ANUAL: this.INGRESO_ANUAL,
           factor_uafir: this.factor_uafir,
+          FLUJO_MENSUAL: this.FLUJO_MENSUAL,
+          FLUJO_ANUAL: this.FLUJO_ANUAL,
+          nivel_riesgo: this.nivel_riesgo,
+          factor_monto_maximo: this.factor_monto_maximo,
+          monto_simple: this.monto_simple,
+          monto_revolvente: this.monto_revolvente,
+          plazo_simple: this.plazo_simple,
+          monto_maximo_smp: this.monto_maximo_smp,
+          monto_maximo_rev: this.monto_maximo_rev,
+          deuda_total: this.solicitud.deuda_total,
+          dif_deuda_ingreso_rev: this.dif_deuda_ingreso_rev,
+          dif_deuda_ingreso_smp: this.dif_deuda_ingreso_smp,
+          razon_FDA_FRC_smp: this.razon_FDA_FRC_smp,
+          razon_FDA_FRC_rev: this.razon_FDA_FRC_rev,
+          tope_capital_contable_smp_rev: this.tope_capital_contable_smp_rev,
+          capacidad_pago_smp: this.capacidad_pago_smp,
+          capacidad_pago_rev: this.capacidad_pago_rev,
+          linea_simple: this.linea_simple,
+          linea_revolvente: this.linea_revolvente
+
 
         }
       },
@@ -306,15 +332,16 @@ const EvalFormWizard = Vue.component('eval-form', {
 
       INGRESO_ANUAL: function () {
         if (this.solicitud.tipo_comprobante === "account_statements" ) {
-          return   12 * this.INGRESO_MENSUAL;
+          if (!this.deposits_month_avg || !this.balances_month_avg) return null;
+          return 12 * this.INGRESO_MENSUAL;
         } else {
           return null;          
         } 
       },
 
       factor_uafir: function () {
-        if (!this.id_actividad) return null;
-        var selected_activity = this.$refs.laboral.activities.find( act => act.id === this.id_actividad);
+        if (!this.solicitud.id_actividad) return null;
+        var selected_activity = this.$refs.laboral.activities.find( act => act.id === this.solicitud.id_actividad);
         return selected_activity.factor_uafir
       },
 
@@ -329,6 +356,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
       FLUJO_ANUAL: function () {
         if (this.solicitud.tipo_comprobante === "account_statements" ) {
+          if (!this.deposits_month_avg || !this.balances_month_avg) return null;
           return   12 * this.FLUJO_MENSUAL;
         } else {
           return null;          
@@ -336,11 +364,11 @@ const EvalFormWizard = Vue.component('eval-form', {
       },
 
       nivel_riesgo: function () {
-        if (!this.id_nivel_riesgo) return null;
-        return this.niveles_riesgo.find( nivrie => nivrie.id === this.id_nivel_riesgo);
+        if (!this.solicitud.id_nivel_riesgo) return null;
+        return this.niveles_riesgo.find( nivrie => nivrie.id === this.solicitud.id_nivel_riesgo);
       },
 
-      factor_monto_tope: function () {
+      factor_monto_maximo: function () {
         if (!this.solicitud.score || this.solicitud.score < 0) return null;
 
         if (this.solicitud.score <= 450) {
@@ -351,6 +379,103 @@ const EvalFormWizard = Vue.component('eval-form', {
           return 0.00523910480286183 * 0.000126666 * Math.exp( 0.016576983 * this.solicitud.score  ) + 0.5;
         }
       },
+      monto_simple: function () {
+        if (this.simple_credits.length === 0) return null;
+        var ret = 0;
+        for(var i=0; i<this.simple_credits.length; i++) {
+          ret += parseInt(this.simple_credits[i].monto, 10);
+        }
+        return ret;
+      },
+      plazo_simple: function () {
+        if (this.simple_credits.length === 0) return null;
+        var ret = 0;
+        for(var i=0; i<this.simple_credits.length; i++) {
+          ret += parseInt(this.simple_credits[i].plazo, 10) * parseInt(this.simple_credits[i].monto, 10);
+        }
+        return Math.ceil((ret / this.monto_simple) / 6) * 6;
+      },
+      monto_revolvente: function () {
+        if (this.revolving_credits.length === 0) return null;
+        var ret = 0;
+        for(var i=0; i<this.revolving_credits.length; i++) {
+          ret += parseInt(this.revolving_credits[i].monto, 10);
+        }
+        return ret;
+      },
+      tasa_mensual_iva: function () {
+        if (!this.nivel_riesgo) return null;
+        return (this.nivel_riesgo.tasa / 12) * 1.16;
+      },
+      factor_recuperacion_capital: function () {
+        if (!this.plazo_simple || !this.nivel_riesgo) return null;
+        var tmi = this.tasa_mensual_iva;
+        return tmi * Math.pow(1+tmi, this.plazo_simple) / (Math.pow( 1+tmi, this.plazo_simple) - 1)
+      },
+      //  restricciones  //
+      monto_maximo_smp: function () {
+        if (!this.monto_simple || !this.factor_monto_maximo) return null;
+        return this.monto_simple * this.factor_monto_maximo;
+      },
+      monto_maximo_rev: function () {
+        if (!this.monto_revolvente || !this.factor_monto_maximo) return null;
+        return this.monto_revolvente * this.factor_monto_maximo;
+      },
+      dif_deuda_ingreso_rev: function () {
+        if (!this.nivel_riesgo || !this.INGRESO_ANUAL || !this.solicitud.deuda_total) return null;
+        return this.nivel_riesgo.rev_factor * this.INGRESO_ANUAL - this.solicitud.deuda_total;
+      },
+      dif_deuda_ingreso_smp: function () {
+        if (!this.nivel_riesgo || !this.INGRESO_ANUAL || !this.solicitud.deuda_total) return null;
+        return this.nivel_riesgo.smp_factor * this.INGRESO_ANUAL - this.solicitud.deuda_total;
+      },
+      razon_FDA_FRC_smp: function () {  // razon entre el flujo anual disponible y el factor de recuperacion de capital
+        if (!this.FLUJO_ANUAL || !this.factor_recuperacion_capital) return null;
+        return this.FLUJO_ANUAL / this.factor_recuperacion_capital;
+      },
+      razon_FDA_tasa_rev: function () {
+        if (!this.FLUJO_ANUAL || !this.nivel_riesgo) return null;
+        return this.FLUJO_ANUAL / ( 0.2 + this.nivel_riesgo.tasa);
+      },
+      tope_capital_contable_smp_rev: function () {
+        if (!this.solicitud.capital_contable || this.solicitud.tipo_comprobante === "account_statements") return null;
+        return this.solicitud.capital_contable / 4;
+      },
+      // capacidad de pago
+      capacidad_pago_rev: function () {
+        if (!this.nivel_riesgo || !this.INGRESO_MENSUAL) return null;
+        return this.INGRESO_MENSUAL * this.nivel_riesgo.n_vences_riesgo;
+      },
+      capacidad_pago_smp: function () {
+        if (!this.FLUJO_MENSUAL || !this.nivel_riesgo) return null;
+        return this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, this.nivel_riesgo.plazo))
+      },
+
+      // lineas de credito
+      linea_simple: function () {
+        if (this.solicitud.tipo_comprobante === "account_statements"){
+          if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || this.razon_FDA_FRC_smp || !this.monto_maximo_smp || !this.tope_capital_contable_smp_rev) return null;
+          return Math.min(this.capacidad_pago_smp, this.dif_deuda_ingreso_smp, 
+            this.razon_FDA_FRC_smp, this.monto_maximo_smp, this.tope_capital_contable_smp_rev);
+        } else {
+          if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || this.razon_FDA_FRC_smp || !this.monto_maximo_smp) return null;
+          return Math.min(this.capacidad_pago_smp, this.dif_deuda_ingreso_smp, 
+            this.razon_FDA_FRC_smp, this.monto_maximo_smp);
+        }        
+      },
+      linea_revolvente: function () {
+        if (this.solicitud.tipo_comprobante === "account_statements"){
+          if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || this.razon_FDA_FRC_rev || !this.monto_maximo_rev || !this.tope_capital_contable_smp_rev) return null;
+          return Math.min(this.capacidad_pago_rev, this.dif_deuda_ingreso_rev, 
+            this.razon_FDA_FRC_rev, this.monto_maximo_rev, this.tope_capital_contable_smp_rev);
+        } else {
+          if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || this.razon_FDA_FRC_rev || !this.monto_maximo_rev) return null;
+          return Math.min(this.capacidad_pago_rev, this.dif_deuda_ingreso_rev, 
+            this.razon_FDA_FRC_rev, this.monto_maximo_rev);
+        }
+
+      },
+
 
 
 
