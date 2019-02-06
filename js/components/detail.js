@@ -27,7 +27,7 @@ const DetailForm = Vue.component('detail', {
                     <td>Nuevo</td>
                     <td><label class="label">Calificación deudor:</label></td>
                     <td>AA</td>
-                  </tr>
+                  </tr> 
                   <tr>
                     <td><label class="label">Tipo comprobante:</label></td>
                     <td>Nomina</td>
