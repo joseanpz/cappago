@@ -11,13 +11,13 @@ var EstadoGeneralStep = Vue.component('estado-general-step',{
 							<label class="label">Ventas anuales: </label>
 						</div>
 						<div class="column is-4">					
-							<input type="text" v-model="ventas_anuales" class="input" />
+							<input type="number" step="0.001" v-model="ventas_anuales" class="input" />
 						</div>
 						<div class="column is-2">
 							<label class="label">Uafir: </label>
 						</div>
 						<div class="column">					
-							<input type="text" v-model="uafir" class="input" />
+							<input type="number" step="0.001" v-model="uafir" class="input" />
 						</div>
 					</div>
 					<div class="columns">
@@ -25,7 +25,7 @@ var EstadoGeneralStep = Vue.component('estado-general-step',{
 							<label class="label">Capital contable: </label>
 						</div>
 						<div class="column is-4">
-							<input type="text" v-model="capital_contable" class="input" />
+							<input type="number" step="0.001" v-model="capital_contable" class="input" />
 						</div>
 						<div class="column is-2">
 							<label class="label">Calificacion deudor: </label>

@@ -17,19 +17,19 @@ var BuroCreditoStep = Vue.component('buro-credito-step',{
 										<table class="table is-bordered">
 											<tr>
 												<td><label class="label">Indicadora de Acreditados Sin Atraso (<b>BK12_CLEAN</b>): </label></td>
-												<td><input type="text" v-model="BK12_CLEAN" class="input" /> </td>
+												<td><input type="number" step="0.001" v-model="BK12_CLEAN" class="input" /> </td>
 											</tr>
 											<tr>
 												<td><label class="label">Monto máximo de crédito otorgado por instituciones financieras bancarias en los ultimos 12 meses. (<b>BK12_MAX_CREDIT_AMT</b>): </label></td>
-												<td><input type="text" v-model="BK12_MAX_CREDIT_AMT" class="input" /> </td>
+												<td><input type="number" step="0.001" v-model="BK12_MAX_CREDIT_AMT" class="input" /> </td>
 											</tr>
 											<tr>
 												<td><label class="label">Deuda Total de Acreditado (<b>BK_DEUDA_TOT</b>): </label></td>
-												<td><input type="text" v-model="deuda_total" class="input" /> </td>
+												<td><input type="number" step="0.001" v-model="deuda_total" class="input" /> </td>
 											</tr>
 											<tr>
 												<td><label class="label">Antigüedad en sociedad de informacion crediticia (<b>MONTHS_ON_FILE_BANKING</b>): </label></td>
-												<td><input type="text" v-model="MONTHS_ON_FILE_BANKING" class="input" /> </td>
+												<td><input type="number" step="0.001" v-model="MONTHS_ON_FILE_BANKING" class="input" /> </td>
 											</tr>
 										</table>
 									</div>
@@ -55,27 +55,27 @@ var BuroCreditoStep = Vue.component('buro-credito-step',{
 											<tbody>
 												<tr>
 													<td><b>Revolvente</b></td>
-													<td><input type="text" v-model="num_cred_act_revol" class="input" /></td>
-													<td><input type="text" v-model="sal_vig_cred_act_revol" class="input" /></td>
-													<td><input type="text" v-model="sal_orig_cred_act_revol" class="input" /></td>
+													<td><input type="number"  v-model="num_cred_act_revol" class="input" /></td>
+													<td><input type="number" step="0.001" v-model="sal_vig_cred_act_revol" class="input" /></td>
+													<td><input type="number" step="0.001" v-model="sal_orig_cred_act_revol" class="input" /></td>
 												</tr>
 												<tr>
 													<td><b>Factorajes</b></td>
-													<td><input type="text" v-model="num_cred_act_fact" class="input" /></td>
-													<td><input type="text" v-model="sal_vig_cred_act_fact" class="input" /></td>
-													<td><input type="text" v-model="sal_orig_cred_act_fact" class="input" /></td>
+													<td><input type="number"  v-model="num_cred_act_fact" class="input" /></td>
+													<td><input type="number" step="0.001" v-model="sal_vig_cred_act_fact" class="input" /></td>
+													<td><input type="number" step="0.001" v-model="sal_orig_cred_act_fact" class="input" /></td>
 												</tr>
 												<tr>
 													<td><b>Arrendamientos</b></td>
-													<td><input type="text" v-model="num_cred_act_arren" class="input" /></td>
-													<td><input type="text" v-model="sal_vig_cred_act_arren" class="input" /></td>
-													<td><input type="text" v-model="sal_orig_cred_act_arren" class="input" /></td>
+													<td><input type="number"  v-model="num_cred_act_arren" class="input" /></td>
+													<td><input type="number" step="0.001" v-model="sal_vig_cred_act_arren" class="input" /></td>
+													<td><input type="number" step="0.001" v-model="sal_orig_cred_act_arren" class="input" /></td>
 												</tr>
 												<tr>
 													<td><b>Simples</b></td>
-													<td><input type="text" v-model="num_cred_act_simp" class="input" /></td>
-													<td><input type="text" v-model="sal_vig_cred_act_simp" class="input" /></td>
-													<td><input type="text" v-model="sal_orig_cred_act_simp" class="input" /></td>
+													<td><input type="number"  v-model="num_cred_act_simp" class="input" /></td>
+													<td><input type="number" step="0.001" v-model="sal_vig_cred_act_simp" class="input" /></td>
+													<td><input type="number" step="0.001" v-model="sal_orig_cred_act_simp" class="input" /></td>
 												</tr>
 											</tbody>
 										</table>
