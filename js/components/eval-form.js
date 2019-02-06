@@ -451,7 +451,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       },
       capacidad_pago_smp: function () {
         if (!this.FLUJO_MENSUAL || !this.nivel_riesgo) return null;
-        return this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, this.plazo_simple))
+        return this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple))
       },
 
       // lineas de credito
