@@ -210,6 +210,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           balances_month_avg: this.balances_month_avg,
           deposits_tendency: this.deposits_tendency,
           //config: this.config,
+          capital_contable: this.solicitud.capital_contable,
           guarantee_factor: this.guarantee_factor,
           INGRESO_MENSUAL: this.INGRESO_MENSUAL,
           INGRESO_ANUAL: this.INGRESO_ANUAL,
@@ -303,7 +304,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         var self = this;
         
         if (this.deposits_tendency < 0) {
-          return this.balances_sum.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / 12
+          return this.balances_sum..slice(8).reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / 4
         } else {
           var val_balances = this.balances_sum.filter((a, idx) => a != self.max_balance && a != self.min_balance && (a/this.deposits_sum[idx] <= 0.3));
           if (typeof val_balances === "undefinded") return 0;
@@ -446,11 +447,11 @@ const EvalFormWizard = Vue.component('eval-form', {
       // capacidad de pago
       capacidad_pago_rev: function () {
         if (!this.nivel_riesgo || !this.INGRESO_MENSUAL) return null;
-        return this.INGRESO_MENSUAL * this.nivel_riesgo.n_vences_riesgo;
+        return this.INGRESO_MENSUAL * this.nivel_riesgo.n_veces_riesgo;
       },
       capacidad_pago_smp: function () {
         if (!this.FLUJO_MENSUAL || !this.nivel_riesgo) return null;
-        return this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, this.nivel_riesgo.plazo))
+        return this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, this.plazo_simple))
       },
 
       // lineas de credito
