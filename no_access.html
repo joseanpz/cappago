@@ -6,36 +6,53 @@
     <title>Capacidad de Pago</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">    
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
 	   <!-- build:css -->    
-    <link rel="stylesheet" href="css/main.css">
     <!-- endbuild -->
+    <style>
+      .navbar.is-primary {
+        background-color: #FF681E;
+        height: 110px;
+        font-size: 45px;
+      }
+      .footer{
+        background-color: #3a5fab !important;
+        color:white;
+      }
+
+
+    </style>
 
   </head>
   <body>
 
     <div id="app">
     <nav class="navbar is-primary">
-      	<div class="container">
-      	  <div class="navbar-brand">
-      	  	<a class="navbar-item" href="#" style="font-weight:bold;">
-      	  	  banregio 	
-      	  	</a>
+        <div class="container">
+          <div class="navbar-brand"> 
+            <a class="navbar-item" href="#/" style="font-weight:bold;">
+              banregio
+            </a>
             <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
               <span aria-hidden="true">
               <span aria-hidden="true">
               <span aria-hidden="true">
             </a>
-      	  </div> 
-          <div class="navbar-menu navbar-end" id="navMenu">
-            <a href="#/" class="navbar-item" is-active>Inicio</a>
-            <a href="#/evaluaciones" class="navbar-item">Evaluaciones</a>
-            <a href="#/evaluar" class="navbar-item">Nueva Evaluación</a>
-          </div>  	  	       	
-      	</div>
+          </div>                         
+        </div>
     </nav>	
-    <div>No acceso</div>
+    <div style=" background-color: #e6e6e6; height:400px; padding-top:30px; font-size: 25px; text-align: center;">Sin acceso</div>
     </div>
-  
+  <div class="footer columns" style="padding-bottom: -15px;"> 
+    <div style="font-weight:bold; font-size: 26px; text-align: center;" class="column is-3">banregio | riesgos</div>
+    <div class="column" style="text-align: right;">
+      <p><b>Banco Regional, S.A</b></p>
+      <p><b>Institución de Banca Múltiple, Banregio Grupo Financiero. </b></p>
+      <p>Todos los Derechos Reservados</p>
+
+    </div>
+ 
+  </div>
   </body>
 
 </html>
