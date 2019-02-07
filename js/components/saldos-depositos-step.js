@@ -46,8 +46,8 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 									<b-field v-for="statement in acc_smnt.statements" :key="statement.id_local">
 									<div class="columns">
 										<label class="lbl_months column is-2">{{statement.mes}}</label>
-										<b-input type="number" class="column" step="0.01"  v-model="statement.deposito"></b-input> &nbsp
-										<b-input type="number" class="column" step="0.01" v-model="statement.saldo"></b-input>
+										<b-input type="number" class="column" step="0.001"  v-model="statement.deposito"></b-input> &nbsp
+										<b-input type="number" class="column" step="0.001" v-model="statement.saldo"></b-input>
 									</div>
 									</b-field>
 								</div>
@@ -106,11 +106,13 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
             })
             .readCatalog('banco')
         },
+
 	    addAccountStetment: function () {
 	    	console.log("adding acc statement");
-	    	console.log(this.account_statements);
+	    	
 	    	var count = this.acc_stmnt_count;
 	    	var statements = this.loadStatements(12);
+	    	console.log(statements);
 	    	if (this.account_statements.length < 3) {
 	    		this.acc_stmnt_count++;
 	    		this.account_statements.push({
@@ -118,9 +120,11 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
     				bank_name: this.selected_bank_name,
     				statements: statements
     			});    			
-	    	}	        
+	    	}
+	    	//console.log('meh');
+	    	//console.log(this.account_statements[0]);	        
 	    },
-	    addStatement: function(id) {
+	    /*addStatement: function(id) {
 
 	    	if (this.account_statements.find(elm => elm.id == id).statements.length < 12) {
 		    	this.account_statements.find(elm => elm.id == id).statements.push({
@@ -131,7 +135,8 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	    		});
 	    		this.acc_stmnt_count++;
 	    	}	
-	    },
+	    },*/
+
 	    deleteAccountStatement: function(id) {
 	    	var index = this.account_statements.indexOf(this.account_statements.find(elm => elm.id_local == id));
 	    	//console.log('deleting deposits');
@@ -150,10 +155,67 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 			    		id_banco: this.selected_bank,
 		    			mes: '2019-01',
 		    			deposito: 0,
-		    			saldo: 0
+		    			saldo: 0,
+		    			synced: false
 		    		});
 	    	  	}
 	    	return stmnts;
+	    },
+
+	    save: function () {
+	    	console.log('thrid marker');
+	    	var to_be_created = [], to_be_updated = [];
+	    	for (var i=0; i < this.account_statements.length; i++ ) {
+	    		var statement = this.account_statements[i];
+				console.log("statement");
+	    		console.log(statement);
+	    		for ( var j=0; j<statement.statements.length; j++) {
+	    			//console.log(this.account_statements[i].statements[j])
+	    			if (!statement.statements[j].id) {
+	    				to_be_created.push(this.account_statements[i].statements[j]);
+	    			} else {
+	    				to_be_updated.push(this.account_statements[i].statements[j]);
+	    			}
+	    		}
+	    	}
+	    	console.log('to be created');
+	    	console.log(to_be_created);
+	    	console.log('to be updated');
+	    	console.log(to_be_updated);
+	    	if (to_be_created.length > 0) {
+	    		google.script.run
+				.withSuccessHandler(function(response){
+					// TODO: handle different success response
+					console.log('Creating "saldo_deposito"!')
+					console.log(response);
+					for (var l=0; l<to_be_created.length; l++) {
+						to_be_created[l].id = response[l].id;
+						to_be_created[l].synced = true;
+					}
+				})
+				.withFailureHandler(function(err){
+					console.log('An error ocurred while creating a "saldo_deposito"!')
+					console.log(err);
+				})
+				.bulkCreate('deposito_saldo', to_be_created);
+	    	}
+
+	    	if (to_be_updated.length > 0) {
+	    		google.script.run
+				.withSuccessHandler(function(response){
+					// TODO: handle different success response
+					console.log('Updating "saldo_deposito"!')
+					console.log(response);
+					for (var l=0; l<to_be_updated.length; l++) {
+						to_be_updated[l].synced = response[l];
+					}
+				})
+				.withFailureHandler(function(err){
+					console.log('An error ocurred while updating a "saldo_deporito"!')
+					console.log(err);
+				})
+				.bulkUpdate('deposito_saldo', to_be_updated);
+	    	}    	
 	    },
 
 	    findLineByLeastSquares: function(values_x, values_y) {
@@ -195,26 +257,12 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 			}
 
 			/*
-			 * Calculate m and b for the formular:
+			 * Calculate m and b for the formula:
 			 * y = x * m + b
 			 */
 			var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
 			var b = (sum_y/count) - (m*sum_x)/count;
 
-			/*
-			 * We will make the x and y result line now
-			 */
-			/*var result_values_x = [];
-			var result_values_y = [];
-
-			for (var v = 0; v &lt; values_length; v++) {
-				x = values_x[v];
-				y = x * m + b;
-				result_values_x.push(x);
-				result_values_y.push(y);
-			}
-
-			return [result_values_x, result_values_y];*/
 			return [m, b]
 		},
 

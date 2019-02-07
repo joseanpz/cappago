@@ -2,7 +2,7 @@ var _authRead = userAuth(_read);
 var _authCreate = userAuth(_create);
 var _authBulkCreate = userAuth(_bulkCreate);
 var _authUpdate = userAuth(_update);
-var _authBulkUpdate = userAuth(_BulkUpdate);
+var _authBulkUpdate = userAuth(_bulkUpdate);
 var _authDelete = userAuth(_delete);
 
 
