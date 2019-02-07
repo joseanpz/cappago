@@ -1,5 +1,6 @@
 var _authRead = userAuth(_read);
 var _authCreate = userAuth(_create);
+var _authBulkCreate = userAuth(_bulkCreate);
 var _authUpdate = userAuth(_update);
 var _authDelete = userAuth(_delete);
 
@@ -56,8 +57,12 @@ function readCatalog(sheet_name) {
 
 function create(sheet_name, data, constrains) {
 	var user = new User(Session.getActiveUser());
-	data.user_name = user.getEmail()
+	data.user_name = user.getEmail();
 	return _authCreate(sheet_name, data, constrains);
+}
+
+function bulkCreate(sheet_name, data, constrains) {
+	return _authBulkCreate(sheet_name, data, constrains);
 }
 
 function update(sheet_name, data, constrains) {
