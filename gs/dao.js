@@ -30,6 +30,32 @@ function _create(sheet_name, data, constrains) {
 	return {id: ms_id};
 }
 
+function _bulkCreate(sheet_name, data, constrains) {
+	var sheet = db.getSheetByName(sheet_name);
+	var properties = _getHeaderRow(sheet);
+	var new_rows = [], new_ids = [];
+
+	for (var i=0; i < data.length ; i++) {
+		// set id as string
+		var ms_id = ((new Date).getTime()+i).toString();  // - 1546344000000;  // set epoch origin at 2019-01-01 00:00
+		var new_row = ["'" + ms_id];
+
+		for (var r = 1, l = properties.length; r < l; r++) {
+			var field_data = data[i][properties[r]];
+			var is_not_undefined = typeof field_data != "undefined";
+			
+			new_row.push(is_not_undefined && field_data != null  ? "'" + field_data: '');
+	    }
+	    new_rows.push(new_row);
+	    new_ids.push({id: ms_id});
+	}
+
+	_insertData(sheet, new_rows)
+	
+
+	return new_ids;
+}
+
 function _update(sheet_name, data, constrains) {
 	var sheet = db.getSheetByName(sheet_name);
 	var properties = _getHeaderRow(sheet);
@@ -96,6 +122,13 @@ function _readData(sheet, properties) {
    }
    
    return data;
+}
+
+function _insertData(sheet, insert_rows) {
+	var rows_count = sheet.getLastRow(), columns_count = sheet.getLastColumn();
+	var insert_count = insert_rows.length;
+	sheet.getRange(rows_count+1, 1, insert_count, columns_count).setValues(insert_rows);
+	return true;
 }
 
 function _updateData(sheet, id, update_row) {
