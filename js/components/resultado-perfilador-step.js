@@ -10,7 +10,12 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-step',{
 							<div class="columns">
 								<div class="column is-2"><label class="label">Decreto:</label></div>
 								<div class="column is-4">
-									<input type="text" v-model="decreto" class="input" />
+									<b-select placeholder="Select a name" v-model="decreto" expanded>	                			
+										<option value selected>-- seleccione -- </option>
+										<option value="1">ESTUDIO</option>
+										<option value="2">DENEGADO</option>
+										<option value="3">PRE-APROBADO</option>
+									</b-select>									
 								</div>
 								<div class="column is-2"><label>Nivel de riesgo:</label></div>
 								<div class="column is-4">
@@ -28,7 +33,11 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-step',{
 								</div>
 								<div class="column is-2"><label>Tipo evaluacion del perfilador:</label></div>
 								<div class="column is-4">
-									<input type="text" v-model="tipo_evaluacion_perfilador" class="input" />
+									<b-select placeholder="Select a name" v-model="tipo_evaluacion_perfilador" expanded>	                			
+										<option value selected>-- seleccione -- </option>
+										<option value="1">EXT</option>
+										<option value="2">NVO</option>										
+									</b-select>									
 								</div>
 							</div>
 						</div>

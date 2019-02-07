@@ -54,14 +54,7 @@
             <a href="#/" class="navbar-item"  is-active><span class="tooltip is-tooltip-bottom" data-tooltip="Home"><i class="fas fa-home"></i></span></a>            
             <a href="#/evaluaciones" class="navbar-item"><span class="tooltip is-tooltip-bottom" data-tooltip="Evaluaciones"><i class="fas fa-tasks"></i></span></a>
             <a href="#/evaluar" class="navbar-item"><span class="tooltip is-tooltip-bottom" data-tooltip="Nueva evaluación"><i class="fas fa-marker"></i></span></a>
-          </div>
-  	  	  <!-- <div id="navMenu" class="navbar-end">
-  	  		<div class="navbar-end">
-  	  			<a href="#/" class="navbar-item" is-active>Inicio</a>
-  	  			<a href="#/evaluaciones" class="navbar-item">Evaluaciones</a>
-  	  			<a href="#/evaluar" class="navbar-item">Nueva Evaluación</a>
-  	  		</div>
-  	  	  </div>-->      	  
+          </div>  	  	       	
       	</div>
     </nav>	
       
@@ -69,6 +62,16 @@
        <!-- component matched by the route will render here -->
       <router-view></router-view>
     </div>
+    <div class="footer"> 
+    <div style="font-weight:bold; font-size: 26px; text-align: center;" class="column is-3">banregio | riesgos</div>
+    <div class="column" style="text-align: right;">
+      <p><b>Banco Regional, S.A</b></p>
+      <p><b>Institución de Banca Múltiple, Banregio Grupo Financiero. </b></p>
+      <p>Todos los Derechos Reservados</p>
+
+    </div>
+ 
+  </div>
   
   </body>
 
@@ -125,17 +128,6 @@
     <detail v-bind="$props"></detail>
     
   </script>
-
-  <div class="footer columns" style="padding-bottom: -15px;"> 
-    <div style="font-weight:bold; font-size: 26px; text-align: center;" class="column is-3">banregio | riesgos</div>
-    <div class="column" style="text-align: right;">
-      <p><b>Banco Regional, S.A</b></p>
-      <p><b>Institución de Banca Múltiple, Banregio Grupo Financiero. </b></p>
-      <p>Todos los Derechos Reservados</p>
-
-    </div>
- 
-  </div> 
 
   <!-- build:js -->
   <script src="js/components/data-table.js"></script>

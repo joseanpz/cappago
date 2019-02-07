@@ -40,18 +40,32 @@ const DataTable = Vue.component('data-table', {
                 default-sort="user.first_name">
                 -->
                 <template slot-scope="props">
-                    <b-table-column field="numero_solicitud" label="#Solicitud" width="40" sortable>
+                    <b-table-column field="numero_solicitud" label="Solicitud" width="40" sortable>
                         {{ props.row.numero_solicitud }}
                     </b-table-column>
-
+                    <b-table-column field="tipo_comprobante" label="Tipo evaluación">
+                        {{ props.row.tipo_comprobante }}
+                    </b-table-column>
+                    <b-table-column field="tipo_comprobante" label="Decreto">
+                        {{ props.row.tipo_comprobante }}
+                    </b-table-column>
+                    <b-table-column field="tipo_comprobante" label="Nivel de riesgo">
+                        {{ props.row.tipo_comprobante }}
+                    </b-table-column>
                     <b-table-column field="tipo_comprobante" label="Comprobantes">
                         {{ props.row.tipo_comprobante }}
                     </b-table-column>
+                    <b-table-column field="tipo_comprobante" label="Linea simple">
+                        {{ props.row.tipo_comprobante }}
+                    </b-table-column>
+                    <b-table-column field="tipo_comprobante" label="Linea revolvente">
+                        {{ props.row.tipo_comprobante }}
+                    </b-table-column>                    
 
+                    <!--
                     <b-table-column field="garantia_hipotecaria" label="Garantía">
                         {{ props.row.garantia_hipotecaria }}
                     </b-table-column>
-                    <!--
                     <b-table-column field="date" label="Date" sortable centered>
                         <span class="tag is-success">
                             {{ new Date(props.row.date).toLocaleDateString() }}
