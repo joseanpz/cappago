@@ -2,6 +2,7 @@ var _authRead = userAuth(_read);
 var _authCreate = userAuth(_create);
 var _authBulkCreate = userAuth(_bulkCreate);
 var _authUpdate = userAuth(_update);
+var _authBulkUpdate = userAuth(_BulkUpdate);
 var _authDelete = userAuth(_delete);
 
 
@@ -67,6 +68,10 @@ function bulkCreate(sheet_name, data, constrains) {
 
 function update(sheet_name, data, constrains) {
 	return _authUpdate(sheet_name, data, constrains);
+}
+
+function bulkUpdate(sheet_name, data, constrains) {
+	return _authBulkUpdate(sheet_name, data, constrains);
 }
 
 

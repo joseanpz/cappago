@@ -82,6 +82,45 @@ function _update(sheet_name, data, constrains) {
 	return _updateData(sheet, data.id, update_row)
 }
 
+function _bulkUpdate(sheet_name, data, constrains) {
+	var sheet = db.getSheetByName(sheet_name);
+	var properties = _getHeaderRow(sheet);
+	var records = _readData(sheet);
+	var updated = [];
+	
+	for (var i=0; i < data.length ; i++) {
+		var idrecords = records.filter(function(item){
+		return item.id === data[i].id;
+		});
+		
+		if (typeof records === "undefined" || records.length === 0){
+	      	updated.push(false);
+	      	continue;
+	    } else {
+	    	var record = idrecords[0];
+	    }
+
+		// set id as string
+		var update_row = [ "'" + data[i].id ];
+		// set row
+		for (var r = 1, l = properties.length; r < l; r++) {
+			var field_data = data[i][properties[r]];
+			var is_not_undefined = typeof field_data != "undefined";
+			
+	        update_row.push(is_not_undefined && field_data != null  ? "'" + field_data: record[properties[r]]);
+	    }
+
+		updated.push(_updateData(sheet, data[i].id, update_row));
+
+	}
+
+	return updated;
+
+	
+}
+
+
+
 function _delete(sheet_name, data_id, constrains) {
 	return false;
 }
@@ -144,7 +183,6 @@ function _updateData(sheet, id, update_row) {
 		}
 	}
 	return false;
-
 }
 
 function _getHeaderRow(sheet) {
