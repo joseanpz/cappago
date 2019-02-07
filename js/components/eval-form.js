@@ -30,7 +30,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           </credito-step>
         </tab-content>
 
-        <tab-content :before-change="saveSolicitude">
+        <tab-content :before-change="saveSolicitudeBalDep">
           <laboral-step
           @act-seniority-change="setActSeniority"
           @oper-seniority-change="setOperSeniority"
@@ -192,7 +192,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       data: function() {
         return {
           // solicitud: this.solicitud,
-          //account_statements: this.account_statements,
+          account_statements: this.account_statements,
           // solicited_credits: this.solicited_credits,
           // balances_sum: this.balances_sum,
           // deposits_sum: this.deposits_sum,
@@ -206,7 +206,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           //niveles_riesgo: this.niveles_riesgo,
           
 
-          deposits_month_avg: this.deposits_month_avg,
+          /*deposits_month_avg: this.deposits_month_avg,
           balances_month_avg: this.balances_month_avg,
           deposits_tendency: this.deposits_tendency,
           //config: this.config,
@@ -234,7 +234,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           capacidad_pago_smp: this.capacidad_pago_smp,
           capacidad_pago_rev: this.capacidad_pago_rev,
           linea_simple: this.linea_simple,
-          linea_revolvente: this.linea_revolvente
+          linea_revolvente: this.linea_revolvente*/
 
 
         }
@@ -545,6 +545,13 @@ const EvalFormWizard = Vue.component('eval-form', {
       saveSolicitudeCredit: function () {
         this.saveSolicitude();
         this.$refs.credito.saveCredits();
+        return true;
+      },
+
+      saveSolicitudeBalDep: function () {
+        this.saveSolicitude();
+        console.log('first marker');
+        this.$refs.laboral.saveBalancesDeposits();
         return true;
       },
 

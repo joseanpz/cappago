@@ -65,7 +65,8 @@ var LaboralStep = Vue.component('laboral-step',{
 							<div class="content">
 								<saldos-depositos-step
 								:id_solicitud="id_solicitud"
-								@acc-statements-change="emmitAccountStatements"> 
+								@acc-statements-change="emmitAccountStatements"
+								ref="saldo_deposito"> 
 								</saldos-depositos-step>
 							</div>
 						</div>
@@ -110,6 +111,10 @@ var LaboralStep = Vue.component('laboral-step',{
 				console.log(err);
 			})
 			.readCatalog('actividad')
+        },
+        saveBalancesDeposits: function () {
+        	console.log('second marker');
+        	this.$refs.saldo_deposito.save();
         },
 
 	},
