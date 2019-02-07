@@ -9,7 +9,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       backButtonText="Atras" finishButtonText="Guardar" stepSize="sm" \
       color="#3a5fab"  errorColor="#8b0000" shape="circle" transition="" \
     > \
-      <h1 slot="title">Evaluación</h1> \
+      <h1 slot="title">Proceso de cálculo de capacidad de pago</h1> \
         <tab-content :before-change="saveSolicitude">
           <solicitud-step 
           @sol-number-change="setSolNumber"          
