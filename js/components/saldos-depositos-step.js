@@ -1,19 +1,19 @@
 var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
-	props: ["bank_list"],
+	props: ["bank_list", "id_solicitud"],
 	template: `
-		<section> 
+		<section> 		
 			<div class="columns">
 				<div  class="column is-2">
-					<b-field label="Seleccione un Banco"></b-field>
+					<label class="label titulos">Seleccione un Banco</label>
 				</div>
 				<div class="column is-2">
  					<b-select placeholder="Select a name" v-model="selected_bank"> 
 						<option 
-						v-for="option in bank_list" 
-						:value="option" 
-						:key="option" 
+						v-for="bank in banks" 
+						:value="bank.id" 
+						:key="bank.id" 
 						> 
-							{{ option}} 
+							{{ bank.nombre}} 
 						</option> 
 					</b-select> 
                       
@@ -30,9 +30,9 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 			<hr/>
 			<div v-if="account_statements.length">
 				<div class="columns" >
-					<div class="column" v-for="acc_smnt in account_statements" :key="acc_smnt.id">
+					<div class="column" v-for="acc_smnt in account_statements" :key="acc_smnt.id_local">
 						<div v-bind:class="{ 'is-6': account_statements.length===1 }" class="card column">
-							<header class="card-header" >
+							<header class="header-sec-card" >
 								<p class="card-header-title title-color">{{acc_smnt.bank_name}}</p>
 							</header>  
 
@@ -43,31 +43,43 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 									<label class="label_color column" >Saldos</label>
 								</div>
 								<div class="content">
-									<b-field v-for="statement in acc_smnt.statements" :key="statement.id">
+									<b-field v-for="statement in acc_smnt.statements" :key="statement.id_local">
 									<div class="columns">
-										<label class="lbl_months column is-2">{{statement.month}}</label>
-										<b-input type="number" class="column" step="0.01" v-model="statement.deposits"></b-input> &nbsp
-										<b-input type="number" class="column" step="0.01" v-model="statement.balance"></b-input>
+										<label class="lbl_months column is-2">{{statement.mes}}</label>
+										<b-input type="number" class="column" step="0.001"  v-model="statement.deposito"></b-input> &nbsp
+										<b-input type="number" class="column" step="0.001" v-model="statement.saldo"></b-input>
 									</div>
 									</b-field>
 								</div>
 							</div>
 							<footer class="card-footer">
-								<!--<a class="card-footer-item" @click="addStatement(acc_smnt.id)">Agregar registro</a> -->
-								<a class="card-footer-item button is-danger is-outlined" @click="deleteAccountStatement(acc_smnt.id)">Borrar banco</a>
+								<!--<a class="card-footer-item" @click="addStatement(acc_smnt.id_local)">Agregar registro</a> -->
+								<a class="card-footer-item button is-danger is-outlined" @click="deleteAccountStatement(acc_smnt.id_local)">Borrar banco</a>
 							</footer>
 						</div>
 					</div>						
 				</div>	  						
 			</div> 
+
 		</section> `,
 	data () {
 		return {
 			acc_stmnt_count: 0,
 			account_statements: [],
     		selected_bank: null,
+    		banks: []
 		}
 	},
+	computed: {
+		selected_bank_name : function () {
+			var bank_selected = this.banks.find(bank => bank.id === this.selected_bank);
+			return bank_selected.nombre;
+		}
+	}, 
+	created: function () {
+		this.readBanks();
+	},
+
 	filters: {
 		pretty: function(value) {
 			console.log('pretty');
@@ -79,21 +91,40 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 		
 	},
 	methods: {
+
+		readBanks: function () {
+          var self = this;
+          google.script.run
+            .withSuccessHandler(function(response){
+            	
+              	console.log(response);
+              	self.banks = response.records;
+            })
+            .withFailureHandler(function(err){
+            	console.log('An error ocurred while fetching banks!')
+              	console.log(err);
+            })
+            .readCatalog('banco')
+        },
+
 	    addAccountStetment: function () {
 	    	console.log("adding acc statement");
-	    	console.log(this.account_statements);
+	    	
 	    	var count = this.acc_stmnt_count;
 	    	var statements = this.loadStatements(12);
+	    	console.log(statements);
 	    	if (this.account_statements.length < 3) {
 	    		this.acc_stmnt_count++;
 	    		this.account_statements.push({
-	        		id: count,
-    				bank_name: this.selected_bank,
+	        		id_local: count,
+    				bank_name: this.selected_bank_name,
     				statements: statements
     			});    			
-	    	}	        
+	    	}
+	    	//console.log('meh');
+	    	//console.log(this.account_statements[0]);	        
 	    },
-	    addStatement: function(id) {
+	    /*addStatement: function(id) {
 
 	    	if (this.account_statements.find(elm => elm.id == id).statements.length < 12) {
 		    	this.account_statements.find(elm => elm.id == id).statements.push({
@@ -104,23 +135,137 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	    		});
 	    		this.acc_stmnt_count++;
 	    	}	
-	    },
+	    },*/
+
 	    deleteAccountStatement: function(id) {
-	    	var index = this.account_statements.indexOf(this.account_statements.find(elm => elm.id == id));
+	    	var index = this.account_statements.indexOf(this.account_statements.find(elm => elm.id_local == id));
+	    	//console.log('deleting deposits');
+	    	//console.log(index);
+	    	//console.log(this.account_statements);
 	        if (index >= 0) this.account_statements.splice(index, 1);
 	    },
+
 	    loadStatements: function (n) {
 	    	var stmnts = []
 	    	for (var i = 0; i < n; i++) {
 	    			stmnts.push({
-			    		id: i,
-		    			month: '2019-01',
-		    			deposits: null,
-		    			balance: null
+	    				id: null,
+			    		id_local: i,
+			    		id_solicitud: this.id_solicitud,
+			    		id_banco: this.selected_bank,
+		    			mes: '2019-01',
+		    			deposito: 0,
+		    			saldo: 0,
+		    			synced: false
 		    		});
 	    	  	}
 	    	return stmnts;
-	    }
+	    },
+
+	    save: function () {
+	    	console.log('thrid marker');
+	    	var to_be_created = [], to_be_updated = [];
+	    	for (var i=0; i < this.account_statements.length; i++ ) {
+	    		var statement = this.account_statements[i];
+				console.log("statement");
+	    		console.log(statement);
+	    		for ( var j=0; j<statement.statements.length; j++) {
+	    			//console.log(this.account_statements[i].statements[j])
+	    			if (!statement.statements[j].id) {
+	    				to_be_created.push(this.account_statements[i].statements[j]);
+	    			} else {
+	    				to_be_updated.push(this.account_statements[i].statements[j]);
+	    			}
+	    		}
+	    	}
+	    	console.log('to be created');
+	    	console.log(to_be_created);
+	    	console.log('to be updated');
+	    	console.log(to_be_updated);
+	    	if (to_be_created.length > 0) {
+	    		google.script.run
+				.withSuccessHandler(function(response){
+					// TODO: handle different success response
+					console.log('Creating "saldo_deposito"!')
+					console.log(response);
+					for (var l=0; l<to_be_created.length; l++) {
+						to_be_created[l].id = response[l].id;
+						to_be_created[l].synced = true;
+					}
+				})
+				.withFailureHandler(function(err){
+					console.log('An error ocurred while creating a "saldo_deposito"!')
+					console.log(err);
+				})
+				.bulkCreate('deposito_saldo', to_be_created);
+	    	}
+
+	    	if (to_be_updated.length > 0) {
+	    		google.script.run
+				.withSuccessHandler(function(response){
+					// TODO: handle different success response
+					console.log('Updating "saldo_deposito"!')
+					console.log(response);
+					for (var l=0; l<to_be_updated.length; l++) {
+						to_be_updated[l].synced = response[l];
+					}
+				})
+				.withFailureHandler(function(err){
+					console.log('An error ocurred while updating a "saldo_deporito"!')
+					console.log(err);
+				})
+				.bulkUpdate('deposito_saldo', to_be_updated);
+	    	}    	
+	    },
+
+	    findLineByLeastSquares: function(values_x, values_y) {
+			var sum_x = 0;
+			var sum_y = 0;
+			var sum_xy = 0;
+			var sum_xx = 0;
+			var count = 0;
+
+			/*
+			 * We'll use those variables for faster read/write access.
+			 */
+			var x = 0;
+			var y = 0;
+			var values_length = values_x.length;
+
+			if (values_length != values_y.length) {
+				throw new Error('The parameters values_x and values_y need to have same size!');
+			}
+
+			/*
+			* Nothing to do.
+			*/
+			if (values_length === 0) {
+				return [ [], [] ];
+			}
+
+			/*
+			 * Calculate the sum for each of the parts necessary.
+			 */
+			for (var v = 0; v < values_length; v++) {
+				x = values_x[v];
+				y = values_y[v];
+				sum_x += x;
+				sum_y += y;
+				sum_xx += x*x;
+				sum_xy += x*y;
+				count++;
+			}
+
+			/*
+			 * Calculate m and b for the formula:
+			 * y = x * m + b
+			 */
+			var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
+			var b = (sum_y/count) - (m*sum_x)/count;
+
+			return [m, b]
+		},
+
 	},
 	watch: {
 		account_statements: function(val) {

@@ -2,16 +2,14 @@ const DetailForm = Vue.component('detail', {
   props: ['id'],
 	template: `
 	<section class="container" >
-  <div id="detail-print">
-        {{ $route.params.id }} <br/>
-        <br/>
-        <div class="columns navbar is-primary" id="header_PDF" style="display:none;">
+  <div id="detail-print" style="padding:30px;">        
+        <header class="columns navbar is-primary" id="header_PDF" style="display:none; padding-bottom:20px;">
           <a class="navbar-item" href="#" style="font-weight:bold; padding-left:50px;">
               banregio  
           </a>
-        </div>
+        </header>
         <br/>
-        <div class="columns">
+        <div class="columns" style="padding-bottom: 250px;">
           <div class="column">
               <table class="table is-bordered is-striped" style="width:100%;">
                 <tbody>
@@ -20,7 +18,7 @@ const DetailForm = Vue.component('detail', {
                   <tr>
                   <tr>
                     <td><label class="label">RFC:</label></td>
-                    <td>MECJ890724KJ3</td>
+                    <td>MECJ890724KJ3</td> 
                     <td><label class="label">Solicitud:</label></td>
                     <td>{{solicitud.numero_solicitud}}</td>
                   </tr>
@@ -29,7 +27,7 @@ const DetailForm = Vue.component('detail', {
                     <td>Nuevo</td>
                     <td><label class="label">Calificación deudor:</label></td>
                     <td>AA</td>
-                  </tr>
+                  </tr> 
                   <tr>
                     <td><label class="label">Tipo comprobante:</label></td>
                     <td>Nomina</td>
@@ -80,9 +78,16 @@ const DetailForm = Vue.component('detail', {
               </table>
           </div>    
         </div>
-
-        <br/><br/>
+        <div class="footer columns" style="display:none; bottom: 0; padding:10px; height:150px;" id="div_footer"> 
+          <div style="font-weight:bold; font-size: 26px; text-align: center;" class="column is-3">banregio | riesgos</div>
+          <div class="column" style="text-align: right;">
+            <p><b>Banco Regional, S.A</b></p>
+            <p><b>Institución de Banca Múltiple, Banregio Grupo Financiero. </b></p>
+            <p>Todos los Derechos Reservados</p>
+          </div>
+        </div> 
         </div>
+        
         <div id="editor" style="text-align:right;" >
           <button class="button" @click = "genPDF" style="background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Descarga</button>
         </div>
@@ -97,15 +102,18 @@ const DetailForm = Vue.component('detail', {
 	methods: {
 		genPDF: function () {		
       document.getElementById("header_PDF").style.display = "block";
+      document.getElementById("div_footer").style.display = "block";
+
 			html2canvas(document.getElementById("detail-print"), {
 				onrendered: function (canvas) {
           
-					var img = canvas.toDataURL("image/url",1.0);
+					var img = canvas.toDataURL("image/url",1.0);  
 					var doc = new jsPDF('p', 'pt', 'letter')
-					doc.addImage(img, 'JPEG',30,20,550,500);
+					doc.addImage(img, 'JPEG',25,25,560,750);
           
 					doc.save('test.pdf');
            document.getElementById("header_PDF").style.display = "none";
+           document.getElementById("div_footer").style.display = "none";
 				}
 			});
     
