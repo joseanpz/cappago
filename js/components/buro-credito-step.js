@@ -10,7 +10,7 @@ var BuroCreditoStep = Vue.component('buro-credito-step',{
 						<div class="column">
 							<div class="card">
 								<header class="card-header">
-									<p class="card-header-title">Segmento calificación</p>
+									<p class="card-header-title">Segmento califica</p>
 								</header>
 								<div class="card-content">	
 									<div class="content">
