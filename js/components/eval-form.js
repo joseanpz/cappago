@@ -94,6 +94,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           @eval-type-prfl-change="setPrfEvalType"
 
           ref="resultado_perfilador"
+          :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
           > 
           </resultado-perfilador-step>
         </tab-content>
