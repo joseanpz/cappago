@@ -141,7 +141,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	          console.log('An error ocurred while reading saldos depositos');
 	          console.log(err);
 	        })
-	        .readFKRelation('deposito_saldo', 'id_solicitud', this.id_solicitud)
+	        .readFKRelation('deposito_saldo', 'id_solicitud', this.id_solicitud);
 		},
 
 		setAccountStetments: function (records) {
@@ -169,7 +169,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 						}
 					}
 					if (!bank_exist) {
-						bank_statements.push({
+						this.account_statements.push({
 							id_local: this.acc_stmnt_count,
 							bank_id: record.id_banco,
 							bank_name: this.banks.find(bank => bank.id === record.id_banco).nombre,
