@@ -1,5 +1,5 @@
 var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-step',{
-	props: ['linea', 'capacidad_pago', 'ingreso_vs_deuda', 'razon_flujo_tasa', 'razon_flujo_rec_capital'],
+	props: ['linea', 'capacidad_pago', 'monto_solicitado', 'monto_maximo', 'ingreso_vs_deuda', 'razon_flujo_tasa', 'razon_flujo_rec_capital'],
 	template: `
 		<section class="container">
 				<div class="card">

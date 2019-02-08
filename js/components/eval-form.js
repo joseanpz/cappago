@@ -95,6 +95,12 @@ const EvalFormWizard = Vue.component('eval-form', {
 
           ref="resultado_perfilador"
           :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+          :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+          :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+          :razon_flujo_tasa="razon_FDA_tasa_rev"
+          :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+          :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+          :monto_maximo="{'simple':monto_maximo_smp, 'revolvente':monto_maximo_rev}"
           > 
           </resultado-perfilador-step>
         </tab-content>
