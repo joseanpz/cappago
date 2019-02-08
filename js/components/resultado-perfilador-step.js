@@ -49,10 +49,11 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-step',{
 						<p class="card-header-title">Resultado capacidad de pago</p>
 					</header>
 					<div class="card-content">	
-						<div class="content">
-						Linea simple: {{linea.simple}}
-						Linea revolvente: {{linea.revolvente}}
-
+						<div class="content columns">
+							<div class="column">Linea simple:</div>
+							<div class="column">{{linea.simple}}</div>
+							<div class="column">Linea revolvente:</div>
+							<div class="column">{{linea.revolvente}}</div>					
 						</div>
 					</div>
 				</div>
