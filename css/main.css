@@ -207,3 +207,8 @@ select:focus select:before {
 .titulos{
 	text-align: right;
 }
+
+.alinea_text{
+	text-align: right;
+	font-weight: bold;
+}
