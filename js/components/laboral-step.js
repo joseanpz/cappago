@@ -1,5 +1,5 @@
 var LaboralStep = Vue.component('laboral-step',{
-	props: ['id_solicitud'],
+	props: ['id_solicitud', 'linea', 'capacidad_pago', 'monto_solicitado', 'monto_maximo', 'ingreso_vs_deuda', 'razon_flujo_tasa', 'razon_flujo_rec_capital'],
 	template: `
 		<section class="container">
 			<div class="card">
@@ -74,11 +74,13 @@ var LaboralStep = Vue.component('laboral-step',{
 					</div>
 				</div>
 			</div>
+			<results v-bind="$props"></results>
 		</section>
 	`,
 
 	components: {
-		SaldosDepositosStep, 
+		SaldosDepositosStep,
+		Results, 
 	},
 
 	data () {

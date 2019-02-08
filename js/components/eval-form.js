@@ -11,15 +11,22 @@ const EvalFormWizard = Vue.component('eval-form', {
       color="#3a5fab"  errorColor="#8b0000" shape="circle" transition="" \
     > \
       <h1 slot="title">Proceso de cálculo de capacidad de pago</h1> \
-        <tab-content :before-change="saveSolicitude">
+        <tab-content :before-change="saveSolicitude" title="Datos de la solicitud">
           <solicitud-step 
           @sol-number-change="setSolNumber" 
-          ref="solicitud"         
+          ref="solicitud" 
+          :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+          :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+          :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+          :razon_flujo_tasa="razon_FDA_tasa_rev"
+          :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+          :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+          :monto_maximo="{'simple':monto_maximo_smp, 'revolvente':monto_maximo_rev}"        
           > 
           </solicitud-step>
         </tab-content>
 
-        <tab-content :before-change="saveSolicitudeCredit">
+        <tab-content :before-change="saveSolicitudeCredit" title="Datos del crédito">
           <credito-step
           @credit-dest-change="setCreditDest"
           @guarantee-change="setGuarantee"
@@ -28,11 +35,18 @@ const EvalFormWizard = Vue.component('eval-form', {
 
           :id_solicitud="solicitud.id"
           ref="credito"
+          :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+          :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+          :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+          :razon_flujo_tasa="razon_FDA_tasa_rev"
+          :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+          :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+          :monto_maximo="{'simple':monto_maximo_smp, 'revolvente':monto_maximo_rev}"
           > 
           </credito-step>
         </tab-content>
 
-        <tab-content :before-change="saveSolicitudeBalDep">
+        <tab-content :before-change="saveSolicitudeBalDep" title="Información laboral">
           <laboral-step
           @act-seniority-change="setActSeniority"
           @oper-seniority-change="setOperSeniority"
@@ -41,12 +55,19 @@ const EvalFormWizard = Vue.component('eval-form', {
           @acc-statements-change="setAccountStatements"
 
           :id_solicitud="solicitud.id"
-          ref="laboral"          
+          ref="laboral"
+          :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+          :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+          :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+          :razon_flujo_tasa="razon_FDA_tasa_rev"
+          :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+          :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+          :monto_maximo="{'simple':monto_maximo_smp, 'revolvente':monto_maximo_rev}"        
           > 
           </laboral-step>
         </tab-content>
 
-        <tab-content :before-change="saveSolicitude">
+        <tab-content :before-change="saveSolicitude" title="Buró">
           <buro-credito-step
           @total-debt-change="setTotalDebt"
           @monfile-banking-change="setMonfileBanking"
@@ -66,13 +87,20 @@ const EvalFormWizard = Vue.component('eval-form', {
           @sal-orig-simp-change="setSalOrigSimp"
 
           ref="buro_credito"
+          :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+          :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+          :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+          :razon_flujo_tasa="razon_FDA_tasa_rev"
+          :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+          :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+          :monto_maximo="{'simple':monto_maximo_smp, 'revolvente':monto_maximo_rev}"
 
           
           > 
           </buro-credito-step>
         </tab-content>
 
-        <tab-content :before-change="saveSolicitude">
+        <tab-content :before-change="saveSolicitude" title="Estados financieros">
           <estado-general-step
           @uafir-change="setUafir"
           @acc-capital-change="setAccCapital"
@@ -80,13 +108,20 @@ const EvalFormWizard = Vue.component('eval-form', {
           @annual-sales-change="setAnnualSales"
 
           ref="estado_general"
+          :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+          :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+          :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+          :razon_flujo_tasa="razon_FDA_tasa_rev"
+          :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+          :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+          :monto_maximo="{'simple':monto_maximo_smp, 'revolvente':monto_maximo_rev}"
 
           
           > 
           </estado-general-step>
         </tab-content>
 
-        <tab-content>
+        <tab-content title="Perfilador">
           <resultado-perfilador-step
           @decree-change="setDecree"
           @risk-level-change="setRiskLevel"
@@ -107,7 +142,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
          
 
-			    <pre>{{ data | pretty }}</pre>
+			    <!--<pre>{{ data | pretty }}</pre>-->
 
            <template slot="footer" slot-scope="props"> \
                    <div class="wizard-footer-left"> \
@@ -517,6 +552,29 @@ const EvalFormWizard = Vue.component('eval-form', {
         }
 
       },
+
+      // props for results
+      /*linea: function () {
+
+      }, 
+      capacidad_pago: function () {
+
+      }, 
+      monto_solicitado: function () {
+
+      }, 
+      monto_maximo: function () {
+
+      }, 
+      ingreso_vs_deuda: function () {
+
+      }, 
+      razon_flujo_tasa: function () {
+
+      }, 
+      razon_flujo_rec_capital: function () {
+
+      },*/
     },
 
     filters: {

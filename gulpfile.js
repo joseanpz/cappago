@@ -4,6 +4,7 @@ var concat = require('gulp-concat');
 
 var js_paths = [
 	'js/components/data-table.js',
+	'js/components/results.js',
 	'js/components/solicitud-step.js',
 	'js/components/credito-step.js',
 	'js/components/saldos-depositos-step.js',

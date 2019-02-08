@@ -74,68 +74,11 @@
     
   
   </body>
-
   
-
-
-  <!-- Vue templates -->
-  <script type="text/x-template" id="list-template">
-	<div>
-	  <section class="container" style="margin-top: 20px;">
-	  	<div class="columns"> 
-	  		<div class="column"> 
-              
-            <data-table class="table is-bordered is-striped is-hoverable" id="listado"></data-table>
-        </div>        
-      </div>
-	  </section>
-	</div>
-  </script>
-
-
-  <script type="text/x-template" id="form-template">
-  <div>
-    <section class="container" style="margin-top: 20px;">
-      <div class="columns"> 
-      	<div class="column">
-      	  <eval-form></eval-form>
-      	</div>  
-      </div> 
-    </section>
-  </div>
-  </script>
-  <script type="text/x-template" id="home-template">
-    <div style="background-image: url('https://portalbanregio.s3.amazonaws.com/assets/naranja/img/Creditos-Empresa.jpg'); border-color: rgb(249, 161, 27); height:500px;">
-    <section class="container">
-      <div class="columns" > 
-        <div class="column" style="padding:50px;">        
-          <h2  style="color: #fff; font-size: 1.0em;">Segmento Negocios</h2>
-          <h3 style="color: white; font-size: 3.0em;"><b>Cálculo de capacidad de pago</b></h3>
-          <h3 style="color:white; font-size: 1.5em;">Conoce el valor de la Línea Asignada (Simple y/o Revolvente) <br/> para la Empresa analizada</h3>        
-        </div>      
-      </div> 
-    </section>
-  </div>
-  </script>
-  <script type="text/x-template" id="updateform-template">
-    <div>
-      Update Form {{ $route.params.id }}
-    <section class="container">
-      <div class="columns"> 
-        <div class="column">
-          <eval-form :id_solicitud="$props.id"></eval-form>
-        </div>  
-      </div> 
-    </section>
-  </div>
-  </script>
-  <script type="text/x-template" id="detail-template">
-    <detail v-bind="$props"></detail>
-    
-  </script>
 
   <!-- build:js -->
   <script src="js/components/data-table.js"></script>
+  <script src="js/components/results.js"></script>
   <script src="js/components/solicitud-step.js"></script>
   <script src="js/components/credito-step.js"></script>
   <script src="js/components/saldos-depositos-step.js"></script>

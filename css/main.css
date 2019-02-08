@@ -5,6 +5,9 @@
 .container{	
 	margin-bottom: 50px;
 }
+.results{	
+	margin-top: 20px;
+}
 .navbar.is-primary {
 	background-color: #FF681E;
 	height: 110px;
