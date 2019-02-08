@@ -100,7 +100,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
          
 
-			    <!--<pre>{{ data | pretty }}</pre>-->
+			    <pre>{{ data | pretty }}</pre>
 
            <template slot="footer" slot-scope="props"> \
                    <div class="wizard-footer-left"> \
@@ -202,23 +202,23 @@ const EvalFormWizard = Vue.component('eval-form', {
       
       data: function() {
         return {
-          solicitud: this.solicitud,
-          id_solicitud: this.id_solicitud,
+          //solicitud: this.solicitud,
+          //id_solicitud: this.id_solicitud,
           account_statements: this.account_statements,
           //solicited_credits: this.solicited_credits,
-          // balances_sum: this.balances_sum,
-          // deposits_sum: this.deposits_sum,
-          // max_balance: this.max_balance,
-          // min_balance: this.min_balance,
-          // max_deposit: this.max_deposit,
-          // min_deposit: this.min_deposit,
+          balances_sum: this.balances_sum,
+          deposits_sum: this.deposits_sum,
+          max_balance: this.max_balance,
+          min_balance: this.min_balance,
+          max_deposit: this.max_deposit,
+          min_deposit: this.min_deposit,
           //simple_credits: this.simple_credits,
           //revolving_credits: this.revolving_credits,
           //id_nivel_riesgo: this.solicitud.id_nivel_riesgo,
           //niveles_riesgo: this.niveles_riesgo,
           
 
-          /*deposits_month_avg: this.deposits_month_avg,
+          deposits_month_avg: this.deposits_month_avg,
           balances_month_avg: this.balances_month_avg,
           deposits_tendency: this.deposits_tendency,
           //config: this.config,
@@ -235,9 +235,9 @@ const EvalFormWizard = Vue.component('eval-form', {
           monto_simple: this.monto_simple,
           monto_revolvente: this.monto_revolvente,
           plazo_simple: this.plazo_simple,
-          monto_maximo_smp: this.monto_maximo_smp,
-          monto_maximo_rev: this.monto_maximo_rev,
           deuda_total: this.solicitud.deuda_total,
+          monto_maximo_smp: this.monto_maximo_smp,
+          monto_maximo_rev: this.monto_maximo_rev,          
           dif_deuda_ingreso_rev: this.dif_deuda_ingreso_rev,
           dif_deuda_ingreso_smp: this.dif_deuda_ingreso_smp,
           razon_FDA_FRC_smp: this.razon_FDA_FRC_smp,
@@ -246,7 +246,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           capacidad_pago_smp: this.capacidad_pago_smp,
           capacidad_pago_rev: this.capacidad_pago_rev,
           linea_simple: this.linea_simple,
-          linea_revolvente: this.linea_revolvente*/
+          linea_revolvente: this.linea_revolvente
 
 
         }
@@ -358,7 +358,10 @@ const EvalFormWizard = Vue.component('eval-form', {
       factor_uafir: function () {
         if (!this.solicitud.id_actividad) return null;
         var selected_activity = this.$refs.laboral.activities.find( act => act.id === this.solicitud.id_actividad);
-        return selected_activity.factor_uafir
+        if (typeof selected_activity != "undefined"){
+          return selected_activity.factor_uafir;
+        }
+        return null;
       },
 
       FLUJO_MENSUAL: function () {

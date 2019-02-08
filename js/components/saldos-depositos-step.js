@@ -75,12 +75,10 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 			var bank_selected = this.banks.find(bank => bank.id === this.selected_bank);
 			return bank_selected.nombre;
 		}
-	}, 
+	},
+
 	created: function () {
-		this.readBanks();
-		if (typeof this.id_solicitud != 'undefined' && !!this.id_solicitud) {
-			this.readAccountStetments();	
-		}
+		this.readBanks();		
 	},
 
 	filters: {
@@ -99,9 +97,12 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
           var self = this;
           google.script.run
             .withSuccessHandler(function(response){
-            	
+            	console.log('Reading banks!')
               	console.log(response);
               	self.banks = response.records;
+              	if (typeof self.id_solicitud != 'undefined' && !!self.id_solicitud) {
+					self.readAccountStetments();	
+				}
             })
             .withFailureHandler(function(err){
             	console.log('An error ocurred while fetching banks!')
