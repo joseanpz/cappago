@@ -35,6 +35,7 @@ const DataTable = Vue.component('data-table', {
                 :current-page.sync="currentPage"
                 :pagination-simple="isPaginationSimple"
                 :default-sort-direction="defaultSortDirection"
+                :risk_levels="risk_levels"
                 >
                 <!--
                 default-sort="user.first_name">
@@ -50,10 +51,10 @@ const DataTable = Vue.component('data-table', {
                         {{ props.row.tipo_comprobante }}
                     </b-table-column>
                     <b-table-column field="tipo_comprobante" label="Nivel de riesgo">
-                        {{ props.row.tipo_comprobante }}
+                        {{ props.row.nivel_riesgo }}
                     </b-table-column>
                     <b-table-column field="tipo_comprobante" label="Comprobantes">
-                        {{ props.row.tipo_comprobante }}
+                        {{ props.row.tipo_comprobante | comprobante }}
                     </b-table-column>
                     <b-table-column field="tipo_comprobante" label="Linea simple">
                         {{ props.row.tipo_comprobante }}
@@ -91,72 +92,67 @@ const DataTable = Vue.component('data-table', {
                     </b-table-column>
                 </template>
             </b-table>
+
+            <!--<pre> {{ risk_levels | pretty}} </pre>-->
         </section>`,
     data() {
 		return {
-		  data: [
-          /*
-                { 'id': 1, 'user': { 'first_name': 'Jesse', 'last_name': 'Simmons' } , 'date': '2016-10-15 13:43:27', 'gender': 'Male' },
-                { 'id': 2, 'user': { 'first_name': 'John', 'last_name': 'Jacobs' }, 'date': '2016-12-15 06:00:53', 'gender': 'Male' },
-                { 'id': 3, 'user': { 'first_name': 'Tina', 'last_name': 'Gilbert' }, 'date': '2016-04-26 06:26:28', 'gender': 'Female' },
-                { 'id': 4, 'user': { 'first_name': 'Clarence', 'last_name': 'Flores' }, 'date': '2016-04-10 10:28:46', 'gender': 'Male' },
-                { 'id': 5, 'user': { 'first_name': 'Anne', 'last_name': 'Lee' }, 'date': '2016-12-06 14:38:38', 'gender': 'Female' },
-                { 'id': 1, 'user': { 'first_name': 'Jesse', 'last_name': 'Simmons' } , 'date': '2016-10-15 13:43:27', 'gender': 'Male' },
-                { 'id': 2, 'user': { 'first_name': 'John', 'last_name': 'Jacobs' }, 'date': '2016-12-15 06:00:53', 'gender': 'Male' },
-                { 'id': 3, 'user': { 'first_name': 'Tina', 'last_name': 'Gilbert' }, 'date': '2016-04-26 06:26:28', 'gender': 'Female' },
-                { 'id': 1, 'user': { 'first_name': 'Jesse', 'last_name': 'Simmons' } , 'date': '2016-10-15 13:43:27', 'gender': 'Male' },
-                { 'id': 2, 'user': { 'first_name': 'John', 'last_name': 'Jacobs' }, 'date': '2016-12-15 06:00:53', 'gender': 'Male' },
-                { 'id': 3, 'user': { 'first_name': 'Tina', 'last_name': 'Gilbert' }, 'date': '2016-04-26 06:26:28', 'gender': 'Female' },
-                { 'id': 1, 'user': { 'first_name': 'Jesse', 'last_name': 'Simmons' } , 'date': '2016-10-15 13:43:27', 'gender': 'Male' },
-                { 'id': 2, 'user': { 'first_name': 'John', 'last_name': 'Jacobs' }, 'date': '2016-12-15 06:00:53', 'gender': 'Male' },
-                { 'id': 3, 'user': { 'first_name': 'Tina', 'last_name': 'Gilbert' }, 'date': '2016-04-26 06:26:28', 'gender': 'Female' },
-                { 'id': 1, 'user': { 'first_name': 'Jesse', 'last_name': 'Simmons' } , 'date': '2016-10-15 13:43:27', 'gender': 'Male' },
-                { 'id': 2, 'user': { 'first_name': 'John', 'last_name': 'Jacobs' }, 'date': '2016-12-15 06:00:53', 'gender': 'Male' },
-                { 'id': 3, 'user': { 'first_name': 'Tina', 'last_name': 'Gilbert' }, 'date': '2016-04-26 06:26:28', 'gender': 'Female' },
-                { 'id': 1, 'user': { 'first_name': 'Jesse', 'last_name': 'Simmons' } , 'date': '2016-10-15 13:43:27', 'gender': 'Male' },
-                { 'id': 2, 'user': { 'first_name': 'John', 'last_name': 'Jacobs' }, 'date': '2016-12-15 06:00:53', 'gender': 'Male' },
-                { 'id': 3, 'user': { 'first_name': 'Tina', 'last_name': 'Gilbert' }, 'date': '2016-04-26 06:26:28', 'gender': 'Female' }
-            */    
-              ],
-          columns: [
+            data: [],
+            columns: [
                 {
-                field: 'numero_solicitud',
-                label: 'Numero de Solicitud',
-                //width: '40',
-                //numeric: false
+                    field: 'numero_solicitud',
+                    label: 'Numero de Solicitud',
+                    //width: '40',
+                    //numeric: false
                 },
                 {
-                field: 'tipo_comprobante',
-                label: 'Tipo Comprobante',
+                    field: 'tipo_comprobante',
+                    label: 'Tipo Comprobante',
                 },
                 {
-                field: 'garantia_hipotecaria',
-                label: 'Garantia Hipotecaria',
+                    field: 'garantia_hipotecaria',
+                    label: 'Garantia Hipotecaria',
                 },
-                /*{
-                field: 'date',
-                label: 'Date',
-                centered: true
-                },
-                {
-                field: 'gender',
-                label: 'Gender',
-                },*/
                 {
                 field: 'Acciones',
                 label: 'Acciones',
                 }
             ],
-          isPaginated: true,
-          isPaginationSimple: false,
-          defaultSortDirection: 'asc',
-          currentPage: 1,
-          perPage: 5  
-		}
+            risk_levels: [],
+            isPaginated: true,
+            isPaginationSimple: false,
+            defaultSortDirection: 'asc',
+            currentPage: 1,
+            perPage: 5  
+        }
     },
     
     created: function () {
         this.readSolicitudes();
+        this.readRiskLevels();
+    },
+
+    filters: {
+        comprobante: function(value) {
+            if (value === "account_statements") return "Estados de Cuenta";
+            if (value === "financial_statements") return "Estados Financieros";
+            return "N/A";
+        },
+
+        nivel_riesgo_nombre: function(value) {
+            if (!!value && typeof this.risk_levels != "undefined") {
+                return this.risk_levels.find( item => item.id === value).nombre;
+            } else {
+                return null;
+            }
+        },
+
+        pretty: function(value) {
+            //console.log('pretty');
+            //console.log(value);
+            return JSON.stringify(value, null, 2);
+        },
+
     },
 
     methods: {
@@ -166,13 +162,40 @@ const DataTable = Vue.component('data-table', {
             .withSuccessHandler(function(response){
                 console.log('Response from "solicitudes".')
                 console.log(response);
-                self.data = response.records;
+                self.setData(response.records);
+                //self.data = response.records;
             })
             .withFailureHandler(function(err){
                 console.log('An error ocurred while fetching "solicitudes".')
                 console.log(err);
             })
             .read('solicitud');
+        },
+        readRiskLevels: function () {
+          var self = this;
+          google.script.run
+            .withSuccessHandler(function(response){
+              console.log(response);
+              self.risk_levels = response.records;
+            })
+            .withFailureHandler(function(err){
+              console.log(err);
+            })
+            .readCatalog('nivel_riesgo')
+        },
+
+        setData: function (records) {
+            var self = this;
+            this.data = records.map(function(record){
+                console.log(record);
+                var nriesgo = self.risk_levels.find( item => item.id === record.id_nivel_riesgo);
+                if (typeof nriesgo != 'undefined') {
+                    record.nivel_riesgo = nriesgo.nombre;
+                } else {
+                    record.nivel_riesgo = null;
+                }                
+                return record;
+            });
         },
     }
 
