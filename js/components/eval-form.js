@@ -3,6 +3,7 @@ Vue.use(VueFormGenerator);
 
 
 const EvalFormWizard = Vue.component('eval-form', {
+  props: ['id_solicitud'],
 	template: `
     <form-wizard @on-complete="onComplete" \
       subtitle="subtitulo" nextButtonText="Siguiente" \
@@ -12,7 +13,8 @@ const EvalFormWizard = Vue.component('eval-form', {
       <h1 slot="title">Proceso de cálculo de capacidad de pago</h1> \
         <tab-content :before-change="saveSolicitude">
           <solicitud-step 
-          @sol-number-change="setSolNumber"          
+          @sol-number-change="setSolNumber" 
+          ref="solicitud"         
           > 
           </solicitud-step>
         </tab-content>
@@ -63,6 +65,8 @@ const EvalFormWizard = Vue.component('eval-form', {
           @sal-orig-revol-change="setSalOrigRevol"
           @sal-orig-simp-change="setSalOrigSimp"
 
+          ref="buro_credito"
+
           
           > 
           </buro-credito-step>
@@ -75,6 +79,8 @@ const EvalFormWizard = Vue.component('eval-form', {
           @debtor-qual-change="setDebtorQual"
           @annual-sales-change="setAnnualSales"
 
+          ref="estado_general"
+
           
           > 
           </estado-general-step>
@@ -86,6 +92,8 @@ const EvalFormWizard = Vue.component('eval-form', {
           @risk-level-change="setRiskLevel"
           @score-change="setScore"
           @eval-type-prfl-change="setPrfEvalType"
+
+          ref="resultado_perfilador"
           > 
           </resultado-perfilador-step>
         </tab-content>
@@ -93,7 +101,6 @@ const EvalFormWizard = Vue.component('eval-form', {
          
 
 			    <!--<pre>{{ data | pretty }}</pre>-->
-          <pre>{{ data | pretty }}</pre>
 
            <template slot="footer" slot-scope="props"> \
                    <div class="wizard-footer-left"> \
@@ -181,6 +188,10 @@ const EvalFormWizard = Vue.component('eval-form', {
     created: function () {
       this.readConfig();
       this.readNivelesRiesgo();
+      if (!!this.id_solicitud) {
+        this.solicitud.id = this.id_solicitud
+        this.readSolicitud();
+      }  
     },
 
     computed: {
@@ -191,9 +202,10 @@ const EvalFormWizard = Vue.component('eval-form', {
       
       data: function() {
         return {
-          // solicitud: this.solicitud,
+          solicitud: this.solicitud,
+          id_solicitud: this.id_solicitud,
           account_statements: this.account_statements,
-          // solicited_credits: this.solicited_credits,
+          //solicited_credits: this.solicited_credits,
           // balances_sum: this.balances_sum,
           // deposits_sum: this.deposits_sum,
           // max_balance: this.max_balance,
@@ -540,6 +552,55 @@ const EvalFormWizard = Vue.component('eval-form', {
           console.log(err);
         })
         .readCatalog('nivel_riesgo')
+      },
+
+      readSolicitud: function () {
+        var self = this;
+        google.script.run
+        .withSuccessHandler(function(response){
+          console.log('Reading solicitud');
+          console.log(response);
+          self.setSolicitud(response);  // solicitud.numero_solicitud = response.numero_solicitud;
+        })
+        .withFailureHandler(function(err){
+          console.log('An error ocurred while reading solicitud');
+          console.log(err);
+        })
+        .readId('solicitud', this.id_solicitud)
+      },
+
+      setSolicitud: function (response) {
+        this.$refs.solicitud.numero_solicitud = response.numero_solicitud;
+        this.$refs.credito.destino_credito = response.destino_credito;
+        this.$refs.credito.garantia = response.garantia;
+        this.$refs.laboral.id_actividad = response.id_actividad;
+        this.$refs.laboral.tipo_comprobante = response.tipo_comprobante;
+        this.$refs.laboral.antiguedad_actividad = response.antiguedad_actividad;
+        this.$refs.laboral.antiguedad_operacion = response.antiguedad_operacion;
+        this.$refs.buro_credito.deuda_total = response.deuda_total ;
+        this.$refs.buro_credito.MONTHS_ON_FILE_BANKING = response.MONTHS_ON_FILE_BANKING ;
+        this.$refs.buro_credito.BK12_CLEAN = response.BK12_CLEAN ;
+        this.$refs.buro_credito.BK12_MAX_CREDIT_AMT = response.BK12_MAX_CREDIT_AMT;
+        this.$refs.buro_credito.num_cred_act_arren = response.num_cred_act_arren;
+        this.$refs.buro_credito.num_cred_act_fact = response.num_cred_act_fact;
+        this.$refs.buro_credito.num_cred_act_revol = response.num_cred_act_revol;
+        this.$refs.buro_credito.num_cred_act_simp = response.num_cred_act_simp;
+        this.$refs.buro_credito.sal_vig_cred_act_arren = response.sal_vig_cred_act_arren;
+        this.$refs.buro_credito.sal_vig_cred_act_fact = response.sal_vig_cred_act_fact;
+        this.$refs.buro_credito.sal_vig_cred_act_revol = response.sal_vig_cred_act_revol;
+        this.$refs.buro_credito.sal_vig_cred_act_simp = response.sal_vig_cred_act_simp;
+        this.$refs.buro_credito.sal_orig_cred_act_arren = response.sal_orig_cred_act_arren;
+        this.$refs.buro_credito.sal_orig_cred_act_fact = response.sal_orig_cred_act_fact;
+        this.$refs.buro_credito.sal_orig_cred_act_revol = response.sal_orig_cred_act_revol;
+        this.$refs.buro_credito.sal_orig_cred_act_simp = response.sal_orig_cred_act_simp;
+        this.$refs.estado_general.uafir = response.uafir;
+        this.$refs.estado_general.capital_contable = response.capital_contable;
+        this.$refs.estado_general.ventas_anuales = response.ventas_anuales;
+        this.$refs.estado_general.calificacion_deudor = response.calificacion_deudor;
+        this.$refs.resultado_perfilador.tipo_evaluacion_perfilador = response.tipo_evaluacion_perfilador;
+        this.$refs.resultado_perfilador.decreto = response.decreto;
+        this.$refs.resultado_perfilador.score = response.score;
+        this.$refs.resultado_perfilador.id_nivel_riesgo = response.id_nivel_riesgo;
       },
 
       saveSolicitudeCredit: function () {

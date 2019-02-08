@@ -78,6 +78,9 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	}, 
 	created: function () {
 		this.readBanks();
+		if (typeof this.id_solicitud != 'undefined' && !!this.id_solicitud) {
+			this.readAccountStetments();	
+		}
 	},
 
 	filters: {
@@ -117,6 +120,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	    		this.acc_stmnt_count++;
 	    		this.account_statements.push({
 	        		id_local: count,
+	        		bank_id: this.selected_bank,
     				bank_name: this.selected_bank_name,
     				statements: statements
     			});    			
@@ -124,6 +128,61 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	    	//console.log('meh');
 	    	//console.log(this.account_statements[0]);	        
 	    },
+
+	    readAccountStetments: function () {
+			var self = this;
+	        google.script.run
+	        .withSuccessHandler(function(response){
+	          console.log('Reading saldos depositos');
+	          console.log(response);
+	          self.setAccountStetments(response.records);  // solicitud.numero_solicitud = response.numero_solicitud;
+	        })
+	        .withFailureHandler(function(err){
+	          console.log('An error ocurred while reading saldos depositos');
+	          console.log(err);
+	        })
+	        .readFKRelation('deposito_saldo', 'id_solicitud', this.id_solicitud);
+		},
+
+		setAccountStetments: function (records) {
+
+			var l = records.length;
+			if (l > 0) {
+				this.account_statements.push({
+					id_local: this.acc_stmnt_count,
+					bank_id: records[0].id_banco,
+					bank_name: this.banks.find(bank => bank.id === records[0].id_banco).nombre,
+					statements: [records[0]]
+
+				});
+				this.acc_stmnt_count +=1;
+
+
+				for( var i=1; i<l; i++) {
+					var record = records[i];
+					var bank_exist = false;
+					for (var j=0; j < this.account_statements.length; j++) {
+						if (record.id_banco === this.account_statements[j].bank_id) {
+							this.account_statements[j].statements.push(record)
+							bank_exist = true;
+							break;
+						}
+					}
+					if (!bank_exist) {
+						this.account_statements.push({
+							id_local: this.acc_stmnt_count,
+							bank_id: record.id_banco,
+							bank_name: this.banks.find(bank => bank.id === record.id_banco).nombre,
+							statements: [record]
+						});
+						this.acc_stmnt_count +=1
+					}
+				}
+			}
+
+			
+			
+		},
 	    /*addStatement: function(id) {
 
 	    	if (this.account_statements.find(elm => elm.id == id).statements.length < 12) {

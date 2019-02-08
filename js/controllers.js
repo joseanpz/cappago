@@ -70,4 +70,21 @@ const EvalDetailController = {
 };
 
 
-const EvalUpdateFormController = { template: '#updateform-template' };
+const EvalUpdateFormController = {
+  props: ['id'], 
+  template: `
+    <div>
+      Update Form {{ id }}
+      <section class="container">
+        <div class="columns"> 
+          <div class="column">
+            <eval-form :id_solicitud="id"></eval-form>
+          </div>  
+        </div> 
+      </section>
+    </div>
+  `,
+  components: {
+    EvalFormWizard,
+  }
+};

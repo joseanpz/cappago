@@ -34,15 +34,17 @@ function readId(sheet_name, id) {
 
 function readFKRelation(sheet_name, fk_field, fk) {
 	var user = new User(Session.getActiveUser());
-	var user_filter = keyValueFilter('user_name', user.getEmail());
+	//var user_filter = keyValueFilter('user_name', user.getEmail());
 	var fk_filter = keyValueFilter(fk_field, fk);
 
-	var data = _authRead(sheet_name, [user_filter, id_filter]);
+	return _authRead(sheet_name, [fk_filter]);
+	//return data.records;
+	/*
 	if (data.records.length > 0) {
-		return data.records[0]
+		return data.records
 	} else {
 		return {status: 404, message: "Data not found"}
-	}
+	}*/
 }
 
 function readCatalog(sheet_name) {

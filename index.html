@@ -120,7 +120,14 @@
   <script type="text/x-template" id="updateform-template">
     <div>
       Update Form {{ $route.params.id }}
-    </div>
+    <section class="container">
+      <div class="columns"> 
+        <div class="column">
+          <eval-form :id_solicitud="$props.id"></eval-form>
+        </div>  
+      </div> 
+    </section>
+  </div>
   </script>
   <script type="text/x-template" id="detail-template">
     <detail v-bind="$props"></detail>

@@ -130,8 +130,13 @@ var CreditoStep = Vue.component('credito-step',{
 			selected_type: null,
 			simple_credits: [],
 			revolving_credits: [],
-
 		}
+	},
+
+	created: function () {
+		if (typeof this.id_solicitud != 'undefined' && !!this.id_solicitud) {
+			this.readCredits();	
+		}		
 	},
 
 	computed: {
@@ -171,6 +176,36 @@ var CreditoStep = Vue.component('credito-step',{
 			// console.log(this.simple_credits);
 			  	
 	    	this.credits_count++;
+		},
+
+		readCredits: function () {
+			var self = this;
+	        google.script.run
+	        .withSuccessHandler(function(response){
+	          console.log('Reading creditos');
+	          console.log(response);
+	          self.setCreditos(response.records);  // solicitud.numero_solicitud = response.numero_solicitud;
+	        })
+	        .withFailureHandler(function(err){
+	          console.log('An error ocurred while reading creditos');
+	          console.log(err);
+	        })
+	        .readFKRelation('credito_solicitado', 'id_solicitud', this.id_solicitud)
+		},
+
+		setCreditos: function (records) {
+			this.credits_count = records.length;
+			if (this.credits_count > 0) {
+				for (var i=0; i < this.credits_count; i++) {
+					var record = records[i];
+					record.saved = true;
+					if (record.tipo === "1") {
+						this.simple_credits.push(record)
+					} else if (record.tipo === "2") {
+						this.revolving_credits.push(record)
+					}
+				}
+			}
 		},
 
 		saveCreditFuture: function(instance, params) {
@@ -242,6 +277,7 @@ var CreditoStep = Vue.component('credito-step',{
 
 		},
 
+		/*
 		saveCredit: function (self, k, delay, m, n) {
 
 			var that = self;
@@ -289,9 +325,7 @@ var CreditoStep = Vue.component('credito-step',{
 				setTimeout(function() {self.saveCredit(self, k, delay, m, n);}, delay);
 			}
 
-		},
-
-
+		},*/
 
 		saveCredits: function () {
 			/*var self = this;
