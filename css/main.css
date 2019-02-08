@@ -2,6 +2,9 @@
 	font-family: "LL Circular Pro Book Web";
 }*/
 
+.container{	
+	margin-bottom: 50px;
+}
 .navbar.is-primary {
 	background-color: #FF681E;
 	height: 110px;
@@ -194,7 +197,7 @@ select:focus select:before {
 	/*background-image: linear-gradient(0deg , #F4F4F9, white);*/
     border-radius: 6px;
     color: #586e75;
-    padding: 20px 20px 0 20px;
+    padding: 20px;
 }
 
 .header-sec-card{

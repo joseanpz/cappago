@@ -13,11 +13,11 @@
     <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css">
 
     <!-- <link rel="stylesheet" href="css/asset/buefy.min.css"> -->
-    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma-extensions@4.0.0/dist/css/bulma-extensions.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">    
 
 	
-	<!-- build:css -->    
+	  <!-- build:css -->    
     <link rel="stylesheet" href="css/main.css">
     <!-- endbuild -->
  
@@ -45,9 +45,9 @@
       	  	  banregio
       	  	</a>
             <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
-              <span aria-hidden="true">
-              <span aria-hidden="true">
-              <span aria-hidden="true">
+              <span  aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>       
             </a>
       	  </div> 
           <div class="navbar-menu navbar-end" id="navMenu">
@@ -61,17 +61,17 @@
        <!-- route outlet -->
        <!-- component matched by the route will render here -->
       <router-view></router-view>
-    </div>
-    <div class="footer"> 
-    <div style="font-weight:bold; font-size: 26px; text-align: center;" class="column is-3">banregio | riesgos</div>
-    <div class="column" style="text-align: right;">
-      <p><b>Banco Regional, S.A</b></p>
-      <p><b>Institución de Banca Múltiple, Banregio Grupo Financiero. </b></p>
-      <p>Todos los Derechos Reservados</p>
 
+      <div class="footer columns"> 
+      <div style="font-weight:bold; font-size: 26px; text-align: center;" class="column is-3">banregio | riesgos</div>
+      <div class="column" style="text-align: right;">
+        <p><b>Banco Regional, S.A</b></p>
+        <p><b>Institución de Banca Múltiple, Banregio Grupo Financiero. </b></p>
+        <p>Todos los Derechos Reservados</p>
+      </div>
     </div>
- 
-  </div>
+    </div>
+    
   
   </body>
 
@@ -81,7 +81,7 @@
   <!-- Vue templates -->
   <script type="text/x-template" id="list-template">
 	<div>
-	  <section class="container">
+	  <section class="container" style="margin-top: 20px;">
 	  	<div class="columns"> 
 	  		<div class="column"> 
               
@@ -95,7 +95,7 @@
 
   <script type="text/x-template" id="form-template">
   <div>
-    <section class="container">
+    <section class="container" style="margin-top: 20px;">
       <div class="columns"> 
       	<div class="column">
       	  <eval-form></eval-form>
@@ -105,16 +105,14 @@
   </div>
   </script>
   <script type="text/x-template" id="home-template">
-    <div style="background-image: url('https://portalbanregio.s3.amazonaws.com/assets/naranja/img/Creditos-Empresa.jpg'); border-color: rgb(249, 161, 27);">
-    <section class="container" >
-      <div class="columns" style="height:450px; padding-top:30px;"> 
-        <div class="column">        
-        <h2  style="color: #fff; font-size: 1.0em;">Segmento Negocios</h2>
-        <h3 style="color: white; font-size: 3.0em;"><b>Cálculo de capacidad de pago</b></h3>
-        <h3 style="color:white; font-size: 1.5em;">Conoce el valor de la Línea Asignada (Simple y/o Revolvente) <br/> para la Empresa analizada</h3>
-        
-        </div>
-        
+    <div style="background-image: url('https://portalbanregio.s3.amazonaws.com/assets/naranja/img/Creditos-Empresa.jpg'); border-color: rgb(249, 161, 27); height:500px;">
+    <section class="container">
+      <div class="columns" > 
+        <div class="column" style="padding:50px;">        
+          <h2  style="color: #fff; font-size: 1.0em;">Segmento Negocios</h2>
+          <h3 style="color: white; font-size: 3.0em;"><b>Cálculo de capacidad de pago</b></h3>
+          <h3 style="color:white; font-size: 1.5em;">Conoce el valor de la Línea Asignada (Simple y/o Revolvente) <br/> para la Empresa analizada</h3>        
+        </div>      
       </div> 
     </section>
   </div>
