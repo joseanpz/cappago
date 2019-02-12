@@ -18,7 +18,7 @@ const DetailForm = Vue.component('detail', {
                   <tr>
                   <tr>
                     <td><label class="label">RFC:</label></td>
-                    <td>MECJ890724KJ3</td> 
+                    <td>{{ rfc }}</td> 
                     <td><label class="label">Solicitud:</label></td>
                     <td>{{numero_solicitud}}</td>
                   </tr>
@@ -45,7 +45,7 @@ const DetailForm = Vue.component('detail', {
                   </tr>
                   <tr>
                     <td><label class="label">Nivel de riesgo:</label></td>
-                    <td class="">{{nivel_riesgo }}</td>
+                    <td class="">{{ nivel_riesgo }}</td>
                     <td><label class="label"></label></td>
                     <td class=""></td>
                   </tr>
@@ -58,9 +58,9 @@ const DetailForm = Vue.component('detail', {
                   </tr>
                   <tr>
                     <td><label class="label">Monto :</label></td>
-                    <td class="td-cantidad">$452,255</td>
+                    <td class="td-cantidad">{{solicitud.linea_simple_sugerida}}</td>
                     <td><label class="label">Linea:</label></td>
-                    <td class="td-cantidad">$485,965</td>
+                    <td class="td-cantidad">{{solicitud.linea_revolvente_sugerida}}</td>
                   </tr>
                   <tr>
                     <td><label class="label">Plazo :</label></td>
@@ -97,7 +97,8 @@ const DetailForm = Vue.component('detail', {
 	data () {
 		return {       
 			solicitud: null,
-      risk_levels: [],   
+      risk_levels: [], 
+      rfc: null 
 		}
 	},
 	methods: {
@@ -122,8 +123,6 @@ const DetailForm = Vue.component('detail', {
     readDetail:function(){
       var self = this;
       console.log('Reading detail');
-      console.log(this);
-      console.log(this.$parent);
       google.script.run
           .withSuccessHandler(function(response){
             console.log('Response from solicitud ');
@@ -151,7 +150,7 @@ const DetailForm = Vue.component('detail', {
       })
       .readCatalog('nivel_riesgo')
     },   
-    setData: function (response) {
+    /*setData: function (response) {
       var self = this;
       console.log('setting data solicitud');      
       var nriesgo = self.risk_levels.find( item => item.id === response.id_nivel_riesgo);
