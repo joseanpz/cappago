@@ -88,14 +88,23 @@ const DetailForm = Vue.component('detail', {
         </div> 
         </div>
         
-        <div id="editor" style="text-align:right;" >
-          <div class="column is-2">
-            <label class="label titulos">captura de rfc: </label>
+        <div id="editor" style="text-align:right;" class=" card" >
+          <header class="card-header">
+              <p class="card-header-title">Captura de RFC:</p>
+          </header>
+          <div class="card-content">  
+          <div class="content columns">
+            <div class="column is-2">
+              <label class="label titulos">RFC: </label>
+            </div>
+            <div class="column is-4">
+              <input type="text" v-model="rfc" class="input" />
+            </div>
+            <div class="column">
+            <button class="button " @click = "genPDF" style="background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Descarga</button>
+            </div>
+            </div>
           </div>
-          <div class="column is-4">
-            <input type="text" v-model="rfc" class="input" />
-          </div>
-          <button class="button" @click = "genPDF" style="background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Descarga</button>
         </div>
         <br/>        
     </section> 
@@ -229,6 +238,7 @@ const DetailForm = Vue.component('detail', {
   
 	methods: {
 		genPDF: function () {		
+      var self = this;
       document.getElementById("header_PDF").style.display = "block";
       document.getElementById("div_footer").style.display = "block";
 
@@ -239,7 +249,7 @@ const DetailForm = Vue.component('detail', {
 					var doc = new jsPDF('p', 'pt', 'letter')
 					doc.addImage(img, 'JPEG',25,25,560,750);
           
-					doc.save('test.pdf');
+					doc.save('Solicitud_'+self.solicitud.numero_solicitud+'.pdf');
            document.getElementById("header_PDF").style.display = "none";
            document.getElementById("div_footer").style.display = "none";
 				}
