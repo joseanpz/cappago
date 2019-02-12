@@ -249,7 +249,7 @@ const DetailForm = Vue.component('detail', {
 					var doc = new jsPDF('p', 'pt', 'letter')
 					doc.addImage(img, 'JPEG',25,25,560,750);
           
-					doc.save('Solicitud_'+self.solicitud.numero_solicitud+'.pdf');
+					doc.save('CapacidadPago_'+self.solicitud.numero_solicitud+'.pdf');
            document.getElementById("header_PDF").style.display = "none";
            document.getElementById("div_footer").style.display = "none";
 				}
