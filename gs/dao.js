@@ -122,12 +122,20 @@ function _bulkUpdate(sheet_name, data, constrains) {
 
 
 function _delete(sheet_name, data_id, constrains) {
-	return false;
+	var sheet = db.getSheetByName(sheet_name);
+	return _deleteData(sheet, data_id);
 }
 
 
 
 /****** Low level methods******/
+
+function _insertData(sheet, insert_rows) {
+	var rows_count = sheet.getLastRow(), columns_count = sheet.getLastColumn();
+	var insert_count = insert_rows.length;
+	sheet.getRange(rows_count+1, 1, insert_count, columns_count).setValues(insert_rows);
+	return true;
+}
 
 /**
   * @desc reads all rows of a sheet and arranges trem as a list of objects
@@ -163,13 +171,6 @@ function _readData(sheet, properties) {
    return data;
 }
 
-function _insertData(sheet, insert_rows) {
-	var rows_count = sheet.getLastRow(), columns_count = sheet.getLastColumn();
-	var insert_count = insert_rows.length;
-	sheet.getRange(rows_count+1, 1, insert_count, columns_count).setValues(insert_rows);
-	return true;
-}
-
 function _updateData(sheet, id, update_row) {
 
 	var rows_count = sheet.getLastRow(), columns_count = sheet.getLastColumn();
@@ -179,6 +180,21 @@ function _updateData(sheet, id, update_row) {
 		if (id_temp === id) {
 			// write row, this is commited after function is finished
 			sheet.getRange(i, 1, 1, columns_count).setValues([update_row])
+			return true;         
+		}
+	}
+	return false;
+}
+
+function _deleteData(sheet, id) {
+
+	var rows_count = sheet.getLastRow();
+	for (var i = 1; i <= rows_count; i++) {
+		// find row
+		var id_temp = sheet.getRange(i, 1).getValue();
+		if (id_temp === id) {
+			// delete row
+			sheet.deleteRow(i);
 			return true;         
 		}
 	}

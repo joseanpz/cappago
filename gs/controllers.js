@@ -54,7 +54,7 @@ function readCatalog(sheet_name) {
 }
 
 /*
- * Data wtiting
+ * Data changes
  *
  */
 
@@ -75,5 +75,10 @@ function update(sheet_name, data, constrains) {
 function bulkUpdate(sheet_name, data, constrains) {
 	return _authBulkUpdate(sheet_name, data, constrains);
 }
+
+function deleteId(sheet_name, data_id, constrains) {
+	return _authDelete(sheet_name, data, constrains);
+}
+
 
 
