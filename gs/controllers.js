@@ -4,6 +4,9 @@ var _authBulkCreate = userAuth(_bulkCreate);
 var _authUpdate = userAuth(_update);
 var _authBulkUpdate = userAuth(_bulkUpdate);
 var _authDelete = userAuth(_delete);
+var _authBulkDelete = userAuth(_bulkDelete);
+var _authDeleteRows = userAuth(_deleteRows);
+
 
 
 function read(sheet_name, filters) {
@@ -77,7 +80,15 @@ function bulkUpdate(sheet_name, data, constrains) {
 }
 
 function deleteId(sheet_name, data_id, constrains) {
-	return _authDelete(sheet_name, data, constrains);
+	return _authDelete(sheet_name, data_id, constrains);
+}
+
+function bulkDelete(sheet_name, data_ids, constrains) {
+	return _authBulkDelete(sheet_name, data_ids, constrains);
+}
+
+function deleteRows(sheet_name, data_id, rows, constrains) {
+	return _authDeleteRows(sheet_name, data_id, rows, constrains);
 }
 
 

@@ -119,14 +119,25 @@ function _bulkUpdate(sheet_name, data, constrains) {
 	
 }
 
-
-
 function _delete(sheet_name, data_id, constrains) {
 	var sheet = db.getSheetByName(sheet_name);
 	return _deleteData(sheet, data_id);
 }
 
+function _deleteRows(sheet_name, data_id, rows, constrains) {
+	var sheet = db.getSheetByName(sheet_name);
+	return _deleteDataRows(sheet, data_id, rows);
+}
 
+function _bulkDelete(sheet_name, data_ids, constrains) {
+	var sheet = db.getSheetByName(sheet_name);
+	var deleted = [];
+	
+	for (var i=0; i < data_ids.length ; i++) {
+		deleted.push(_deleteData(sheet, data_ids[i]))
+	}
+	return deleted;
+}
 
 /****** Low level methods******/
 
@@ -195,6 +206,21 @@ function _deleteData(sheet, id) {
 		if (id_temp === id) {
 			// delete row
 			sheet.deleteRow(i);
+			return true;         
+		}
+	}
+	return false;
+}
+
+function _deleteDataRows(sheet, id, rows) {
+	
+	var rows_count = sheet.getLastRow();
+	for (var i = 1; i <= rows_count; i++) {
+		// find row
+		var id_temp = sheet.getRange(i, 1).getValue();
+		if (id_temp === id) {
+			// delete row
+			sheet.deleteRows(i, rows);
 			return true;         
 		}
 	}
