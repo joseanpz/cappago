@@ -20,28 +20,28 @@ const DetailForm = Vue.component('detail', {
                     <td><label class="label">RFC:</label></td>
                     <td>{{ rfc }}</td> 
                     <td><label class="label">Solicitud:</label></td>
-                    <td>{{numero_solicitud}}</td>
+                    <td>{{ solicitud.numero_solicitud }}</td>
                   </tr>
                   <tr>
                     <td><label class="label">Tipo evaluacion:</label></td>
-                    <td>{{tipo_evaluacion_perfilador}}</td>
+                    <td>{{ solicitud.tipo_evaluacion_perfilador | tipo_evaluacion_perfilador }}</td>
                     <td><label class="label">Calificación deudor:</label></td>
-                    <td>AA</td>
+                    <td>{{this.solicitud.calificacion_deudor}}</td>
                   </tr> 
                   <tr>
                     <td><label class="label">Tipo comprobante:</label></td>
-                    <td> {{ tipo_comprobante }}</td>
+                    <td> {{ solicitud.tipo_comprobante | comprobante }}</td>
                     <td><label class="label">Actividad:</label></td>
-                    <td>Pesca</td>
+                    <td>{{ actividad }}</td>
                   </tr>
                   <tr>
                     <td colspan="4" class="div-titulos">Perfil</td>
                   <tr>
                   <tr>
                     <td><label class="label">Decreto:</label></td>
-                    <td class="">{{decreto}}</td>
+                    <td class="">{{ solicitud.decreto | decreto }}</td>
                     <td><label class="label">Score:</label></td>
-                    <td class="">{{score}}</td>
+                    <td class="">{{ solicitud.score }}</td>
                   </tr>
                   <tr>
                     <td><label class="label">Nivel de riesgo:</label></td>
@@ -89,6 +89,12 @@ const DetailForm = Vue.component('detail', {
         </div>
         
         <div id="editor" style="text-align:right;" >
+          <div class="column is-2">
+            <label class="label titulos">captura de rfc: </label>
+          </div>
+          <div class="column is-4">
+            <input type="text" v-model="rfc" class="input" />
+          </div>
           <button class="button" @click = "genPDF" style="background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Descarga</button>
         </div>
         <br/>        
@@ -96,90 +102,55 @@ const DetailForm = Vue.component('detail', {
     `,
 	data () {
 		return {       
-			solicitud: null,
+			solicitud : {
+        id: null,
+        id_actividad: null,
+        id_nivel_riesgo: null,
+        numero_solicitud: null,
+        tipo_comprobante: null,
+        linea_simple_sugerida: null,
+        linea_revolvente_sugerida: null,
+        garantia: null,
+        tipo_evaluacion_perfilador: null,
+        decreto: null,
+        score: null,
+        ventas_anuales: null,
+        // flujo_disponible_mensual : null,  
+        uafir: null,
+        capital_contable: null,
+        destino_credito: null,
+        antiguedad_actividad: null,
+        antiguedad_operacion: null,
+        calificacion_deudor: null,
+        deuda_total: null,
+        MONTHS_ON_FILE_BANKING: null,
+        BK12_CLEAN: null,
+        BK12_MAX_CREDIT_AMT: null,
+        num_cred_act_arren: null,
+        num_cred_act_fact: null,
+        num_cred_act_revol: null,
+        num_cred_act_simp: null,
+        sal_vig_cred_act_arren: null,
+        sal_vig_cred_act_fact: null,
+        sal_vig_cred_act_revol: null,
+        sal_vig_cred_act_simp: null,
+        sal_orig_cred_act_arren: null,
+        sal_orig_cred_act_fact: null,
+        sal_orig_cred_act_revol: null,
+        sal_orig_cred_act_simp: null
+      },
       risk_levels: [], 
+      activities: [],
       rfc: null 
 		}
 	},
-  
-	methods: {
-		genPDF: function () {		
-      document.getElementById("header_PDF").style.display = "block";
-      document.getElementById("div_footer").style.display = "block";
 
-			html2canvas(document.getElementById("detail-print"), {
-				onrendered: function (canvas) {
-          
-					var img = canvas.toDataURL("image/url",1.0);  
-					var doc = new jsPDF('p', 'pt', 'letter')
-					doc.addImage(img, 'JPEG',25,25,560,750);
-          
-					doc.save('test.pdf');
-           document.getElementById("header_PDF").style.display = "none";
-           document.getElementById("div_footer").style.display = "none";
-				}
-			});
-    
-		},
-    readDetail:function(){
-      var self = this;
-      console.log('Reading detail');
-      google.script.run
-          .withSuccessHandler(function(response){
-            console.log('Response from solicitud ');
-            console.log(response);
+  created: function () {   
+    this.readDetail();
+    this.readRiskLevels();
+    this.readActivities();  
+  },
 
-            this.solicitud = response;
-            self.readRiskLevels();
-          })
-          .withFailureHandler(function(err){
-            console.log('An error ocurred while fetching a "solicitud"');
-            console.log(err);
-          })
-          .readId('solicitud',this.id)
-
-    },
-    readRiskLevels: function () {
-      var self = this;
-      google.script.run
-      .withSuccessHandler(function(response){
-        console.log(response);
-        self.risk_levels = response.records;        
-      })
-      .withFailureHandler(function(err){
-        console.log(err);
-      })
-      .readCatalog('nivel_riesgo')
-    },   
-    /*setData: function (response) {
-      var self = this;
-      console.log('setting data solicitud');      
-      var nriesgo = self.risk_levels.find( item => item.id === response.id_nivel_riesgo);
-      if (typeof nriesgo != 'undefined') {
-        response.nivel_riesgo = nriesgo.nombre;
-      } else {
-        response.nivel_riesgo = null;
-      }  
-      console.log('nivel_riesgo');
-      console.log(response) ;             
-     // this.solicitud = response;
-        
-    },
-    /* readActivities: function(){
-      var self = this;
-      google.script.run
-      .withSuccessHandler(function(response){
-        console.log(response);
-        self.activityName = response.records;
-      })
-      .withFailureHandler(function(err){
-        console.log(err);
-      })
-      .readCatalog('actividad')
-    },*/
-
-
-	},
   computed:{
     data: function() {
         return {          
@@ -189,19 +160,34 @@ const DetailForm = Vue.component('detail', {
     nivel_riesgo: function() {
       var self = this;
       console.log('nivel_riesgo computed');
-        if(!this.solicitud) return null;
+        if(!this.solicitud.id) return null;
         if(this.risk_levels.length === 0) return null;
         console.log('Apunto de regresar');
         var nriesgo = this.risk_levels.find(function(item){
-           console.log(item.id);
-           console.log(self.solicitud);
+           //console.log(item.id);
+           //console.log(self.solicitud);
            var ret = item.id === self.solicitud.id_nivel_riesgo;
            return ret;           
         });
         console.log(nriesgo);
         return nriesgo.nombre;        
     },
-    numero_solicitud:function(){
+    actividad: function() {
+      var self = this;
+      console.log('actividad computed');
+        if(!this.solicitud.id) return null;
+        if(this.activities.length === 0) return null;
+        console.log('Apunto de regresar actividad');
+        var activity = this.activities.find(function(item){
+           console.log(item.id);
+           console.log(self.solicitud);
+           var ret = item.id === self.solicitud.id_actividad;
+           return ret;           
+        });
+        console.log(activity);
+        return activity.nombre;        
+    },
+    /*numero_solicitud:function(){
       var self = this;
       if(!this.solicitud) return null;
       console.log('numero_solicitud computed');
@@ -238,30 +224,160 @@ const DetailForm = Vue.component('detail', {
       var self = this;
       if(!this.solicitud) return null;
       return self.solicitud.score;
-    }
+    }*/
   },
-	beforeCreate: function() {
+  
+	methods: {
+		genPDF: function () {		
+      document.getElementById("header_PDF").style.display = "block";
+      document.getElementById("div_footer").style.display = "block";
 
+			html2canvas(document.getElementById("detail-print"), {
+				onrendered: function (canvas) {
+          
+					var img = canvas.toDataURL("image/url",1.0);  
+					var doc = new jsPDF('p', 'pt', 'letter')
+					doc.addImage(img, 'JPEG',25,25,560,750);
+          
+					doc.save('test.pdf');
+           document.getElementById("header_PDF").style.display = "none";
+           document.getElementById("div_footer").style.display = "none";
+				}
+			});
+    
+		},
+    readDetail:function(){
+      var self = this;
+      console.log('Reading detail');
+      google.script.run
+      .withSuccessHandler(function(response){
+        console.log('Response from solicitud ');
+        console.log(response);
 
-	},
-	created: function () {   
-    this.readDetail();     
-	},
-  filters: {        
-        nivel_riesgo_nombre: function(value) {
-            if (!!value && typeof this.risk_levels != "undefined") {
-                return this.risk_levels.find( item => item.id === value).nombre;
-            } else {
-                return null;
-            }
-        },
+        //this.solicitud = response;
+        self.setSolicitud(response);            
+      })
+      .withFailureHandler(function(err){
+        console.log('An error ocurred while fetching a "solicitud"');
+        console.log(err);
+      })
+      .readId('solicitud',this.id)
+
+    },
+    readActivities: function () {
+      var self = this;
+      google.script.run
+      .withSuccessHandler(function(response){
+        console.log('Reading activities');
+        console.log(response);
+        self.activities = response.records;
+      })
+      .withFailureHandler(function(err){
+        console.log('An error ocurred while reading activities');
+        console.log(err);
+      })
+      .readCatalog('actividad')
+    },
+    readRiskLevels: function () {
+      var self = this;
+      google.script.run
+      .withSuccessHandler(function(response){
+        console.log(response);
+        self.risk_levels = response.records;        
+      })
+      .withFailureHandler(function(err){
+        console.log(err);
+      })
+      .readCatalog('nivel_riesgo')
+    },
+    setSolicitud: function (response) {
+      this.solicitud.id = response.id,
+      this.solicitud.numero_solicitud = response.numero_solicitud;
+      this.solicitud.destino_credito = response.destino_credito;
+      this.solicitud.garantia = response.garantia;
+      this.solicitud.id_actividad = response.id_actividad;
+      this.solicitud.tipo_comprobante = response.tipo_comprobante;
+      this.solicitud.antiguedad_actividad = response.antiguedad_actividad;
+      this.solicitud.antiguedad_operacion = response.antiguedad_operacion;
+      this.solicitud.deuda_total = response.deuda_total;
+      this.solicitud.MONTHS_ON_FILE_BANKING = response.MONTHS_ON_FILE_BANKING;
+      this.solicitud.BK12_CLEAN = response.BK12_CLEAN;
+      this.solicitud.BK12_MAX_CREDIT_AMT = response.BK12_MAX_CREDIT_AMT;
+      this.solicitud.num_cred_act_arren = response.num_cred_act_arren;
+      this.solicitud.num_cred_act_fact = response.num_cred_act_fact;
+      this.solicitud.num_cred_act_revol = response.num_cred_act_revol;
+      this.solicitud.num_cred_act_simp = response.num_cred_act_simp;
+      this.solicitud.sal_vig_cred_act_arren = response.sal_vig_cred_act_arren;
+      this.solicitud.sal_vig_cred_act_fact = response.sal_vig_cred_act_fact;
+      this.solicitud.sal_vig_cred_act_revol = response.sal_vig_cred_act_revol;
+      this.solicitud.sal_vig_cred_act_simp = response.sal_vig_cred_act_simp;
+      this.solicitud.sal_orig_cred_act_arren = response.sal_orig_cred_act_arren;
+      this.solicitud.sal_orig_cred_act_fact = response.sal_orig_cred_act_fact;
+      this.solicitud.sal_orig_cred_act_revol = response.sal_orig_cred_act_revol;
+      this.solicitud.sal_orig_cred_act_simp = response.sal_orig_cred_act_simp;
+      this.solicitud.uafir = response.uafir;
+      this.solicitud.capital_contable = response.capital_contable;
+      this.solicitud.ventas_anuales = response.ventas_anuales;
+      this.solicitud.calificacion_deudor = response.calificacion_deudor;
+      this.solicitud.tipo_evaluacion_perfilador = response.tipo_evaluacion_perfilador;
+      this.solicitud.decreto = response.decreto;
+      this.solicitud.score = response.score;
+      this.solicitud.id_nivel_riesgo = response.id_nivel_riesgo;
+      this.solicitud.linea_revolvente_sugerida = response.linea_revolvente_sugerida;
+      this.solicitud.linea_simple_sugerida = response.linea_simple_sugerida;
+    },  
+    /*setData: function (response) {
+      var self = this;
+      console.log('setting data solicitud');      
+      var nriesgo = self.risk_levels.find( item => item.id === response.id_nivel_riesgo);
+      if (typeof nriesgo != 'undefined') {
+        response.nivel_riesgo = nriesgo.nombre;
+      } else {
+        response.nivel_riesgo = null;
+      }  
+      console.log('nivel_riesgo');
+      console.log(response) ;             
+     // this.solicitud = response;
         
     },
-	beforeMount: function() {
-
+    /* readActivities: function(){
+      var self = this;
+      google.script.run
+      .withSuccessHandler(function(response){
+        console.log(response);
+        self.activityName = response.records;
+      })
+      .withFailureHandler(function(err){
+        console.log(err);
+      })
+      .readCatalog('actividad')
+    },*/
 	},
-	mounted: function() {
-	//	this.genPDF();
-   
-	}
+  
+  filters: {        
+    nivel_riesgo_nombre: function(value) {
+      if (!!value && typeof this.risk_levels != "undefined") {
+          return this.risk_levels.find( item => item.id === value).nombre;
+      } else {
+          return null;
+      }
+    },
+    comprobante: function(value) {
+        if (value === "account_statements") return "Estados de Cuenta";
+        if (value === "financial_statements") return "Estados Financieros";
+        return "N/A";
+    },
+    tipo_evaluacion_perfilador: function(value) {
+        if (value === "1") return "EXT";
+        if (value === "2") return "NVO";
+        return "N/A";
+    }, 
+    decreto: function(value) {
+        if (value === "1") return "ESTUDIO";
+        if (value === "2") return "DENEGADO";
+        if (value === "3") return "PRE-APROBADO";
+        return "N/A";
+    },
+        
+  },
 }); 

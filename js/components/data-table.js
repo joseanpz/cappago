@@ -50,17 +50,17 @@ const DataTable = Vue.component('data-table', {
                     <b-table-column field="decreto" label="Decreto">
                         {{ props.row.decreto | decreto }}
                     </b-table-column>
-                    <b-table-column field="tipo_comprobante" label="Nivel de riesgo">
+                    <b-table-column field="nivel_riesgo" label="Nivel de riesgo">
                         {{ props.row.nivel_riesgo }}
                     </b-table-column>
                     <b-table-column field="tipo_comprobante" label="Comprobantes">
                         {{ props.row.tipo_comprobante | comprobante }}
                     </b-table-column> 
-                    <b-table-column field="tipo_comprobante" label="Linea simple">
-                        {{ props.row.tipo_comprobante }}
+                    <b-table-column field="linea_simple" label="Linea simple">
+                        {{ props.row.linea_simple_sugerida }}
                     </b-table-column>
-                    <b-table-column field="tipo_comprobante" label="Linea revolvente">
-                        {{ props.row.tipo_comprobante }}
+                    <b-table-column field="linea_revolvente" label="Linea revolvente">
+                        {{ props.row.linea_revolvente_sugerida }}
                     </b-table-column>                    
   
                     <!--
@@ -135,8 +135,7 @@ const DataTable = Vue.component('data-table', {
         }
     },
     
-    created: function () {
-        this.readSolicitudes();
+    created: function () {        
         this.readRiskLevels();
     },
 
@@ -195,6 +194,7 @@ const DataTable = Vue.component('data-table', {
             .withSuccessHandler(function(response){
               console.log(response);
               self.risk_levels = response.records;
+              self.readSolicitudes();
             })
             .withFailureHandler(function(err){
               console.log(err);
