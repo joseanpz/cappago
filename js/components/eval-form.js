@@ -166,6 +166,8 @@ const EvalFormWizard = Vue.component('eval-form', {
           id_nivel_riesgo: null,
           numero_solicitud: null,
           tipo_comprobante: "account_statements",
+          linea_simple_sugerida: null,
+          linea_revolvente_sugerida: null,
           garantia: null,
           tipo_evaluacion_perfilador: null,
           decreto: null,
@@ -882,6 +884,16 @@ const EvalFormWizard = Vue.component('eval-form', {
       setRevolvingCredits: function(val) {
       	this.revolving_credits = val;
       } 
+    },
+
+    watch: {
+      linea_simple: function(val) {
+        this.solicitud.linea_simple_sugerida = val;
+      },
+
+      linea_revolvente: function(val) {
+        this.solicitud.linea_revolvente_sugerida = val;
+      }
     }
 });
 
