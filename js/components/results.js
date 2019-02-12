@@ -35,13 +35,13 @@ const Results = Vue.component('results', {
 					<div class="column">{{razon_flujo_tasa}}</div>					
 				</div>
 				<div class="content columns">
-					<div class="column alinea_text">Monto maximo</div>
+					<div class="column alinea_text">Monto maximo por buró</div>
 					<div class="column">{{monto_maximo.simple}}</div>
-					<div class="column alinea_text">Monto maximo</div>
+					<div class="column alinea_text">Monto maximo por buró</div>
 					<div class="column">{{monto_maximo.revolvente}}</div>					
 				</div>
 				<div class="content columns">
-					<div class="column alinea_text">Linea</div>
+					<div class="column alinea_text">Monto</div>
 					<div class="column">{{linea.simple}}</div>
 					<div class="column alinea_text">Linea</div>
 					<div class="column">{{linea.revolvente}}</div>					
