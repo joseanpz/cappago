@@ -11,7 +11,8 @@ function test_dao(){
   //var records = _readData(sheet);
   //records = records.filter(filter1);
   //var bulkinsert = _bulkCreate("test", multidata);
-  var bulkinsert = bulkCreate("test", multidata);
+  // var bulkinsert = bulkCreate("test", multidata);
+  
 
   //var inserted = _insertData(sheet, rows);
   var data = _read("test");
@@ -32,6 +33,7 @@ function test_controllers(){
   // var sheet = db.getSheetByName(sheetName);
   //var records = _readData(sheet);
   //records = records.filter(filter1);
+  var is_deleted = deleteId("test", "1549503416315")
   var data = read("test");
   var data_id = readId("test", "1548439381010");
   //var new_row = _create("test", {key1: "foo" });

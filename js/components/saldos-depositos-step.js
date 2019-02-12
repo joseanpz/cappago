@@ -198,11 +198,35 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	    },*/
 
 	    deleteAccountStatement: function(id) {
-	    	var index = this.account_statements.indexOf(this.account_statements.find(elm => elm.id_local == id));
+	    	var self = this;
+
+	    	var account_statement = this.account_statements.find(elm => elm.id_local == id);
+	    	var first_statemnt = account_statement.statements.find(elm => elm.id_local == 0);
+	    	var index = this.account_statements.indexOf(account_statement);
 	    	//console.log('deleting deposits');
 	    	//console.log(index);
 	    	//console.log(this.account_statements);
+	    	console.log(account_statement);
+	    	console.log(first_statemnt);
+	        
+
+	        if (!!first_statemnt.id) {
+	        	google.script.run
+				.withSuccessHandler(function(response){
+					console.log('Deleting depositos_saldos response!');
+					console.log(response);
+					//self.solicitud.id = response.id;
+				})
+				.withFailureHandler(function(err){
+					console.log('An error ocurred while deleting credito')
+					console.log(err);
+					alert("Ha ocurrido un error al intentar borrar los registro. Por favor intente de nuevo.");
+					self.account_statements.push(account_statement);
+				})
+				.deleteRows('deposito_saldo', first_statemnt.id, 12);
+	        }
 	        if (index >= 0) this.account_statements.splice(index, 1);
+	        
 	    },
 
 	    loadStatements: function (n) {

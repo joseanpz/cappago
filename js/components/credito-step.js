@@ -197,7 +197,7 @@ var CreditoStep = Vue.component('credito-step',{
 	          console.log('An error ocurred while reading creditos');
 	          console.log(err);
 	        })
-	        .readFKRelation('credito_solicitado', 'id_solicitud', this.id_solicitud)
+	        .readFKRelation('credito_solicitado', 'id_solicitud', this.id_solicitud);
 		},
 
 		setCreditos: function (records) {
@@ -284,62 +284,7 @@ var CreditoStep = Vue.component('credito-step',{
 
 		},
 
-		/*
-		saveCredit: function (self, k, delay, m, n) {
-
-			var that = self;
-			console.log('saveCredit');
-
-			if (k<m) {
-				var credit = self.simple_credits[k];
-			} else {
-				var credit = self.revolving_credits[k-m];
-			}			
-
-			if (!credit.saved) {
-				google.script.run
-				.withSuccessHandler(function(response){
-					// TODO: handle different success response
-					console.log('Creating "credit"!')
-					console.log(response);
-					credit.id = response.id;
-					credit.saved = true;
-				})
-				.withFailureHandler(function(err){
-					console.log('An error ocurred while saving a "credit"!')
-					console.log(err);
-				})
-				.create('credito_solicitado', credit);
-			} else {
-				google.script.run
-				.withSuccessHandler(function(response){
-					console.log('Updating credito_solicitado response!')
-					console.log(response);
-					//self.solicitud.id = response.id;
-				})
-				.withFailureHandler(function(err){
-					console.log('An error ocurred while updating')
-					console.log(err);
-				})
-				.update('credito_solicitado', credit)
-			}
-
-			k +=1;
-
-			if (k < m+n) {
-				console.log('inside recurrence');
-				// console.log(k);				
-				setTimeout(function() {self.saveCredit(self, k, delay, m, n);}, delay);
-			}
-
-		},*/
-
 		saveCredits: function () {
-			/*var self = this;
-			var m = self.simple_credits.length;
-			var n = self.revolving_credits.length
-			
-			setTimeout(function(){self.saveCredit(self, 0, 5000, m, n);}, 1000);  // 500 ms no data corruption*/
 
 			var params = {
 				incr: 0,
@@ -352,14 +297,42 @@ var CreditoStep = Vue.component('credito-step',{
 		deleteCredit: function(id, crd_type) {
 			// TODO: delete in  database
 
+			var self = this;
+
 			if (crd_type === 'simple') {
-				var index = this.simple_credits.indexOf(this.simple_credits.find(elm => elm.id_local == id));
-	        	if (index >= 0) this.simple_credits.splice(index, 1);
+				var credit = this.simple_credits.find(elm => elm.id_local == id);
+				var index = this.simple_credits.indexOf(credit);
+	        	if (index >= 0){
+	        		this.simple_credits.splice(index, 1);
+	        	} 
 				 
 			} else if (crd_type === 'revolvente') {
-				var index = this.revolving_credits.indexOf(this.revolving_credits.find(elm => elm.id_local == id));
+				var credit = this.revolving_credits.find(elm => elm.id_local == id)
+				var index = this.revolving_credits.indexOf(credit);
 	        	if (index >= 0) this.revolving_credits.splice(index, 1);
 			}
+			console.log('before delete credito_solicitado');
+			console.log(credit);
+			if (!!credit.id) {
+				google.script.run
+				.withSuccessHandler(function(response){
+					console.log('Deleting credito_solicitado response!')
+					console.log(response);
+					//self.solicitud.id = response.id;
+				})
+				.withFailureHandler(function(err){
+					console.log('An error ocurred while deleting credito')
+					console.log(err);
+					alert("Ha ocurrido un error al intentar borrar el registro. Por favor intente de nuevo.");
+					if (crd_type === 'simple') {
+						self.simple_credits.push(credit);								 
+					} else if (crd_type === 'revolvente') {
+			        	self.revolving_credits.push(credit);
+				}
+				})
+				.deleteId('credito_solicitado', credit.id);
+			}
+			
 	    },
 	},
 
