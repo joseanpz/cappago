@@ -91,8 +91,8 @@ const DetailForm = Vue.component('detail', {
         <div id="editor" style="text-align:right;" >
           <button class="button" @click = "genPDF" style="background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Descarga</button>
         </div>
-        <br/>
-    </section>
+        <br/>        
+    </section> 
     `,
 	data () {
 		return {       
@@ -100,6 +100,7 @@ const DetailForm = Vue.component('detail', {
       risk_levels: [],   
 		}
 	},
+  
 	methods: {
 		genPDF: function () {		
       document.getElementById("header_PDF").style.display = "block";
@@ -239,13 +240,13 @@ const DetailForm = Vue.component('detail', {
       if(!this.solicitud) return null;
       return self.solicitud.score;
     }
-	},
+  },
 	beforeCreate: function() {
 
 
 	},
-	created: function () {
-    this.readDetail();
+	created: function () {   
+    this.readDetail();     
 	},
   filters: {        
         nivel_riesgo_nombre: function(value) {

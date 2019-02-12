@@ -44,25 +44,25 @@ const DataTable = Vue.component('data-table', {
                     <b-table-column field="numero_solicitud" label="Solicitud" width="40" sortable>
                         {{ props.row.numero_solicitud }}
                     </b-table-column>
-                    <b-table-column field="tipo_comprobante" label="Tipo evaluación">
-                        {{ props.row.tipo_comprobante }}
+                    <b-table-column field="tipo_evaluacion_perfilador" label="Tipo evaluación">
+                        {{ props.row.tipo_evaluacion_perfilador | tipo_evaluacion_perfilador }}
                     </b-table-column>
-                    <b-table-column field="tipo_comprobante" label="Decreto">
-                        {{ props.row.tipo_comprobante }}
+                    <b-table-column field="decreto" label="Decreto">
+                        {{ props.row.decreto | decreto }}
                     </b-table-column>
                     <b-table-column field="tipo_comprobante" label="Nivel de riesgo">
                         {{ props.row.nivel_riesgo }}
                     </b-table-column>
                     <b-table-column field="tipo_comprobante" label="Comprobantes">
                         {{ props.row.tipo_comprobante | comprobante }}
-                    </b-table-column>
+                    </b-table-column> 
                     <b-table-column field="tipo_comprobante" label="Linea simple">
                         {{ props.row.tipo_comprobante }}
                     </b-table-column>
                     <b-table-column field="tipo_comprobante" label="Linea revolvente">
                         {{ props.row.tipo_comprobante }}
                     </b-table-column>                    
-
+  
                     <!--
                     <b-table-column field="garantia_hipotecaria" label="Garantía">
                         {{ props.row.garantia_hipotecaria }}
@@ -110,6 +110,14 @@ const DataTable = Vue.component('data-table', {
                     label: 'Tipo Comprobante',
                 },
                 {
+                    field : 'tipo_evaluacion_perfilador',
+                    label : 'Tipo evaluacion'
+                },
+                {
+                    field : 'decreto',
+                    label : 'Decreto'
+                },
+                {
                     field: 'garantia_hipotecaria',
                     label: 'Garantia Hipotecaria',
                 },
@@ -138,7 +146,17 @@ const DataTable = Vue.component('data-table', {
             if (value === "financial_statements") return "Estados Financieros";
             return "N/A";
         },
-
+        tipo_evaluacion_perfilador: function(value) {
+            if (value === "1") return "EXT";
+            if (value === "2") return "NVO";
+            return "N/A";
+        }, 
+        decreto: function(value) {
+            if (value === "1") return "ESTUDIO";
+            if (value === "2") return "DENEGADO";
+            if (value === "3") return "PRE-APROBADO";
+            return "N/A";
+        },
         nivel_riesgo_nombre: function(value) {
             if (!!value && typeof this.risk_levels != "undefined") {
                 return this.risk_levels.find( item => item.id === value).nombre;
