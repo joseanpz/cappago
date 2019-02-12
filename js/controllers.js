@@ -72,13 +72,21 @@ const EvalUpdateFormController = {
       <section class="container">
         <div class="columns"> 
           <div class="column">
-            <eval-form :id_solicitud="id"></eval-form>
+            <eval-form :id_solicitud="id" @move-to-success-route="moveToListRoute"></eval-form>
           </div>  
         </div> 
       </section>
     </div>
   `,
+
   components: {
     EvalFormWizard,
+  },
+
+  methods: {
+    moveToListRoute: function () {
+      console.log('pushing list route')
+      this.$router.push('/evaluaciones');
+    }
   }
 };
