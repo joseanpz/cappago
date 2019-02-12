@@ -58,26 +58,26 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 													<tr>
 														<td><b>Revolvente</b></td>
 														<td><input type="number"  v-model="num_cred_act_revol" class="input" /></td>
-														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_revol" class="input" /></td>
 														<td><input type="number" step="0.001" v-model="sal_orig_cred_act_revol" class="input" /></td>
+														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_revol" class="input" /></td>
 													</tr>
 													<tr>
 														<td><b>Factorajes</b></td>
 														<td><input type="number"  v-model="num_cred_act_fact" class="input" /></td>
-														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_fact" class="input" /></td>
 														<td><input type="number" step="0.001" v-model="sal_orig_cred_act_fact" class="input" /></td>
+														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_fact" class="input" /></td>
 													</tr>
 													<tr>
 														<td><b>Arrendamientos</b></td>
 														<td><input type="number"  v-model="num_cred_act_arren" class="input" /></td>
-														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_arren" class="input" /></td>
 														<td><input type="number" step="0.001" v-model="sal_orig_cred_act_arren" class="input" /></td>
+														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_arren" class="input" /></td>
 													</tr>
 													<tr>
 														<td><b>Simples</b></td>
 														<td><input type="number"  v-model="num_cred_act_simp" class="input" /></td>
-														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_simp" class="input" /></td>
 														<td><input type="number" step="0.001" v-model="sal_orig_cred_act_simp" class="input" /></td>
+														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_simp" class="input" /></td>
 													</tr>
 												</tbody>
 											</table>
