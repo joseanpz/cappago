@@ -102,6 +102,7 @@ const DataTable = Vue.component('data-table', {
                 {
                     field: 'numero_solicitud',
                     label: 'Numero de Solicitud',
+                    
                     //width: '40',
                     //numeric: false
                 },
