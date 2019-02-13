@@ -500,26 +500,27 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     monto_simple_buro: function () {
-      console.log('in monto_simple_buro');
+      /*console.log('in monto_simple_buro');
       console.log(!this.solicitud.sal_orig_cred_act_simp);
       console.log(!this.solicitud.sal_orig_cred_act_arren);
       console.log(!this.solicitud.num_cred_act_simp);
       console.log(!this.solicitud.num_cred_act_arren);
 
       console.log(!this.solicitud.sal_orig_cred_act_simp || !this.solicitud.sal_orig_cred_act_arren || !this.solicitud.num_cred_act_simp || !this.solicitud.num_cred_act_arren);
+      */
 
       if (!this.solicitud.sal_orig_cred_act_simp || !this.solicitud.sal_orig_cred_act_arren || !this.solicitud.num_cred_act_simp || !this.solicitud.num_cred_act_arren) return null;
       var ret = ( parseFloat(this.solicitud.sal_orig_cred_act_simp) + parseFloat(this.solicitud.sal_orig_cred_act_arren) ) / ( parseFloat(this.solicitud.num_cred_act_simp) + parseFloat(this.solicitud.num_cred_act_arren) );
-      console.log('in monto simple buro');
-      console.log(ret);
+      // console.log('in monto simple buro');
+      // console.log(ret);
       return ret;
     },
 
     monto_revolvente_buro: function () {
       if (!this.solicitud.sal_orig_cred_act_revol || !this.solicitud.sal_orig_cred_act_fact || !this.solicitud.num_cred_act_revol || !this.solicitud.num_cred_act_fact) return null;
       var ret = ( parseFloat(this.solicitud.sal_orig_cred_act_revol) + parseFloat(this.solicitud.sal_orig_cred_act_fact) ) / ( parseFloat(this.solicitud.num_cred_act_revol) + parseFloat(this.solicitud.num_cred_act_fact) );
-      console.log('in monto revolvente buro');
-      console.log(ret);
+      // console.log('in monto revolvente buro');
+      // console.log(ret);
       return ret;
     },
 

@@ -19,7 +19,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
                       
 				</div>
 				<div class="column is-2">
-					<a class="button is-info is-outlined" @click="addAccountStetment">
+					<a class="button is-info is-outlined" @click="addAccountStatment">
 						<span class="icon is-small">
 							<i class="fas fa-check"></i>
 						</span>
@@ -101,7 +101,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
               	console.log(response);
               	self.banks = response.records;
               	if (typeof self.id_solicitud != 'undefined' && !!self.id_solicitud) {
-					self.readAccountStetments();	
+					self.readAccountStatments();	
 				}
             })
             .withFailureHandler(function(err){
@@ -111,13 +111,25 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
             .readCatalog('banco')
         },
 
-	    addAccountStetment: function () {
+	    addAccountStatment: function () {
 	    	console.log("adding acc statement");
 	    	
 	    	var count = this.acc_stmnt_count;
 	    	var statements = this.loadStatements(12);
-	    	console.log(statements);
+
+	    	// console.log(statements);
+
+	    	// if () {
+
+	    	// }
+			
 	    	if (this.account_statements.length < 3) {
+	    		for ( var i=0; i<this.account_statements.length; i++) {
+					if (this.selected_bank === this.account_statements[i].bank_id) {
+						alert("Por favor elija otro banco que no haya seleccionado anteriormente");
+						return;
+					}
+				}
 	    		this.acc_stmnt_count++;
 	    		this.account_statements.push({
 	        		id_local: count,
@@ -125,27 +137,29 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
     				bank_name: this.selected_bank_name,
     				statements: statements
     			});    			
+	    	} else {
+	    		alert("No puede elegir más de tres bancos.");
 	    	}
 	    	//console.log('meh');
 	    	//console.log(this.account_statements[0]);	        
 	    },
 
-	    readAccountStetments: function () {
+	    readAccountStatments: function () {
 			var self = this;
 	        google.script.run
 	        .withSuccessHandler(function(response){
-	          console.log('Reading saldos depositos');
-	          console.log(response);
-	          self.setAccountStetments(response.records);  // solicitud.numero_solicitud = response.numero_solicitud;
+				console.log('Reading saldos depositos');
+				console.log(response);
+				self.setAccountStatments(response.records);  // solicitud.numero_solicitud = response.numero_solicitud;
 	        })
 	        .withFailureHandler(function(err){
-	          console.log('An error ocurred while reading saldos depositos');
-	          console.log(err);
+				console.log('An error ocurred while reading saldos depositos');
+				console.log(err);
 	        })
 	        .readFKRelation('deposito_saldo', 'id_solicitud', this.id_solicitud);
 		},
 
-		setAccountStetments: function (records) {
+		setAccountStatments: function (records) {
 
 			var l = records.length;
 			if (l > 0) {
