@@ -11,20 +11,18 @@ const DataTable = Vue.component('data-table', {
                     <option value="desc">Default sort direction: DESC</option>
                 </b-select>
                 -->
+                <b-input type="text" v-model="query" placeholder="Buscar Solicitud"> </b-input>
                 <b-select v-model="perPage" :disabled="!isPaginated">
-                    <option value="5">5 per page</option>
-                    <option value="10">10 per page</option>
-                    <option value="15">15 per page</option>
-                    <option value="20">20 per page</option>
-                </b-select>
-                <div class="control">
-                    <button class="button" @click="currentPage = 2" :disabled="!isPaginated">Set page to 2</button>
+                    <option value="5">5 por página</option>
+                    <option value="10">10 por página</option>
+                    <option value="15">15 por página</option>
+                    <option value="20">20 por página</option>
+                </b-select>                
+                <div class="control is-flex">
+                    <b-switch v-model="isPaginated">Paginado</b-switch>
                 </div>
                 <div class="control is-flex">
-                    <b-switch v-model="isPaginated">Paginated</b-switch>
-                </div>
-                <div class="control is-flex">
-                    <b-switch v-model="isPaginationSimple" :disabled="!isPaginated">Simple pagination</b-switch>
+                    <b-switch v-model="isPaginationSimple" :disabled="!isPaginated">Paginación simple</b-switch>
                 </div>
             </b-field>
             <br/>
@@ -37,11 +35,9 @@ const DataTable = Vue.component('data-table', {
                 :default-sort-direction="defaultSortDirection"
                 :risk_levels="risk_levels"
                 >
-                <!--
-                default-sort="user.first_name">
-                -->
+
                 <template slot-scope="props">
-                    <b-table-column field="numero_solicitud" label="Solicitud" width="40" sortable>
+                    <b-table-column field="numero_solicitud" label="Solicitud" width="40">
                         {{ props.row.numero_solicitud }}
                     </b-table-column>
                     <b-table-column field="tipo_evaluacion_perfilador" label="Tipo evaluación">
@@ -97,7 +93,7 @@ const DataTable = Vue.component('data-table', {
         </section>`,
     data() {
 		return {
-            data: [],
+            raw_data: [],
             columns: [
                 {
                     field: 'numero_solicitud',
@@ -132,12 +128,21 @@ const DataTable = Vue.component('data-table', {
             isPaginationSimple: false,
             defaultSortDirection: 'asc',
             currentPage: 1,
-            perPage: 5  
+            perPage: 5,
+            query: null 
         }
     },
     
     created: function () {        
         this.readRiskLevels();
+        this.readSolicitudes();
+    },
+
+    computed: {
+        data: function () {
+            if (this.risk_levels.length === 0 || this.raw_data.length === 0) return [];
+            return this.setData(this.raw_data);
+        }
     },
 
     filters: {
@@ -179,9 +184,9 @@ const DataTable = Vue.component('data-table', {
             google.script.run
             .withSuccessHandler(function(response){
                 console.log('Response from "solicitudes".')
-                console.log(response);
-                self.setData(response.records);
-                //self.data = response.records;
+                // console.log(response);
+                // self.setData(response.records);
+                self.raw_data = response.records;
             })
             .withFailureHandler(function(err){
                 console.log('An error ocurred while fetching "solicitudes".')
@@ -194,8 +199,7 @@ const DataTable = Vue.component('data-table', {
           google.script.run
             .withSuccessHandler(function(response){
               console.log(response);
-              self.risk_levels = response.records;
-              self.readSolicitudes();
+              self.risk_levels = response.records;              
             })
             .withFailureHandler(function(err){
               console.log(err);
@@ -203,10 +207,16 @@ const DataTable = Vue.component('data-table', {
             .readCatalog('nivel_riesgo')
         },
 
-        setData: function (records) {
-            var self = this;
-            this.data = records.map(function(record){
-                console.log(record);
+        setData: function () {
+            var self = this, table_data;
+            if (!!this.query) {
+                table_data = this.raw_data.filter(item => item.numero_solicitud.match(this.query) );
+            } else {
+                table_data = this.raw_data;
+            }
+
+            return  table_data.map(function(record){
+                // console.log(record);
                 var nriesgo = self.risk_levels.find( item => item.id === record.id_nivel_riesgo);
                 if (typeof nriesgo != 'undefined') {
                     record.nivel_riesgo = nriesgo.nombre;

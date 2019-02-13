@@ -196,44 +196,6 @@ const DetailForm = Vue.component('detail', {
         console.log(activity);
         return activity.nombre;        
     },
-    /*numero_solicitud:function(){
-      var self = this;
-      if(!this.solicitud) return null;
-      console.log('numero_solicitud computed');
-      console.log(self.solicitud.numero_solicitud);
-      return self.solicitud.numero_solicitud;
-    },
-    tipo_evaluacion_perfilador:function(){
-      console.log('tipo_evaluacion_perfilador computed');
-      var self = this;
-      if(!this.solicitud) return null;
-      if (self.solicitud.tipo_evaluacion_perfilador === "1") return "EXT";
-      if (self.solicitud.tipo_evaluacion_perfilador === "2") return "NVO";
-      
-      return "N/A";
-    },
-    tipo_comprobante:function(){
-      console.log('tipo_comprobante computed');
-      var self = this;
-      if(!this.solicitud) return null;
-      if (self.solicitud.tipo_comprobante === "account_statements") return "Estados de Cuenta";
-      if (self.solicitud.tipo_comprobante === "financial_statements") return "Estados Financieros";
-      return "N/A";
-    },
-    decreto:function(){
-      console.log('decreto computed');
-      var self = this;
-      if(!this.solicitud) return null;
-      if (self.solicitud.decreto === "1") return "ESTUDIO";
-      if (self.solicitud.decreto === "2") return "DENEGADO";
-      if (self.solicitud.decreto === "3") return "PRE-APROBADO";
-      return "N/A";
-    },
-    score:function(){
-      var self = this;
-      if(!this.solicitud) return null;
-      return self.solicitud.score;
-    }*/
   },
   
 	methods: {
@@ -247,7 +209,7 @@ const DetailForm = Vue.component('detail', {
           
 					var img = canvas.toDataURL("image/url",1.0);  
 					var doc = new jsPDF('p', 'pt', 'letter')
-					doc.addImage(img, 'JPEG',25,25,560,750);
+					doc.addImage(img, 'JPEG',25,75,560,650);
           
 					doc.save('CapacidadPago_'+self.solicitud.numero_solicitud+'.pdf');
            document.getElementById("header_PDF").style.display = "none";
