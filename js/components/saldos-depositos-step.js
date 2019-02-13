@@ -237,15 +237,20 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 			    		id_local: i,
 			    		id_solicitud: this.id_solicitud,
 			    		id_banco: this.selected_bank,
-		    			mes: '2019-01',
+		    			mes: this.getdate(i),
 		    			deposito: 0,
 		    			saldo: 0,
 		    			synced: false
 		    		});
 	    	  	}
-	    	return stmnts;
+	    	return stmnts; 
 	    },
-
+	    getdate:function(i){
+	    	var fechaAct = new Date();
+	    	fechaAct = new Date(fechaAct.getFullYear(), fechaAct.getMonth() - 11, 0); 	    	
+	    	var nuevafecha =  new Date(new Date(fechaAct.getFullYear(), fechaAct.getMonth() +i,1)).toJSON().slice(0,7);
+	    	return nuevafecha;
+	    },
 	    save: function () {
 	    	console.log('thrid marker');
 	    	var to_be_created = [], to_be_updated = [];

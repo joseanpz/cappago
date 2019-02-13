@@ -79,7 +79,7 @@ const DetailForm = Vue.component('detail', {
           </div>    
         </div>
         <div class="footer columns" style="display:none; bottom: 0; padding:10px; height:150px;" id="div_footer"> 
-          <div style="font-weight:bold; font-size: 26px; text-align: center;" class="column is-3">banregio | riesgos</div>
+          <div style="font-weight:bold; font-size: 20px; text-align: center;" class="column is-4">banregio | Inteligencia de riesgos</div>
           <div class="column" style="text-align: right;">
             <p><b>Banco Regional, S.A</b></p>
             <p><b>Institución de Banca Múltiple, Banregio Grupo Financiero. </b></p>
@@ -211,7 +211,7 @@ const DetailForm = Vue.component('detail', {
 					var doc = new jsPDF('p', 'pt', 'letter')
 					doc.addImage(img, 'JPEG',25,75,560,650);
           
-					doc.save('Solicitud_'+self.solicitud.numero_solicitud+'.pdf');
+					doc.save('CapacidadPago_'+self.solicitud.numero_solicitud+'.pdf');
            document.getElementById("header_PDF").style.display = "none";
            document.getElementById("div_footer").style.display = "none";
 				}
