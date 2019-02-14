@@ -8,8 +8,8 @@ const Results = Vue.component('results', {
 			<div class="card-content">	
 				<div class="content columns">
 					<div class="card column">
-						<header class="card-header">
-							<p class="card-header-title">Simples</p>
+						<header class="header-sec-card">
+							<p class="card-header-title title-color">Simples</p>
 						</header>
 						<div class="card-content">	
 							<div class="content columns">
@@ -42,8 +42,8 @@ const Results = Vue.component('results', {
 						</div>
 					</div>
 					<div class="card column">
-						<header class="card-header">
-							<p class="card-header-title">Revolventes</p>
+						<header class="header-sec-card">
+							<p class="card-header-title title-color">Revolventes</p>
 						</header>
 						<div class="card-content">	
 							<div class="content columns">
