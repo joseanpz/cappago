@@ -725,8 +725,7 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     saveSolicitudeBalDep: function () {
-      this.saveSolicitude();
-      console.log('first marker');
+      this.saveSolicitude();      
       this.$refs.laboral.saveBalancesDeposits();
       return true;
     },

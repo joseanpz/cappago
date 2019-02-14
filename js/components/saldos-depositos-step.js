@@ -116,12 +116,6 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	    	
 	    	var count = this.acc_stmnt_count;
 	    	var statements = this.loadStatements(12);
-
-	    	// console.log(statements);
-
-	    	// if () {
-
-	    	// }
 			
 	    	if (this.account_statements.length < 3) {
 	    		for ( var i=0; i<this.account_statements.length; i++) {
@@ -193,23 +187,9 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 						this.acc_stmnt_count +=1
 					}
 				}
-			}
-
-			
+			}		
 			
 		},
-	    /*addStatement: function(id) {
-
-	    	if (this.account_statements.find(elm => elm.id == id).statements.length < 12) {
-		    	this.account_statements.find(elm => elm.id == id).statements.push({
-		    		id: this.acc_stmnt_count,
-	    			month: null,
-	    			deposits: null,
-	    			balance: null
-	    		});
-	    		this.acc_stmnt_count++;
-	    	}	
-	    },*/
 
 	    deleteAccountStatement: function(id) {
 	    	var self = this;
@@ -259,14 +239,16 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	    	  	}
 	    	return stmnts; 
 	    },
+
 	    getdate:function(i){
 	    	var fechaAct = new Date();
 	    	fechaAct = new Date(fechaAct.getFullYear(), fechaAct.getMonth() - 11, 0); 	    	
 	    	var nuevafecha =  new Date(new Date(fechaAct.getFullYear(), fechaAct.getMonth() +i,1)).toJSON().slice(0,7);
 	    	return nuevafecha;
 	    },
+
 	    save: function () {
-	    	console.log('thrid marker');
+	    	
 	    	var to_be_created = [], to_be_updated = [];
 	    	for (var i=0; i < this.account_statements.length; i++ ) {
 	    		var statement = this.account_statements[i];

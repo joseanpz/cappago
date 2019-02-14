@@ -116,7 +116,7 @@ var LaboralStep = Vue.component('laboral-step',{
 			.readCatalog('actividad')
         },
         saveBalancesDeposits: function () {
-        	console.log('second marker');
+        	
         	this.$refs.saldo_deposito.save();
         },
 
