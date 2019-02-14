@@ -13,7 +13,7 @@ const Results = Vue.component('results', {
 						</header>
 						<div class="card-content">	
 							<div class="content columns">
-								<table class="column table is-bordered is-striped" style="width:100%">
+								<table class="column table  " style="width:100%">
 									<tr>
 										<td class="alinea_text">Monto solicitado</td>
 										<td>{{monto_solicitado.simple}}</td>
@@ -47,7 +47,7 @@ const Results = Vue.component('results', {
 						</header>
 						<div class="card-content">	
 							<div class="content columns">
-								<table class="column table is-bordered is-striped" style="width:100%">
+								<table class="column table " style="width:100%">
 									<tr>
 										<td class="alinea_text">Monto solicitado</td>
 										<td>{{monto_solicitado.revolvente}}</td>

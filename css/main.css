@@ -204,7 +204,7 @@ select:focus select:before {
 }
 
 .header-sec-card{
-	border:1px solid #3a5fab;
+	border:0px solid #3a5fab;
 }
 
 .titulos{
@@ -214,4 +214,11 @@ select:focus select:before {
 .alinea_text{
 	text-align: right;
 	font-weight: bold;
+}
+
+
+/* table style */
+
+.results  table td {
+	border: 0px !important;
 }
