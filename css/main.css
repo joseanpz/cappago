@@ -219,6 +219,6 @@ select:focus select:before {
 
 /* table style */
 
-.results  table td {
+.card  table td, th {
 	border: 0px !important;
 }

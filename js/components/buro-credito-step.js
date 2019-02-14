@@ -11,12 +11,12 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 						<div class="columns">
 							<div class="column">
 								<div class="card">
-									<header class="card-header">
-										<p class="card-header-title">Segmento califica</p>
+									<header class="header-sec-card">
+										<p class="card-header-title title-color">Segmento califica</p>
 									</header>
 									<div class="card-content">	
 										<div class="content">
-											<table class="table is-bordered">
+											<table class="table ">
 												<tr>
 													<td><label class="label">Indicadora de Acreditados Sin Atraso (<b>BK12_CLEAN</b>): </label></td>
 													<td><input type="number" step="0.001" v-model="BK12_CLEAN" class="input" /> </td>
@@ -40,18 +40,18 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 							</div>
 							<div class="column">
 								<div class="card">
-									<header class="card-header">
-										<p class="card-header-title">Reporte de buro de credito (Resumen)</p>
+									<header class="header-sec-card">
+										<p class="card-header-title title-color">Reporte de buro de credito (Resumen)</p>
 									</header>
 									<div class="card-content">	
 										<div class="content">								
-											<table class="table is-bordered">
+											<table class="table ">
 												<thead>
 													<tr>
-														<th style="border: 1px solid #3a5fab;">Tipo de credito</th>
-														<th style="border: 1px solid #3a5fab;">Numero de creditos</th>
-														<th style="border: 1px solid #3a5fab;">Original</th>
-														<th style="border: 1px solid #3a5fab;">Vigente</th>
+														<th >Tipo de credito</th>
+														<th >Numero de creditos</th>
+														<th >Original</th>
+														<th >Vigente</th>
 													</tr>								
 												</thead>
 												<tbody>
