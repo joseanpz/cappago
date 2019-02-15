@@ -106,8 +106,11 @@ const EvalFormWizard = Vue.component('eval-form', {
         @acc-capital-change="setAccCapital"
         @debtor-qual-change="setDebtorQual"
         @annual-sales-change="setAnnualSales"
+        @short-term-debt-change="setShortTermDebt"
+        @finantial-passive-change="setFinantialPassive"
 
         ref="estado_general"
+        :tipo_comprobante="solicitud.tipo_comprobante"
         :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
         :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
         :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
@@ -176,6 +179,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         ventas_anuales: null,
         // flujo_disponible_mensual : null,  
         uafir: null,
+        deuda_cortoplazo: null,
+        pasivo_financiero_corto: null,
         capital_contable: null,
         destino_credito: null,
         antiguedad_actividad: null,
@@ -927,7 +932,14 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
     setRevolvingCredits: function(val) {
     	this.revolving_credits = val;
-    } 
+    },
+    setShortTermDebt: function(val) {
+      this.solicitud.deuda_cortoplazo = val;      
+    },
+    setFinantialPassive: function(val) {
+      this.solicitud.pasivo_financiero_corto = val;      
+    }
+
   },
 
   watch: {
