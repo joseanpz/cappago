@@ -8,7 +8,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
 	   <!-- build:css -->    
-    <!-- endbuild -->
+    <!-- endbuild --> 
     <style>
       .navbar.is-primary {
         background-color: #FF681E;
@@ -18,6 +18,11 @@
       .footer{
         background-color: #3a5fab !important;
         color:white;
+      }    
+
+      .navbar.is-primary .navbar-brand .navbar-link.is-active, .navbar.is-primary .navbar-brand .navbar-link:hover, .navbar.is-primary .navbar-brand>a.navbar-item.is-active, .navbar.is-primary .navbar-brand>a.navbar-item:hover {
+          background-color: #FF681E;
+          color: #fff;
       }
 
 
@@ -28,7 +33,7 @@
 
     <div id="app">
     <nav class="navbar is-primary">
-        <div class="container">
+        <div class="container" style=" margin: auto;">
           <div class="navbar-brand"> 
             <a class="navbar-item" href="#/" style="font-weight:bold;">
               banregio

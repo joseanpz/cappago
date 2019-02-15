@@ -66,16 +66,11 @@ var CreditoStep = Vue.component('credito-step',{
 			                			</div>		            				
 										<b-field v-for="credit in revolving_credits" :key="credit.id_local"> 
 			  								<div class="columns">
-				                				<div class="column is-9">
+				                				<div class="column is-11">
 				                				<b-input type="number" step="0.01" v-model="credit.monto"></b-input>
 				                				</div>
 				                				<div class="column">
-				                					<a class="button is-danger is-outlined "  style="justify-content: center;" @click="deleteCredit(credit.id_local, 'revolvente')">
-												    <span>Borrar</span>
-												    <span class="icon is-small">
-												      <i class="fas fa-times"></i>
-												    </span>
-												 </a>
+				                					<a class="btn-delete is-outlined tooltip is-tooltip-right" data-tooltip="Eliminar" @click="deleteCredit(credit.id_local, 'revolvente')"><i class="fas fa-times fa-2x"></i></a>				                					
 				                				</div>
 				                			</div>			  							
 										</b-field>
@@ -98,19 +93,14 @@ var CreditoStep = Vue.component('credito-step',{
 			                		</div>                		
 			  							<b-field v-for="credit in simple_credits"  :key="credit.id_local"> 
 			  								<div class="columns">
-			  									<div class="column is-5">
+			  									<div class="column">
 			  										<b-input type="number" step="0.01"  v-model="credit.monto"></b-input>
 			  									</div>
-				  								<div class="column is-5">
+				  								<div class="column">
 			  										<b-input type="number" step="0.01"  v-model="credit.plazo"></b-input>
 			  									</div>
-			  									<div class="column is-5">
-			  										<a class="button is-danger is-outlined"  @click="deleteCredit(credit.id_local, 'simple')">
-												    <span >Borrar</span>
-												    <span class="icon is-small">
-												      <i class="fas fa-times"></i>
-												    </span>
-												</a>
+			  									<div class="column is-1">
+			  									<a class="btn-delete is-outlined tooltip is-tooltip-right" data-tooltip="Eliminar" @click="deleteCredit(credit.id_local, 'simple')"><i class="fas fa-times fa-2x"></i></a>			  										
 			  									</div>			  											  							
 											</div>
 			  							</b-field> 

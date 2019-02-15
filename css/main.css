@@ -216,6 +216,9 @@ select:focus select:before {
 	font-weight: bold;
 }
 
+.btn-delete, .btn-delete:hover{
+	color:red;
+}
 
 /* table style */
 
