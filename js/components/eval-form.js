@@ -54,6 +54,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         @eval-type-change="setEvalType"          
         @acc-statements-change="setAccountStatements"
 
+        :tipo_comprobante="solicitud.tipo_comprobante"
         :id_solicitud="solicitud.id"
         ref="laboral"
         :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"

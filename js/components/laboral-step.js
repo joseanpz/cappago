@@ -1,5 +1,5 @@
 var LaboralStep = Vue.component('laboral-step',{
-	props: ['id_solicitud', 'linea', 'capacidad_pago', 'monto_solicitado', 'monto_maximo', 'ingreso_vs_deuda', 'razon_flujo_tasa', 'razon_flujo_rec_capital'],
+	props: ['id_solicitud', 'linea', 'capacidad_pago', 'monto_solicitado', 'monto_maximo', 'ingreso_vs_deuda', 'razon_flujo_tasa', 'razon_flujo_rec_capital','tipo_comprobante'],
 	template: `
 		<section class="container">
 			<div class="card">
@@ -124,7 +124,7 @@ var LaboralStep = Vue.component('laboral-step',{
 			.readCatalog('actividad')
         },
         saveBalancesDeposits: function () {
-        	
+        	if(typeof this.$refs.saldo_deposito != 'undefined') return;
         	this.$refs.saldo_deposito.save();
         },
 
