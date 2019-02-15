@@ -39,14 +39,22 @@ var LaboralStep = Vue.component('laboral-step',{
 						</div>
 
 						<div class="columns">	
-							<div class="column is-6">						
-								<label class="label">Tipo de comprobantes de ingresos: </label>
-								<b-radio v-model="tipo_comprobante" size="is-normal"  native-value="account_statements"> 
-						        	Estados de Cuenta 
-					    		</b-radio>
-								<b-radio v-model="tipo_comprobante" size="is-normal" class="form-color" native-value="financial_statements"> 
-						        	Estados Financieros  
-						    	</b-radio>
+							<div class="column is-6">	
+								<div class="columns">
+								<div class="column"><label class="label">Tipo de comprobantes de ingresos: </label></div>
+								</div>
+								<div class="columns">
+									<div class="column">
+										<b-radio class="label titulos" v-model="tipo_comprobante" size="is-normal"  native-value="account_statements"> 
+								        	Estados de Cuenta 
+							    		</b-radio>
+									</div>
+									<div class="column">
+										<b-radio class="label titulos" v-model="tipo_comprobante" size="is-normal"  native-value="financial_statements"> 
+								        	Estados Financieros  
+								    	</b-radio>
+									</div>
+								</div>																										
 							</div>
 							<div class="column is-2">
 								<label class="label titulos">Actividad: </label>

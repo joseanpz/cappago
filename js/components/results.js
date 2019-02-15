@@ -7,7 +7,7 @@ const Results = Vue.component('results', {
 			</header>
 			<div class="card-content">	
 				<div class="content columns">
-					<div class="card column">
+					<div class="card column" style="margin: 5px;">
 						<header class="header-sec-card">
 							<p class="card-header-title title-color">Simples</p>
 						</header>
@@ -41,7 +41,7 @@ const Results = Vue.component('results', {
 							</div>
 						</div>
 					</div>
-					<div class="card column">
+					<div class="card column" style="margin: 5px;">
 						<header class="header-sec-card">
 							<p class="card-header-title title-color">Revolventes</p>
 						</header>

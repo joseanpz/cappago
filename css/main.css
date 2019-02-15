@@ -97,6 +97,9 @@ select:focus select:before {
 	font-size:12px;
 	color: #3a5fab !important;	
 	font-weight: bold;
+	text-align: center;
+	margin: auto;
+	padding:auto;
 }
 
 .card-header{
@@ -209,6 +212,8 @@ select:focus select:before {
 
 .titulos{
 	text-align: right;
+	margin: auto;
+	padding: auto;
 }
 
 .alinea_text{
