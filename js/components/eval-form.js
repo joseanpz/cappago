@@ -286,6 +286,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         uafir: this.solicitud.uafir,
         ventas_anuales: this.solicitud.ventas_anuales,
         nivel_riesgo: this.nivel_riesgo,
+        exp_creditos_largos: this.solicitud.exp_creditos_largos,
 
         /*factor_monto_maximo: this.factor_monto_maximo,
         factor_recuperacion_capital: this.factor_recuperacion_capital,
@@ -794,7 +795,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.buro_credito.sal_orig_cred_act_fact = response.sal_orig_cred_act_fact;
       this.$refs.buro_credito.sal_orig_cred_act_revol = response.sal_orig_cred_act_revol;
       this.$refs.buro_credito.sal_orig_cred_act_simp = response.sal_orig_cred_act_simp;
-      this.$refs.buro_credito.exp_creditos_largos = response.exp_creditos_largos;  
+      this.$refs.buro_credito.exp_creditos_largos = (response.exp_creditos_largos === "true");  
       this.$refs.estado_general.uafir = response.uafir;
       this.$refs.estado_general.capital_contable = response.capital_contable;
       this.$refs.estado_general.ventas_anuales = response.ventas_anuales;
