@@ -53,10 +53,10 @@ const DataTable = Vue.component('data-table', {
                         {{ props.row.tipo_comprobante | comprobante }}
                     </b-table-column> 
                     <b-table-column field="linea_simple" label="Linea simple">
-                        {{ props.row.linea_simple_sugerida }}
+                        {{ Math.round(props.row.linea_simple_sugerida) }}
                     </b-table-column>
                     <b-table-column field="linea_revolvente" label="Linea revolvente">
-                        {{ props.row.linea_revolvente_sugerida }}
+                        {{ Math.round(props.row.linea_revolvente_sugerida) }}
                     </b-table-column>                    
   
                     <!--
@@ -88,6 +88,7 @@ const DataTable = Vue.component('data-table', {
                     </b-table-column>
                 </template>
             </b-table>
+            <label style="color:#3a5fab;"><b>*</b>Cantidades en Miles</label>
 
             <!--<pre> {{ risk_levels | pretty}} </pre>-->
         </section>`,

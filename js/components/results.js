@@ -35,7 +35,7 @@ const Results = Vue.component('results', {
 										<td>{{monto_maximo.simple}}</td>
 									</tr>
  										<td class="alinea_text">Monto</td>
-										<td>{{linea.simple}}</td>
+										<td>{{ linea.simple }}</td>
 									</tr>
 								</table>
 							</div>
@@ -70,15 +70,25 @@ const Results = Vue.component('results', {
 									</tr>
 									<tr>
 										<td class="alinea_text">Linea</td>
-										<td>{{linea.revolvente}}</td>
+										<td>{{ linea.revolvente  }}</td>
 									</tr>
 								</table>
 							</div>
 						</div>
 					</div>
-
-				</div> 							
+				</div>
+				<div class="columns">
+					<div class="column">
+						<label style="color:#3a5fab;" class="column"><b>*</b>Cantidades en Miles</label>
+					</div>
+					<div class="column">
+						<label style="color:#3a5fab;" class="column"><b>*</b>Cantidades en Miles</label>
+					</div>
+					
+				</div>
 			</div>
 		</div>
 	`
-});
+}
+
+);
