@@ -225,6 +225,23 @@ select:focus select:before {
 	color:red;
 }
 
+.is-checkradio[type="checkbox"]:hover:not([disabled]) + label::before, .is-checkradio[type="checkbox"]:hover:not([disabled]) + label::before, .is-checkradio[type="radio"]:hover:not([disabled]) + label::before, .is-checkradio[type="radio"]:hover:not([disabled]) + label::before {
+    border-color: #3a5fab !important;
+}
+.is-checkradio[type=checkbox]:hover:not([disabled])+label::before, .is-checkradio[type=checkbox]:hover:not([disabled])+label:before, .is-checkradio[type=radio]:hover:not([disabled])+label::before, .is-checkradio[type=radio]:hover:not([disabled])+label:before {
+    border-color: #3a5fab!important;
+}
+.is-checkradio[type=checkbox]+label::after, .is-checkradio[type=checkbox]+label:after {
+    box-sizing: border-box;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    border-width: .1rem;
+    border-style: solid;
+    border-color: #3a5fab;
+    border-top: 0;
+    border-left: 0;
+}
+
 /* table style */
 
 .card  table td, th {
