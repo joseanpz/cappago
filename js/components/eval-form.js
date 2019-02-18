@@ -402,18 +402,24 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     guarantee_factor: function () {
       if (!this.solicitud.garantia) {
-        return null;
+        return 1;
       } else if (this.solicitud.garantia === "1" || this.solicitud.garantia === "2" || this.solicitud.garantia === "3") {
         return 1;
       } else if (this.solicitud.garantia === "4" || this.solicitud.garantia === "5") {
-        return 0.8;
+        return 1;
       }
     },
 
     INGRESO_MENSUAL: function () {        
       if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (!this.deposits_month_avg || !this.balances_month_avg) return null;
-        return Math.min(this.deposits_month_avg * this.guarantee_factor, this.balances_month_avg * this.guarantee_factor / this.config.factor1) ; 
+        if (!this.deposits_month_avg || !this.balances_month_avg || !this.solicitud.id_nivel_riesgo) return null;
+        if (parseInt(this.solicitud.id_nivel_riesgo) < 4) {
+          return Math.max(this.deposits_month_avg * this.guarantee_factor, this.balances_month_avg * this.guarantee_factor / this.config.factor1) ; 
+        } else if (parseInt(this.solicitud.id_nivel_riesgo) < 6) {
+          return (parseFloat(this.deposits_month_avg * this.guarantee_factor) + parseFloat(this.balances_month_avg * this.guarantee_factor / this.config.factor1)) / 2 ; 
+        } else {
+          return Math.min(this.deposits_month_avg * this.guarantee_factor, this.balances_month_avg * this.guarantee_factor / this.config.factor1) ;   
+        }        
       } else {
         if (!this.solicitud.ventas_anuales) return null;
         console.log('ingreso mensual estado financieros');
@@ -423,7 +429,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     INGRESO_ANUAL: function () {
       if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (!this.deposits_month_avg || !this.balances_month_avg) return null;
+        if (!this.deposits_month_avg || !this.balances_month_avg || !this.solicitud.id_nivel_riesgo) return null;
         return 12 * this.INGRESO_MENSUAL;
       } else {
         if (!this.solicitud.ventas_anuales) return null;
@@ -443,8 +449,14 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     FLUJO_MENSUAL: function () {
       if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (!this.deposits_month_avg || !this.balances_month_avg) return null;
-        return Math.min(this.deposits_month_avg * this.factor_uafir, this.balances_month_avg * this.guarantee_factor) ; 
+        if (!this.deposits_month_avg || !this.balances_month_avg || !this.solicitud.id_nivel_riesgo) return null;
+        if (parseInt(this.solicitud.id_nivel_riesgo) < 4) {
+          return Math.max(this.deposits_month_avg * this.factor_uafir, this.balances_month_avg * this.guarantee_factor) ; 
+        } else if (parseInt(this.solicitud.id_nivel_riesgo) < 6) {
+          return (parseFloat(this.deposits_month_avg * this.factor_uafir) + parseFloat(this.balances_month_avg * this.guarantee_factor)) / 2 ; 
+        } else {
+          return Math.min(this.deposits_month_avg * this.factor_uafir, this.balances_month_avg * this.guarantee_factor) ;   
+        }        
       } else {
         if (!this.solicitud.id_nivel_riesgo || !this.solicitud.id_actividad || !this.INGRESO_MENSUAL || !this.solicitud.uafir) return null;
         if (parseInt(this.solicitud.id_nivel_riesgo) < 5 ) {
@@ -459,7 +471,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     FLUJO_ANUAL: function () {
       if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (!this.deposits_month_avg || !this.balances_month_avg) return null;
+        if (!this.deposits_month_avg || !this.balances_month_avg || !this.solicitud.id_nivel_riesgo) return null;
         return   12 * this.FLUJO_MENSUAL;
       } else {
         if (!this.solicitud.id_nivel_riesgo || !this.solicitud.id_actividad || !this.INGRESO_MENSUAL || !this.solicitud.uafir) return null;
@@ -608,7 +620,7 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     capacidad_pago_smp: function () {
-      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.solicitud.pasivo_financiero_corto ) return null;
+      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.solicitud.pasivo_financiero_corto || !this.config ) return null;
       var valor_actual = this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva; 
       if (this.solicitud.tipo_comprobante === "account_statements"){
         return valor_actual - this.solicitud.pasivo_financiero_corto;
