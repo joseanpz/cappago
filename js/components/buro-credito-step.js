@@ -87,6 +87,30 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 							</div>
 						</div>					
 					</div>
+
+						<div class="columns">
+							<div class="column is-6">
+								<div class="card">
+									<header class="header-sec-card">
+										<p class="card-header-title title-color">Experiencia en creditos</p>
+									</header>
+									<div class="card-content">	
+										<div class="content">								
+											<table class="table">												
+												<tbody>
+													<tr>
+														<td><b>Tiene Experiencia con creditos largos?</b></td>
+														<td><input type="checkbox"  v-model="exp_creditos_largos"/></td>														
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
 				</div>
 			</div>
 			<results v-bind="$props"></results>			
@@ -109,7 +133,8 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 			sal_orig_cred_act_arren: null,
 			sal_orig_cred_act_fact: null,
 			sal_orig_cred_act_revol: null,
-			sal_orig_cred_act_simp: null
+			sal_orig_cred_act_simp: null,
+			exp_creditos_largos: null
 		}
 	},
 
@@ -165,6 +190,9 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 		},
 		sal_orig_cred_act_simp: function (val) {
 			this.$emit('sal-orig-simp-change', val);
+		},
+		exp_creditos_largos: function (val) {
+			this.$emit('large-credit-experience', val);
 		},
 		
 	}

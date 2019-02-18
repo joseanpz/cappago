@@ -86,6 +86,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         @sal-orig-fact-change="setSalOrigFact"
         @sal-orig-revol-change="setSalOrigRevol"
         @sal-orig-simp-change="setSalOrigSimp"
+        @large-credit-experience="setLargeExpCredit"
 
         ref="buro_credito"
         :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
@@ -202,7 +203,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         sal_orig_cred_act_arren: null,
         sal_orig_cred_act_fact: null,
         sal_orig_cred_act_revol: null,
-        sal_orig_cred_act_simp: null
+        sal_orig_cred_act_simp: null,
+        exp_creditos_largos: null
       },        
   		account_statements: [],
   		simple_credits: [],
@@ -302,6 +304,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         sal_orig_cred_act_fact: this.solicitud.sal_orig_cred_act_fact,
         sal_orig_cred_act_revol: this.solicitud.sal_orig_cred_act_revol,
         sal_orig_cred_act_simp: this.solicitud.sal_orig_cred_act_simp,
+        exp_creditos_largos: this.solicitud.exp_creditos_largos,
         monto_simple_buro: this.monto_simple_buro,
         monto_revolvente_buro: this.monto_revolvente_buro,
         monto_maximo_smp: this.monto_maximo_smp,
@@ -714,6 +717,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.buro_credito.sal_orig_cred_act_fact = response.sal_orig_cred_act_fact;
       this.$refs.buro_credito.sal_orig_cred_act_revol = response.sal_orig_cred_act_revol;
       this.$refs.buro_credito.sal_orig_cred_act_simp = response.sal_orig_cred_act_simp;
+      this.$refs.buro_credito.exp_creditos_largos = response.exp_creditos_largos;  
       this.$refs.estado_general.uafir = response.uafir;
       this.$refs.estado_general.capital_contable = response.capital_contable;
       this.$refs.estado_general.ventas_anuales = response.ventas_anuales;
@@ -925,6 +929,9 @@ const EvalFormWizard = Vue.component('eval-form', {
     setSalOrigSimp: function(val) {
       this.solicitud.sal_orig_cred_act_simp = val;
     },
+    setLargeExpCredit: function(val) {
+      this.solicitud.exp_creditos_largos = val;
+    },  
     setAccountStatements: function(val) {
     	this.account_statements = val;
     },
