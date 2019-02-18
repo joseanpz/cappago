@@ -39,13 +39,13 @@ const DetailForm = Vue.component('detail', {
                 <tr>
                 <tr>
                   <td><label class="label">Decreto:</label></td>
-                  <td class="">{{ solicitud.decreto | decreto }}</td>
+                  <td class="">{{ decreto }}</td>
                   <td><label class="label">Score:</label></td>
                   <td class="">{{ solicitud.score }}</td>
                 </tr>
                 <tr>
                   <td><label class="label">Nivel de riesgo:</label></td>
-                  <td class="">{{ nivel_riesgo.nombre }}</td>
+                  <td class="">{{ nivel_riesgo_nombre }}</td>
                   <td><label class="label"></label></td>
                   <td class=""></td>
                 </tr>
@@ -65,7 +65,7 @@ const DetailForm = Vue.component('detail', {
                 
                 <tr>
                   <td><label class="label">Tasa :</label></td>
-                  <td class="td-cantidad">{{ nivel_riesgo.tasa * 100 }}%</td>
+                  <td class="td-cantidad">{{ nivel_riesgo_tasa * 100 }}%</td>
                   <td></td>
                   <td></td>
                 </tr>
@@ -120,6 +120,7 @@ const DetailForm = Vue.component('detail', {
         id_nivel_riesgo: null,
         numero_solicitud: null,
         tipo_comprobante: null,
+        plazo_simple: null,
         linea_simple_sugerida: null,
         linea_revolvente_sugerida: null,
         garantia: null,
@@ -149,7 +150,8 @@ const DetailForm = Vue.component('detail', {
         sal_orig_cred_act_arren: null,
         sal_orig_cred_act_fact: null,
         sal_orig_cred_act_revol: null,
-        sal_orig_cred_act_simp: null
+        sal_orig_cred_act_simp: null,
+        exp_creditos_largos: null
       },
       risk_levels: [], 
       activities: [],
@@ -169,6 +171,18 @@ const DetailForm = Vue.component('detail', {
               nivel_riesgo: this.nivel_riesgo,                  
         }
     },
+     decreto: function() {
+      if (!this.solicitud.decreto) return null;
+      if (this.solicitud.decreto === "1") return "ESTUDIO";
+      if (this.solicitud.decreto === "2") return "DENEGADO";
+      if (this.solicitud.decreto === "3"){
+        console.log('decreto');
+        console.log(this.solicitud);
+        if (!!this.solicitud.plazo_simple && parseInt(this.solicitud.plazo_simple) >= 48 && !this.solicitud.exp_creditos_largos) return "ESTUDIO";
+        return "PRE-APROBADO"
+      } ;
+      return "N/A";
+    },
     nivel_riesgo: function() {
       var self = this;
       console.log('nivel_riesgo computed');
@@ -183,6 +197,14 @@ const DetailForm = Vue.component('detail', {
         });
         console.log(nriesgo);
         return nriesgo;        
+    },
+    nivel_riesgo_nombre: function () {
+      if (!this.nivel_riesgo) return null;
+      return this.nivel_riesgo.nombre;
+    },
+    nivel_riesgo_tasa: function () {
+      if (!this.nivel_riesgo) return null;
+      return this.nivel_riesgo.tasa;
     },
     actividad: function() {
       var self = this;
@@ -290,17 +312,20 @@ const DetailForm = Vue.component('detail', {
       this.solicitud.sal_orig_cred_act_fact = response.sal_orig_cred_act_fact;
       this.solicitud.sal_orig_cred_act_revol = response.sal_orig_cred_act_revol;
       this.solicitud.sal_orig_cred_act_simp = response.sal_orig_cred_act_simp;
+      this.solicitud.exp_creditos_largos = (response.exp_creditos_largos === "true"); 
       this.solicitud.uafir = response.uafir;
       this.solicitud.capital_contable = response.capital_contable;
       this.solicitud.ventas_anuales = response.ventas_anuales;
       this.solicitud.calificacion_deudor = response.calificacion_deudor;
       this.solicitud.tipo_evaluacion_perfilador = response.tipo_evaluacion_perfilador;
       this.solicitud.decreto = response.decreto;
+      this.solicitud.plazo_simple = response.plazo_simple;
       this.solicitud.score = response.score;
       this.solicitud.id_nivel_riesgo = response.id_nivel_riesgo;
       this.solicitud.linea_revolvente_sugerida = response.linea_revolvente_sugerida;
       this.solicitud.linea_simple_sugerida = response.linea_simple_sugerida;
-    },  
+    },
+   
     /* readActivities: function(){
       var self = this;
       google.script.run
@@ -323,22 +348,21 @@ const DetailForm = Vue.component('detail', {
           return null;
       }
     },
+
     comprobante: function(value) {
         if (value === "account_statements") return "Estados de Cuenta";
         if (value === "financial_statements") return "Estados Financieros";
         return "N/A";
     },
+
     tipo_evaluacion_perfilador: function(value) {
         if (value === "1") return "EXT";
         if (value === "2") return "NVO";
         return "N/A";
     }, 
-    decreto: function(value) {
-        if (value === "1") return "ESTUDIO";
-        if (value === "2") return "DENEGADO";
-        if (value === "3") return "PRE-APROBADO";
-        return "N/A";
-    },
+
+    
+
     monto_redondeado:function(value){
     if(!!value){      
       if(value >1000){
@@ -350,6 +374,7 @@ const DetailForm = Vue.component('detail', {
         return null;
       }
     },
+
     monto_etiquetas:function(value){
     if(!!value){      
       if(value >1000){
