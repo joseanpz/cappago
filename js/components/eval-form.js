@@ -564,7 +564,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       if (!this.nivel_riesgo || !this.INGRESO_ANUAL || !this.solicitud.deuda_total) return null;
       return this.nivel_riesgo.smp_factor * this.INGRESO_ANUAL - this.solicitud.deuda_total;
     },
-    
+
     dif_deuda_ingreso: function () {
       if (!this.nivel_riesgo || !this.INGRESO_ANUAL || !this.solicitud.deuda_total) return null;
       return this.nivel_riesgo.smp_factor * this.INGRESO_ANUAL - this.solicitud.deuda_total;
@@ -605,28 +605,55 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     // lineas de credito
-    linea_simple: function () {
+    linea_simple_prev: function () {
       if (this.solicitud.tipo_comprobante === "account_statements"){
         if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp || !this.monto_maximo_smp ) return null;
-        return Math.min(this.monto_simple, this.capacidad_pago_smp, this.dif_deuda_ingreso_smp, 
+        return Math.min(this.monto_simple, this.capacidad_pago_smp,
           this.razon_FDA_FRC_smp, this.monto_maximo_smp);
       } else {
-        if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp || !this.monto_maximo_smp || !this.tope_capital_contable_smp_rev) return null;
-        return Math.min(this.monto_simple, this.capacidad_pago_smp, this.dif_deuda_ingreso_smp, 
-          this.razon_FDA_FRC_smp, this.monto_maximo_smp, this.tope_capital_contable_smp_rev);
+        if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp || !this.monto_maximo_smp ) return null;
+        return Math.min(this.monto_simple, this.capacidad_pago_smp, 
+          this.razon_FDA_FRC_smp, this.monto_maximo_smp);
       }        
     },
 
-    linea_revolvente: function () {
+    linea_revolvente_prev: function () {
       if (this.solicitud.tipo_comprobante === "account_statements"){
         if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo_rev) return null;
-        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.dif_deuda_ingreso_rev, 
+        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, 
           this.razon_FDA_tasa_rev, this.monto_maximo_rev);
       } else {
-        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo_rev || !this.tope_capital_contable_smp_rev) return null;
-        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.dif_deuda_ingreso_rev, 
-          this.razon_FDA_tasa_rev, this.monto_maximo_rev, this.tope_capital_contable_smp_rev);
+        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo_rev) return null;
+        return Math.min(this.monto_revolvente, this.capacidad_pago_rev,
+          this.razon_FDA_tasa_rev, this.monto_maximo_rev);
       }
+
+    },
+
+
+
+    linea_simple: function () {
+      if (!this.linea_simple_prev) return null;
+      if (!this.linea_revolvente_prev) return this.linea_simple_prev;
+      var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
+      if (offset > 0) {
+        return  this.linea_simple_prev -  offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))
+      } else {
+        return this.linea_simple_prev;
+      }
+
+    },
+
+    linea_revolvente: function () {
+      if (!this.linea_revolvente_prev) return null;
+      if (!this.linea_simple_prev) return this.linea_revolvente_prev;
+      var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
+      if (offset > 0) {
+        return  this.linea_revolvente_prev -  offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))
+      } else {
+        return this.linea_revolvente_prev;
+      }
+
 
     },
 
