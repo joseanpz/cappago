@@ -144,7 +144,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         </resultado-perfilador-step>
       </tab-content>         
 
-      <!--<pre>{{ data | pretty }}</pre>-->
+      <pre>{{ data | pretty }}</pre>
 
       <template slot="footer" slot-scope="props">
         <div class="wizard-footer-left">
@@ -266,8 +266,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         //simple_credits: this.simple_credits,
         //revolving_credits: this.revolving_credits,
         //id_nivel_riesgo: this.solicitud.id_nivel_riesgo,
-        //niveles_riesgo: this.niveles_riesgo,
-        
+        //niveles_riesgo: this.niveles_riesgo,        
 
         deposits_month_avg: this.deposits_month_avg,
         balances_month_avg: this.balances_month_avg,
@@ -280,8 +279,13 @@ const EvalFormWizard = Vue.component('eval-form', {
         factor_uafir: this.factor_uafir,
         FLUJO_MENSUAL: this.FLUJO_MENSUAL,
         FLUJO_ANUAL: this.FLUJO_ANUAL,
+        pasivo_financiero_corto: this.solicitud.pasivo_financiero_corto,
+        deuda_cortoplazo: this.solicitud.deuda_cortoplazo,
+        uafir: this.solicitud.uafir,
+        ventas_anuales: this.solicitud.ventas_anuales,
         nivel_riesgo: this.nivel_riesgo,
-        factor_monto_maximo: this.factor_monto_maximo,
+
+        /*factor_monto_maximo: this.factor_monto_maximo,
         factor_recuperacion_capital: this.factor_recuperacion_capital,
         monto_simple: this.monto_simple,
         monto_revolvente: this.monto_revolvente,
@@ -314,9 +318,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         capacidad_pago_smp: this.capacidad_pago_smp,
         capacidad_pago_rev: this.capacidad_pago_rev,
         linea_simple: this.linea_simple,
-        linea_revolvente: this.linea_revolvente
-
-
+        linea_revolvente: this.linea_revolvente*/
       }
     },
     
@@ -410,7 +412,9 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (!this.deposits_month_avg || !this.balances_month_avg) return null;
         return Math.min(this.deposits_month_avg * this.guarantee_factor, this.balances_month_avg * this.guarantee_factor / this.config.factor1) ; 
       } else {
-        return null;
+        if (!this.solicitud.ventas_anuales) return null;
+        console.log('ingreso mensual estado financieros');
+        return this.solicitud.ventas_anuales / 12;
       }        
     },
 
@@ -419,7 +423,9 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (!this.deposits_month_avg || !this.balances_month_avg) return null;
         return 12 * this.INGRESO_MENSUAL;
       } else {
-        return null;          
+        if (!this.solicitud.ventas_anuales) return null;
+        console.log('ingreso anual estado financieros');
+        return this.solicitud.ventas_anuales;          
       } 
     },
 
@@ -437,7 +443,14 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (!this.deposits_month_avg || !this.balances_month_avg) return null;
         return Math.min(this.deposits_month_avg * this.factor_uafir, this.balances_month_avg * this.guarantee_factor) ; 
       } else {
-        return null;
+        if (!this.solicitud.id_nivel_riesgo || !this.solicitud.id_actividad || !this.INGRESO_MENSUAL || !this.solicitud.uafir) return null;
+        if (parseInt(this.solicitud.id_nivel_riesgo) < 5 ) {
+          console.log('flujo mensual preaprobado');
+          return Math.min(this.INGRESO_MENSUAL*this.factor_uafir*1.2, this.solicitud.uafir/12);
+        } else {
+          console.log('flujo mensual estudio o denegado');
+          return Math.min(this.INGRESO_MENSUAL*this.factor_uafir, this.solicitud.uafir/12);
+        }
       } 
     },
 
@@ -446,7 +459,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (!this.deposits_month_avg || !this.balances_month_avg) return null;
         return   12 * this.FLUJO_MENSUAL;
       } else {
-        return null;          
+        if (!this.solicitud.id_nivel_riesgo || !this.solicitud.id_actividad || !this.INGRESO_MENSUAL || !this.solicitud.uafir) return null;
+        return this.FLUJO_MENSUAL * 12;          
       } 
     },
 
@@ -550,6 +564,11 @@ const EvalFormWizard = Vue.component('eval-form', {
       if (!this.nivel_riesgo || !this.INGRESO_ANUAL || !this.solicitud.deuda_total) return null;
       return this.nivel_riesgo.smp_factor * this.INGRESO_ANUAL - this.solicitud.deuda_total;
     },
+    
+    dif_deuda_ingreso: function () {
+      if (!this.nivel_riesgo || !this.INGRESO_ANUAL || !this.solicitud.deuda_total) return null;
+      return this.nivel_riesgo.smp_factor * this.INGRESO_ANUAL - this.solicitud.deuda_total;
+    },
 
     razon_FDA_FRC_smp: function () {  // razon entre el flujo anual disponible y el factor de recuperacion de capital
       if (!this.FLUJO_ANUAL || !this.factor_recuperacion_capital) return null;
@@ -574,19 +593,26 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     capacidad_pago_smp: function () {
-      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo) return null;
-      return this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva;
+      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.solicitud.pasivo_financiero_corto ) return null;
+      var valor_actual = this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva; 
+      if (this.solicitud.tipo_comprobante === "account_statements"){
+        return valor_actual - this.solicitud.pasivo_financiero_corto;
+      } else {
+        if (!this.solicitud.deuda_cortoplazo ) return null;
+        return valor_actual - Math.max(this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo)  
+      }
+       
     },
 
     // lineas de credito
     linea_simple: function () {
       if (this.solicitud.tipo_comprobante === "account_statements"){
         if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp || !this.monto_maximo_smp ) return null;
-        return Math.min(this.capacidad_pago_smp, this.dif_deuda_ingreso_smp, 
+        return Math.min(this.monto_simple, this.capacidad_pago_smp, this.dif_deuda_ingreso_smp, 
           this.razon_FDA_FRC_smp, this.monto_maximo_smp);
       } else {
         if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp || !this.monto_maximo_smp || !this.tope_capital_contable_smp_rev) return null;
-        return Math.min(this.capacidad_pago_smp, this.dif_deuda_ingreso_smp, 
+        return Math.min(this.monto_simple, this.capacidad_pago_smp, this.dif_deuda_ingreso_smp, 
           this.razon_FDA_FRC_smp, this.monto_maximo_smp, this.tope_capital_contable_smp_rev);
       }        
     },
@@ -594,11 +620,11 @@ const EvalFormWizard = Vue.component('eval-form', {
     linea_revolvente: function () {
       if (this.solicitud.tipo_comprobante === "account_statements"){
         if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo_rev) return null;
-        return Math.min(this.capacidad_pago_rev, this.dif_deuda_ingreso_rev, 
+        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.dif_deuda_ingreso_rev, 
           this.razon_FDA_tasa_rev, this.monto_maximo_rev);
       } else {
         if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo_rev || !this.tope_capital_contable_smp_rev) return null;
-        return Math.min(this.capacidad_pago_rev, this.dif_deuda_ingreso_rev, 
+        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.dif_deuda_ingreso_rev, 
           this.razon_FDA_tasa_rev, this.monto_maximo_rev, this.tope_capital_contable_smp_rev);
       }
 
@@ -717,6 +743,8 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.estado_general.uafir = response.uafir;
       this.$refs.estado_general.capital_contable = response.capital_contable;
       this.$refs.estado_general.ventas_anuales = response.ventas_anuales;
+      this.$refs.estado_general.deuda_cortoplazo = response.deuda_cortoplazo;
+      this.$refs.estado_general.pasivo_financiero_corto = response.pasivo_financiero_corto;
       this.$refs.estado_general.calificacion_deudor = response.calificacion_deudor;
       this.$refs.resultado_perfilador.tipo_evaluacion_perfilador = response.tipo_evaluacion_perfilador;
       this.$refs.resultado_perfilador.decreto = response.decreto;
