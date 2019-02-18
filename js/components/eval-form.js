@@ -472,7 +472,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       return this.niveles_riesgo.find( nivrie => nivrie.id === this.solicitud.id_nivel_riesgo);
     },
 
-    factor_monto_maximo: function () {
+    /*factor_monto_maximo: function () {
       if (!this.solicitud.score || this.solicitud.score < 0) return null;
 
       if (this.solicitud.score <= 450) {
@@ -481,6 +481,18 @@ const EvalFormWizard = Vue.component('eval-form', {
         return 1.5
       } else {
         return 0.00523910480286183 * 0.000126666 * Math.exp( 0.016576983 * this.solicitud.score  ) + 0.5;
+      }
+    },*/
+
+    factor_monto_maximo: function () {
+      if (!this.solicitud.score || this.solicitud.score < 0) return null;
+
+      if (this.solicitud.score <= 450) {
+        return 0.5;
+      } else if (this.solicitud.score <= 900) {
+        return Math.min(0.0104782096057237 * 0.000126666 * Math.exp( 0.016576983 * this.solicitud.score  ) + 0.5, 1.5);
+      } else {
+        return 1.5;
       }
     },
 
