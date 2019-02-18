@@ -99,8 +99,13 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 											<table class="table">												
 												<tbody>
 													<tr>
-														<td><b>Tiene Experiencia con creditos largos?</b></td>
-														<td><input type="checkbox"  v-model="exp_creditos_largos"/></td>														
+														<td>
+															<div class="field">
+															  <input class="is-checkradio" v-model="exp_creditos_largos" id="exp_creditos_largos" type="checkbox" name="exp_creditos_largos">
+															  <label for="exp_creditos_largos"><b>Tiene Experiencia con creditos largos?</b></label>
+															</div>
+														</td>
+																								
 													</tr>
 												</tbody>
 											</table>
