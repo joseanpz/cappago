@@ -298,20 +298,6 @@ const DetailForm = Vue.component('detail', {
       this.solicitud.linea_revolvente_sugerida = response.linea_revolvente_sugerida;
       this.solicitud.linea_simple_sugerida = response.linea_simple_sugerida;
     },  
-    /*setData: function (response) {
-      var self = this;
-      console.log('setting data solicitud');      
-      var nriesgo = self.risk_levels.find( item => item.id === response.id_nivel_riesgo);
-      if (typeof nriesgo != 'undefined') {
-        response.nivel_riesgo = nriesgo.nombre;
-      } else {
-        response.nivel_riesgo = null;
-      }  
-      console.log('nivel_riesgo');
-      console.log(response) ;             
-     // this.solicitud = response;
-        
-    },
     /* readActivities: function(){
       var self = this;
       google.script.run
