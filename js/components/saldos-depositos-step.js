@@ -36,7 +36,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 							
 							<div class="card-content"> 
 								<div class="columns">
-									<table class="table is-bordered is-striped ">
+									<table class="column table is-bordered is-striped ">
 										<tr>
 											<td colspan="2" class="title-color" style="text-align:left;">
 												<b>{{acc_smnt.bank_name}}</b>
@@ -49,7 +49,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 											<td class="label_color">Saldos</td>
 										</tr>	
 										<tr v-for="statement in acc_smnt.statements" :key="statement.id_local">
-											<td><label class="lbl_months" >{{statement.mes}}</label></td>
+											<td style="vertical-align:middle;"><label class="lbl_months" >{{statement.mes}}</label></td>
 											<td><b-input type="number"  step="0.001"  v-model="statement.deposito"></b-input></td>
 											<td><b-input type="number"  step="0.001" v-model="statement.saldo"></b-input></td>										
 										</tr>																		
