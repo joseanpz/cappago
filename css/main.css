@@ -98,8 +98,7 @@ select:focus select:before {
 	color: #3a5fab !important;	
 	font-weight: bold;
 	text-align: center;
-	margin: auto;
-	padding:auto;
+	padding-bottom: 0px;
 }
 
 .card-header{
