@@ -57,9 +57,9 @@ const DetailForm = Vue.component('detail', {
                   <td colspan="2"><label class="label">Revolvente</label></td>
                 </tr>
                 <tr>
-                  <td><label class="label">Monto :</label></td>
+                  <td><label class="label">Monto* :</label></td>
                   <td class="td-cantidad">{{ solicitud.linea_simple_sugerida | monto_redondeado}}</td>
-                  <td><label class="label">Linea:</label></td>
+                  <td><label class="label">Linea** :</label></td>
                   <td class="td-cantidad">{{ solicitud.linea_revolvente_sugerida | monto_redondeado }}</td>
                 </tr>
                 
@@ -78,7 +78,7 @@ const DetailForm = Vue.component('detail', {
             <label style="color:#3a5fab;" class="column"><b>*</b>{{ solicitud.linea_simple_sugerida | monto_etiquetas}}</label>
           </div>
           <div class="column">
-            <label style="color:#3a5fab;" class="column"><b>**</b>{{ solicitud.linea_simple_sugerida | monto_etiquetas}}</label>
+            <label style="color:#3a5fab;" class="column"><b>**</b>{{ solicitud.linea_revolvente_sugerida | monto_etiquetas}}</label>
           </div>
         </div>
         <div class="footer columns" style="display:none; bottom: 0; padding:10px; height:150px;" id="div_footer"> 
@@ -378,9 +378,9 @@ const DetailForm = Vue.component('detail', {
     monto_etiquetas:function(value){
     if(!!value){      
       if(value >1000){
-        return  "Cantidades en 50K"       
+        return  "Cantidad en múltiplos de 50K"       
       }else{
-        return  "Cantidades en 10K"
+        return  "Cantidad en múltiplos en 10K"
         }
       }else{
         return null;

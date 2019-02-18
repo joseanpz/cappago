@@ -10,10 +10,10 @@ var EstadoGeneralStep = Vue.component('estado-general-step',{
 					<div class="content">
 						<div class="columns">
 							<div class="column is-2">
-								<label class="label">Ventas anuales: </label>
+								<label class="label">Deuda corto plazo: </label>
 							</div>
-							<div class="column is-4">					
-								<input type="number" step="0.001" v-model="ventas_anuales" class="input" />
+							<div class="column is-4">
+								<input type="number" step="0.001" v-model="deuda_cortoplazo" class="input" />
 							</div>
 							<div class="column is-2">
 								<label class="label">Calificacion deudor: </label>
@@ -42,12 +42,12 @@ var EstadoGeneralStep = Vue.component('estado-general-step',{
 								<input type="number" step="0.001" v-model="uafir" class="input" />
 							</div>							
 						</div>
-						<div class="columns">
+						<div class="columns">							
 							<div class="column is-2">
-								<label class="label">Deuda corto plazo: </label>
+								<label class="label">Ventas anuales: </label>
 							</div>
-							<div class="column is-4">
-								<input type="number" step="0.001" v-model="deuda_cortoplazo" class="input" />
+							<div class="column is-4">					
+								<input type="number" step="0.001" v-model="ventas_anuales" class="input" />
 							</div>
 							<div class="column is-2">
 								<label class="label">Pasivo financiero corto plazo: </label>

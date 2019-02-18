@@ -145,7 +145,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         </resultado-perfilador-step>
       </tab-content>         
 
-      <pre>{{ data | pretty }}</pre>
+      <!--<pre>{{ data | pretty }}</pre>-->
 
       <template slot="footer" slot-scope="props">
         <div class="wizard-footer-left">
@@ -622,12 +622,12 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     capacidad_pago_smp: function () {
-      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.solicitud.pasivo_financiero_corto || !this.config ) return null;
+      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.solicitud.deuda_cortoplazo || !this.config ) return null;
       var valor_actual = this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva; 
       if (this.solicitud.tipo_comprobante === "account_statements"){
-        return valor_actual - this.solicitud.pasivo_financiero_corto;
+        return valor_actual - this.solicitud.deuda_cortoplazo;
       } else {
-        if (!this.solicitud.deuda_cortoplazo ) return null;
+        if (!this.solicitud.pasivo_financiero_corto ) return null;
         return valor_actual - Math.max(this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo)  
       }
        
