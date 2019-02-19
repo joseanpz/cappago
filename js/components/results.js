@@ -32,19 +32,19 @@ const Results = Vue.component('results', {
 									</tr>
 									<tr>
 										<td class="alinea_text">Monto maximo por buró</td>
-										<td>{{monto_maximo.simple}}</td>
+										<td>{{Math.round(monto_maximo.simple)}}</td>
 									</tr>
  										<td class="alinea_text">Monto</td>
-										<td>{{ linea.simple }}</td>
+										<td>{{ Math.round(linea.simple) }}</td>
 									</tr>
 								</table>
-							</div>
+							</div> 
 						</div>
 					</div>
 					<div class="card column" style="margin: 5px;">
 						<header class="header-sec-card">
 							<p class="card-header-title title-color">Revolventes</p>
-						</header>
+						</header> 
 						<div class="card-content">	
 							<div class="content columns">
 								<table class="column table " style="width:100%">
@@ -66,11 +66,11 @@ const Results = Vue.component('results', {
 									</tr>
 									<tr>
 										<td class="alinea_text">Monto maximo por buró:</td>
-										<td>{{monto_maximo.revolvente}}</td>
+										<td>{{ Math.round(monto_maximo.revolvente)}}</td>
 									</tr>
 									<tr>
 										<td class="alinea_text">Linea</td>
-										<td>{{ linea.revolvente  }}</td>
+										<td>{{ Math.round(linea.revolvente)  }}</td>
 									</tr>
 								</table>
 							</div>
@@ -78,13 +78,7 @@ const Results = Vue.component('results', {
 					</div>
 				</div>
 				<div class="columns">
-					<div class="column">
-						<label style="color:#3a5fab;" class="column"><b>*</b>Cantidades en Miles</label>
-					</div>
-					<div class="column">
-						<label style="color:#3a5fab;" class="column"><b>*</b>Cantidades en Miles</label>
-					</div>
-					
+					<label style="color:#3a5fab;" class="column"><b>*</b>Cantidades en Miles</label>
 				</div>
 			</div>
 		</div>

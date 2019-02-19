@@ -26,7 +26,7 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 													<td><input type="number" step="0.001" v-model="BK12_MAX_CREDIT_AMT" class="input" /> </td>
 												</tr>
 												<tr>
-													<td><label class="label">Deuda Total de Acreditado (<b>BK_DEUDA_TOT</b>): </label></td>
+													<td><label class="label">Deuda Total de Acreditado (<b>DEUDA_TOT</b>): </label></td>
 													<td><input type="number" step="0.001" v-model="deuda_total" class="input" /> </td>
 												</tr>
 												<tr>
@@ -50,8 +50,8 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 													<tr>
 														<th >Tipo de credito</th>
 														<th >Numero de creditos</th>
-														<th >Original</th>
-														<th >Vigente</th>
+														<th >Monto original</th>
+														<th >Monto vigente</th>
 													</tr>								
 												</thead>
 												<tbody>
@@ -92,7 +92,7 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 							<div class="column is-6">
 								<div class="card">
 									<header class="header-sec-card">
-										<p class="card-header-title title-color">Experiencia en creditos</p>
+										<p class="card-header-title title-color"> Experiencia crediticia</p>
 									</header>
 									<div class="card-content">	
 										<div class="content">								
@@ -102,10 +102,9 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 														<td>
 															<div class="field">
 															  <input class="is-checkradio" v-model="exp_creditos_largos" id="exp_creditos_largos" type="checkbox" name="exp_creditos_largos">
-															  <label for="exp_creditos_largos"><b>Tiene Experiencia con creditos largos?</b></label>
+															  <label for="exp_creditos_largos"><b>Tiene experiencia con creditos simples > 48 meses?</b></label>
 															</div>
 														</td>
-																								
 													</tr>
 												</tbody>
 											</table>

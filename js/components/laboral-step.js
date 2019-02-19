@@ -4,7 +4,7 @@ var LaboralStep = Vue.component('laboral-step',{
 		<section class="container">
 			<div class="card">
 				<header class="card-header">
-					<p class="card-header-title">Información laboral</p>
+					<p class="card-header-title">Caracteristicas PyME</p>
 				</header>
 				<div class="card-content">		
 					<div class="content">				
@@ -57,7 +57,7 @@ var LaboralStep = Vue.component('laboral-step',{
 								</div>																										
 							</div>
 							<div class="column is-2">
-								<label class="label titulos">Actividad: </label>
+								<label class="label titulos">Sector: </label>
 							</div>
 							<div class="column">
 								<b-select placeholder="Select a name" v-model="id_actividad" expanded>
