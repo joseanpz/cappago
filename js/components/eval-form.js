@@ -145,7 +145,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         </resultado-perfilador-step>
       </tab-content>         
 
-      <!--<pre>{{ data | pretty }}</pre>-->
+      <pre>{{ data | pretty }}</pre>
 
       <template slot="footer" slot-scope="props">
         <div class="wizard-footer-left">
@@ -288,6 +288,12 @@ const EvalFormWizard = Vue.component('eval-form', {
         ventas_anuales: this.solicitud.ventas_anuales,
         nivel_riesgo: this.nivel_riesgo,
         exp_creditos_largos: this.solicitud.exp_creditos_largos,
+        monto_simple_buro: this.monto_simple_buro,
+        monto_revolvente_buro: this.monto_revolvente_buro,
+        monto_factoraje_buro: this.monto_factoraje_buro,
+        monto_arrendamiento_buro: this.monto_arrendamiento_buro,
+        BK12_MAX_CREDIT_AMT: this.solicitud.BK12_MAX_CREDIT_AMT,
+        monto_maximo: this.monto_maximo,
 
         /*factor_monto_maximo: this.factor_monto_maximo,
         factor_recuperacion_capital: this.factor_recuperacion_capital,
@@ -297,7 +303,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         deuda_total: this.solicitud.deuda_total,
         MONTHS_ON_FILE_BANKING: this.solicitud.MONTHS_ON_FILE_BANKING,
         BK12_CLEAN: this.solicitud.BK12_CLEAN,
-        BK12_MAX_CREDIT_AMT: this.solicitud.BK12_MAX_CREDIT_AMT,
+        
         num_cred_act_arren: this.solicitud.num_cred_act_arren,
         num_cred_act_fact: this.solicitud.num_cred_act_fact,
         num_cred_act_revol: this.solicitud.num_cred_act_revol,
@@ -550,7 +556,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     monto_simple_buro: function () {
 
-      if (!this.solicitud.sal_orig_cred_act_simp || !this.solicitud.num_cred_act_simp) return null;
+      if (!this.solicitud.sal_orig_cred_act_simp || !this.solicitud.num_cred_act_simp || this.solicitud.num_cred_act_simp == 0) return 0;
       var ret = parseFloat(this.solicitud.sal_orig_cred_act_simp) /  parseFloat(this.solicitud.num_cred_act_simp) ;
       // console.log('in monto simple buro');
       // console.log(ret);
@@ -559,7 +565,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     monto_arrendamiento_buro: function () {
 
-      if (!this.solicitud.sal_orig_cred_act_arren || !this.solicitud.num_cred_act_arren) return null;
+      if (!this.solicitud.sal_orig_cred_act_arren || !this.solicitud.num_cred_act_arren || this.solicitud.num_cred_act_arren == 0) return 0;
       var ret = parseFloat(this.solicitud.sal_orig_cred_act_arren)  / parseFloat(this.solicitud.num_cred_act_arren) ;
       // console.log('in monto simple buro');
       // console.log(ret);
@@ -567,7 +573,7 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     monto_revolvente_buro: function () {
-      if (!this.solicitud.sal_orig_cred_act_revol || !this.solicitud.num_cred_act_revol ) return null;
+      if (!this.solicitud.sal_orig_cred_act_revol || !this.solicitud.num_cred_act_revol || this.solicitud.num_cred_act_revol == 0 ) return 0;
       var ret = parseFloat(this.solicitud.sal_orig_cred_act_revol) / parseFloat(this.solicitud.num_cred_act_revol);
       // console.log('in monto revolvente buro');
       // console.log(ret);
@@ -575,7 +581,7 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     monto_factoraje_buro: function () {
-      if (!this.solicitud.sal_orig_cred_act_fact || !this.solicitud.num_cred_act_fact) return null;
+      if (!this.solicitud.sal_orig_cred_act_fact || !this.solicitud.num_cred_act_fact || this.solicitud.num_cred_act_fact == 0 ) return 0;
       var ret = parseFloat(this.solicitud.sal_orig_cred_act_fact)  /  parseFloat(this.solicitud.num_cred_act_fact) ;
       // console.log('in monto revolvente buro');
       // console.log(ret);
@@ -595,8 +601,11 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     //  restricciones  //
     monto_maximo: function () {
-      if (!this.monto_simple_buro  || !this.monto_revolvente_buro || !this.monto_factoraje_buro || !this.monto_arrendamiento_buro || !this.solicitud.BK12_MAX_CREDIT_AMT || !this.factor_monto_maximo) return null;
-      return Math.max(this.solicitud.BK12_MAX_CREDIT_AMT, this.monto_simple_buro, this.monto_revolvente_buro, this.monto_factoraje_buro, this.monto_arrendamiento_buro) * this.factor_monto_maximo;
+
+      if (this.monto_simple_buro === null  || this.monto_revolvente_buro === null || this.monto_factoraje_buro === null || this.monto_arrendamiento_buro === null || this.solicitud.BK12_MAX_CREDIT_AMT === null || this.factor_monto_maximo === null) return null;
+      var ret = Math.max(this.solicitud.BK12_MAX_CREDIT_AMT, this.monto_simple_buro, this.monto_revolvente_buro, this.monto_factoraje_buro, this.monto_arrendamiento_buro) * this.factor_monto_maximo;
+
+      return ret
     },
 
     dif_deuda_ingreso_rev: function () {
