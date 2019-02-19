@@ -21,7 +21,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         :razon_flujo_tasa="razon_FDA_tasa_rev"
         :razon_flujo_rec_capital="razon_FDA_FRC_smp"
         :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo_smp, 'revolvente':monto_maximo_rev}"        
+        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"        
         > 
         </solicitud-step>
       </tab-content>
@@ -41,7 +41,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         :razon_flujo_tasa="razon_FDA_tasa_rev"
         :razon_flujo_rec_capital="razon_FDA_FRC_smp"
         :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo_smp, 'revolvente':monto_maximo_rev}"
+        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
         > 
         </credito-step>
       </tab-content>
@@ -63,7 +63,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         :razon_flujo_tasa="razon_FDA_tasa_rev"
         :razon_flujo_rec_capital="razon_FDA_FRC_smp"
         :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo_smp, 'revolvente':monto_maximo_rev}"        
+        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"        
         > 
         </laboral-step>
       </tab-content>
@@ -95,7 +95,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         :razon_flujo_tasa="razon_FDA_tasa_rev"
         :razon_flujo_rec_capital="razon_FDA_FRC_smp"
         :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo_smp, 'revolvente':monto_maximo_rev}"
+        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
 
         
         > 
@@ -119,7 +119,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         :razon_flujo_tasa="razon_FDA_tasa_rev"
         :razon_flujo_rec_capital="razon_FDA_FRC_smp"
         :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo_smp, 'revolvente':monto_maximo_rev}"
+        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
 
         
         > 
@@ -140,7 +140,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         :razon_flujo_tasa="razon_FDA_tasa_rev"
         :razon_flujo_rec_capital="razon_FDA_FRC_smp"
         :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo_smp, 'revolvente':monto_maximo_rev}"
+        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
         > 
         </resultado-perfilador-step>
       </tab-content>         
@@ -549,25 +549,34 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     monto_simple_buro: function () {
-      /*console.log('in monto_simple_buro');
-      console.log(!this.solicitud.sal_orig_cred_act_simp);
-      console.log(!this.solicitud.sal_orig_cred_act_arren);
-      console.log(!this.solicitud.num_cred_act_simp);
-      console.log(!this.solicitud.num_cred_act_arren);
 
-      console.log(!this.solicitud.sal_orig_cred_act_simp || !this.solicitud.sal_orig_cred_act_arren || !this.solicitud.num_cred_act_simp || !this.solicitud.num_cred_act_arren);
-      */
+      if (!this.solicitud.sal_orig_cred_act_simp || !this.solicitud.num_cred_act_simp) return null;
+      var ret = parseFloat(this.solicitud.sal_orig_cred_act_simp) /  parseFloat(this.solicitud.num_cred_act_simp) ;
+      // console.log('in monto simple buro');
+      // console.log(ret);
+      return ret;
+    },
 
-      if (!this.solicitud.sal_orig_cred_act_simp || !this.solicitud.sal_orig_cred_act_arren || !this.solicitud.num_cred_act_simp || !this.solicitud.num_cred_act_arren) return null;
-      var ret = ( parseFloat(this.solicitud.sal_orig_cred_act_simp) + parseFloat(this.solicitud.sal_orig_cred_act_arren) ) / ( parseFloat(this.solicitud.num_cred_act_simp) + parseFloat(this.solicitud.num_cred_act_arren) );
+    monto_arrendamiento_buro: function () {
+
+      if (!this.solicitud.sal_orig_cred_act_arren || !this.solicitud.num_cred_act_arren) return null;
+      var ret = parseFloat(this.solicitud.sal_orig_cred_act_arren)  / parseFloat(this.solicitud.num_cred_act_arren) ;
       // console.log('in monto simple buro');
       // console.log(ret);
       return ret;
     },
 
     monto_revolvente_buro: function () {
-      if (!this.solicitud.sal_orig_cred_act_revol || !this.solicitud.sal_orig_cred_act_fact || !this.solicitud.num_cred_act_revol || !this.solicitud.num_cred_act_fact) return null;
-      var ret = ( parseFloat(this.solicitud.sal_orig_cred_act_revol) + parseFloat(this.solicitud.sal_orig_cred_act_fact) ) / ( parseFloat(this.solicitud.num_cred_act_revol) + parseFloat(this.solicitud.num_cred_act_fact) );
+      if (!this.solicitud.sal_orig_cred_act_revol || !this.solicitud.num_cred_act_revol ) return null;
+      var ret = parseFloat(this.solicitud.sal_orig_cred_act_revol) / parseFloat(this.solicitud.num_cred_act_revol);
+      // console.log('in monto revolvente buro');
+      // console.log(ret);
+      return ret;
+    },
+
+    monto_factoraje_buro: function () {
+      if (!this.solicitud.sal_orig_cred_act_fact || !this.solicitud.num_cred_act_fact) return null;
+      var ret = parseFloat(this.solicitud.sal_orig_cred_act_fact)  /  parseFloat(this.solicitud.num_cred_act_fact) ;
       // console.log('in monto revolvente buro');
       // console.log(ret);
       return ret;
@@ -582,6 +591,12 @@ const EvalFormWizard = Vue.component('eval-form', {
     monto_maximo_rev: function () {
       if (!this.monto_revolvente_buro || !this.factor_monto_maximo) return null;
       return this.monto_revolvente_buro * this.factor_monto_maximo;
+    },
+
+    //  restricciones  //
+    monto_maximo: function () {
+      if (!this.monto_simple_buro  || !this.monto_revolvente_buro || !this.monto_factoraje_buro || !this.monto_arrendamiento_buro || !this.solicitud.BK12_MAX_CREDIT_AMT || !this.factor_monto_maximo) return null;
+      return Math.max(this.solicitud.BK12_MAX_CREDIT_AMT, this.monto_simple_buro, this.monto_revolvente_buro, this.monto_factoraje_buro, this.monto_arrendamiento_buro) * this.factor_monto_maximo;
     },
 
     dif_deuda_ingreso_rev: function () {
@@ -625,10 +640,10 @@ const EvalFormWizard = Vue.component('eval-form', {
       if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.solicitud.deuda_cortoplazo || !this.config ) return null;
       var valor_actual = this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva; 
       if (this.solicitud.tipo_comprobante === "account_statements"){
-        return valor_actual - this.solicitud.deuda_cortoplazo;
+        return Math.max(0, valor_actual - this.solicitud.deuda_cortoplazo);
       } else {
         if (!this.solicitud.pasivo_financiero_corto ) return null;
-        return valor_actual - Math.max(this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo)  
+        return Math.max(0, valor_actual - Math.max(this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo));  
       }
        
     },
@@ -636,25 +651,25 @@ const EvalFormWizard = Vue.component('eval-form', {
     // lineas de credito
     linea_simple_prev: function () {
       if (this.solicitud.tipo_comprobante === "account_statements"){
-        if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp || !this.monto_maximo_smp ) return null;
+        if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp || !this.monto_maximo ) return null;
         return Math.min(this.monto_simple, this.capacidad_pago_smp,
-          this.razon_FDA_FRC_smp, this.monto_maximo_smp);
+          this.razon_FDA_FRC_smp, this.monto_maximo);
       } else {
-        if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp || !this.monto_maximo_smp ) return null;
+        if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp || !this.monto_maximo ) return null;
         return Math.min(this.monto_simple, this.capacidad_pago_smp, 
-          this.razon_FDA_FRC_smp, this.monto_maximo_smp);
+          this.razon_FDA_FRC_smp, this.monto_maximo);
       }        
     },
 
     linea_revolvente_prev: function () {
       if (this.solicitud.tipo_comprobante === "account_statements"){
-        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo_rev) return null;
+        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return null;
         return Math.min(this.monto_revolvente, this.capacidad_pago_rev, 
-          this.razon_FDA_tasa_rev, this.monto_maximo_rev);
+          this.razon_FDA_tasa_rev, this.monto_maximo);
       } else {
-        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo_rev) return null;
+        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return null;
         return Math.min(this.monto_revolvente, this.capacidad_pago_rev,
-          this.razon_FDA_tasa_rev, this.monto_maximo_rev);
+          this.razon_FDA_tasa_rev, this.monto_maximo);
       }
 
     },
@@ -666,9 +681,9 @@ const EvalFormWizard = Vue.component('eval-form', {
       if (!this.linea_revolvente_prev) return this.linea_simple_prev;
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
-        return  this.linea_simple_prev -  offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))
+        return  Math.ceil((this.linea_simple_prev -  offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))) / 10 ) * 10;
       } else {
-        return this.linea_simple_prev;
+        return Math.ceil(this.linea_simple_prev / 10) * 10;
       }
 
     },
@@ -678,9 +693,9 @@ const EvalFormWizard = Vue.component('eval-form', {
       if (!this.linea_simple_prev) return this.linea_revolvente_prev;
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
-        return  this.linea_revolvente_prev -  offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))
+        return  Math.ceil((this.linea_revolvente_prev -  offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10;
       } else {
-        return this.linea_revolvente_prev;
+        return Math.ceil(this.linea_revolvente_prev / 10) * 10;
       }
 
 
