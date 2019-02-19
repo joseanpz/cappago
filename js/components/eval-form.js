@@ -288,6 +288,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         ventas_anuales: this.solicitud.ventas_anuales,
         nivel_riesgo: this.nivel_riesgo,
         exp_creditos_largos: this.solicitud.exp_creditos_largos,
+        deposits_movil_means: this.deposits_movil_means,
 
         /*factor_monto_maximo: this.factor_monto_maximo,
         factor_recuperacion_capital: this.factor_recuperacion_capital,
@@ -379,6 +380,27 @@ const EvalFormWizard = Vue.component('eval-form', {
       return val_deposits.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / val_deposits.length;
     },
 
+    deposits_movil_means: function () {
+      var self = this;
+      var first_mm = [], second_mm = [];
+      for (var i=0; i<11; i++) {
+        first_mm.push((this.deposits_sum[i] + this.deposits_sum[i+1]) / 2)
+      }
+      for (var i=0; i<10; i++) {
+        second_mm.push((this.first_mm[i] + this.first_mm[i+1]) / 2)
+      }
+      return second_mm.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / 10;
+    },
+
+    deposits_polynomial_tendency: function () {
+      var quadratic_interpolation = this.polynomial(this.deposits_sum.map(function(item, index){
+        return [index+1, item];
+      }), 2, {precision: 3});
+      var cubic_interpolation = this.polynomial(this.deposits_sum.map(function(item, index){
+        return [index+1, item];
+      }), 3, {precision: 3});
+    },
+
     deposits_tendency: function () {
       if (this.deposits_sum.length == 0) return null;
       var y_values = this.deposits_sum.slice(8), x_values = [0, 1, 2, 3];
@@ -400,6 +422,18 @@ const EvalFormWizard = Vue.component('eval-form', {
         //console.log(val_balances);
         return val_balances.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / val_balances.length;
       }
+    },
+
+    balances_movil_means: function () {
+      var self = this;
+      var first_mm = [], second_mm = [];
+      for (var i=0; i<11; i++) {
+        first_mm.push((this.balances_sum[i] + this.balances_sum[i+1]) / 2)
+      }
+      for (var i=0; i<10; i++) {
+        second_mm.push((this.first_mm[i] + this.first_mm[i+1]) / 2)
+      }
+      return second_mm.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / 10;
     },
 
     guarantee_factor: function () {
@@ -725,9 +759,11 @@ const EvalFormWizard = Vue.component('eval-form', {
       console.log('about to emit');
       this.$emit('move-to-success-route');
     },
+
     saveForm: function(){
       alert('Saving form!');
     },
+
     readConfig: function () {
       var self = this;
       google.script.run
@@ -742,6 +778,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       })
       .readCatalog('config')
     },
+
     readNivelesRiesgo: function () {
       var self = this;
       google.script.run
@@ -856,6 +893,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         
       return true;
     },
+
     findLineByLeastSquares: function(values_x, values_y) {
       var sum_x = 0;
       var sum_y = 0;
@@ -988,7 +1026,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           points: l,
           string: n
       }
-  },
+    },
 
     setActivity: function(val) {
       this.solicitud.id_actividad = val;
