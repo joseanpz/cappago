@@ -625,10 +625,10 @@ const EvalFormWizard = Vue.component('eval-form', {
       if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.solicitud.deuda_cortoplazo || !this.config ) return null;
       var valor_actual = this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva; 
       if (this.solicitud.tipo_comprobante === "account_statements"){
-        return valor_actual - this.solicitud.deuda_cortoplazo;
+        return Math.max(0, valor_actual - this.solicitud.deuda_cortoplazo);
       } else {
         if (!this.solicitud.pasivo_financiero_corto ) return null;
-        return valor_actual - Math.max(this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo)  
+        return Math.max(0, valor_actual - Math.max(this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo));  
       }
        
     },
@@ -917,6 +917,79 @@ const EvalFormWizard = Vue.component('eval-form', {
       return [result_values_x, result_values_y];*/
       return [m, b]
     },
+
+    a: function (a, b) {
+        var c = a.reduce(function(a, b) {
+                return a + b[1]
+            }, 0),
+            d = c / a.length,
+            e = a.reduce(function(a, b) {
+                var c = b[1] - d;
+                return a + c * c
+            }, 0),
+            f = a.reduce(function(a, c, d) {
+                var e = b[d],
+                    f = c[1] - e[1];
+                return a + f * f
+            }, 0);
+        return 1 - f / e
+    },
+
+    b: function (a, b) {
+      var c = 0,
+          d = 0,
+          e = 0,
+          f = 0,
+          g = 0,
+          h = a.length - 1,
+          i = new Array(b);
+      for (c = 0; h > c; c++) {
+          for (f = c, d = c + 1; h > d; d++) Math.abs(a[c][d]) > Math.abs(a[c][f]) && (f = d);
+          for (e = c; h + 1 > e; e++) g = a[e][c], a[e][c] = a[e][f], a[e][f] = g;
+          for (d = c + 1; h > d; d++)
+              for (e = h; e >= c; e--) a[e][d] -= a[e][c] * a[c][d] / a[c][c]
+      }
+      for (d = h - 1; d >= 0; d--) {
+          for (g = 0, e = d + 1; h > e; e++) g += a[e][d] * i[e];
+          i[d] = (a[h][d] - g) / a[d][d]
+      }
+      return i
+    },
+
+    c: function (a, b) {
+      var c = Math.pow(10, b);
+      return Math.round(a * c) / c
+    },
+
+    polynomial: function(d, e, f) { // data, grade, conf.precision
+      var g, h, i, j, k, l, m, n, o = [],
+          p = [],
+          q = 0,
+          r = 0,
+          s = d.length;
+      for (h = "undefined" == typeof e ? 3 : e + 1, i = 0; h > i; i++) {
+          for (k = 0; s > k; k++) null !== d[k][1] && (q += Math.pow(d[k][0], i) * d[k][1]);
+          for (o.push(q), q = 0, g = [], j = 0; h > j; j++) {
+              for (k = 0; s > k; k++) null !== d[k][1] && (r += Math.pow(d[k][0], i + j));
+              g.push(r), r = 0
+          }
+          p.push(g)
+      }
+      for (p.push(o), m = this.b(p, h), l = d.map(function(a) {
+              var b = a[0],
+                  c = m.reduce(function(a, c, d) {
+                      return a + c * Math.pow(b, d)
+                  }, 0);
+              return [b, c]
+          }), n = "y = ", i = m.length - 1; i >= 0; i--) n += i > 1 ? this.c(m[i], f.precision) + "x^" + i + " + " : 1 === i ? this.c(m[i], f.precision) + "x + " : this.c(m[i], f.precision);
+      return {
+          r2: this.a(d, l),
+          equation: m,
+          points: l,
+          string: n
+      }
+  },
+
     setActivity: function(val) {
       this.solicitud.id_actividad = val;
     },
