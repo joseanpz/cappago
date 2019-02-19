@@ -152,7 +152,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           <wizard-button v-if="props.activeTabIndex > 0" @click.native="props.prevTab()" :style="props.fillButtonStyle">Atrás</wizard-button>
         </div>
         <div class="wizard-footer-right">
-          <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" class="wizard-footer-right" :style="props.fillButtonStyle">Guradar y Continuar</wizard-button>
+          <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" class="wizard-footer-right" :style="props.fillButtonStyle">Guardar y Continuar</wizard-button>
           <wizard-button v-else @click.native="onComplete()" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">Finalizar y Guardar</wizard-button>
         </div>
         <!--

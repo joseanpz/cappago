@@ -36,8 +36,8 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-step',{
 								<div class="column is-4">
 									<b-select placeholder="Select a name" v-model="tipo_evaluacion_perfilador" expanded>	                			
 										<option value selected>-- seleccione -- </option>
-										<option value="1">EXT</option>
-										<option value="2">NVO</option>										
+										<option value="1">Cliente existente</option>
+										<option value="2">Cliente nuevo</option>										
 									</b-select>									
 								</div>
 							</div>
