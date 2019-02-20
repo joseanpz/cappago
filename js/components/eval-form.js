@@ -826,9 +826,9 @@ const EvalFormWizard = Vue.component('eval-form', {
       if (!this.linea_revolvente_prev) return this.linea_simple_prev;
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
-        return  Math.ceil((this.linea_simple_prev -  offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))) / 10 ) * 10;
+        return  Math.max(0, Math.ceil((this.linea_simple_prev -  offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))) / 10 ) * 10);
       } else {
-        return Math.ceil(this.linea_simple_prev / 10) * 10;
+        return Math.max(0, Math.ceil(this.linea_simple_prev / 10) * 10);
       }
 
     },
@@ -838,9 +838,9 @@ const EvalFormWizard = Vue.component('eval-form', {
       if (!this.linea_simple_prev) return this.linea_revolvente_prev;
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
-        return  Math.ceil((this.linea_revolvente_prev -  offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10;
+        return  Math.max(0, Math.ceil((this.linea_revolvente_prev -  offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10);
       } else {
-        return Math.ceil(this.linea_revolvente_prev / 10) * 10;
+        return Math.max(0, Math.ceil(this.linea_revolvente_prev / 10) * 10);
       }
 
 
