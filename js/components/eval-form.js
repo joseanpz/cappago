@@ -288,6 +288,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         ventas_anuales: this.solicitud.ventas_anuales,
         nivel_riesgo: this.nivel_riesgo,
         exp_creditos_largos: this.solicitud.exp_creditos_largos,
+        factor_monto_maximo: this.factor_monto_maximo,
         monto_simple_buro: this.monto_simple_buro,
         monto_revolvente_buro: this.monto_revolvente_buro,
         monto_factoraje_buro: this.monto_factoraje_buro,
