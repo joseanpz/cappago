@@ -300,6 +300,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         balances_polynomial_tendency: this.balances_polynomial_tendency,
         balances_projection: this.balances_projection,
         deposits_projection: this.deposits_projection,
+        bal_proj_standard_deviation: this.bal_proj_standard_deviation,
+        dep_proj_standard_deviation: this.dep_proj_standard_deviation,
 
 
         /*factor_monto_maximo: this.factor_monto_maximo,
@@ -436,6 +438,14 @@ const EvalFormWizard = Vue.component('eval-form', {
       return (projection[0] + projection[1]) / 2; 
     },
 
+    dep_proj_standard_deviation: function () {
+      var x = [1,2,3,4,5,6,7,8,9,10,11,12],
+      projections = x.map((item) => (this.deposits_quadratic_cubic_projections(item)[0] + this.deposits_quadratic_cubic_projections(item)[1]) / 2);
+      var projection_mean = projections.reduce((a,b) => a + b) / 12;
+      var variance = projections.map((item) => Math.pow(item - projection_mean, 2)).reduce((a,b) => a+b) / (11);
+      return Math.sqrt(variance);
+    }, 
+
     deposits_tendency: function () {
       if (this.deposits_sum.length == 0) return null;
       var y_values = this.deposits_sum.slice(8), x_values = [0, 1, 2, 3];
@@ -493,6 +503,14 @@ const EvalFormWizard = Vue.component('eval-form', {
     balances_projection: function () {
       var projection = this.balances_quadratic_cubic_projections(14);
       return (projection[0] + projection[1]) / 2; 
+    },
+
+    bal_proj_standard_deviation: function () {
+      var x = [1,2,3,4,5,6,7,8,9,10,11,12],
+      projections = x.map((item) => (this.balances_quadratic_cubic_projections(item)[0] + this.balances_quadratic_cubic_projections(item)[1]) / 2);
+      var projection_mean = projections.reduce((a,b) => a + b) / 12;
+      var variance = projections.map((item) => Math.pow(item - projection_mean, 2)).reduce((a,b) => a+b) / 11;
+      return Math.sqrt(variance);
     },
 
     guarantee_factor: function () {
