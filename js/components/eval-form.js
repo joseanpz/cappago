@@ -302,6 +302,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         deposits_projection: this.deposits_projection,
         bal_proj_standard_deviation: this.bal_proj_standard_deviation,
         dep_proj_standard_deviation: this.dep_proj_standard_deviation,
+        balances_tendency_factor: this.balances_tendency_factor,
+        deposits_tendency_factor: this.deposits_tendency_factor
 
 
         /*factor_monto_maximo: this.factor_monto_maximo,
@@ -444,7 +446,22 @@ const EvalFormWizard = Vue.component('eval-form', {
       var projection_mean = projections.reduce((a,b) => a + b) / 12;
       var variance = projections.map((item) => Math.pow(item - projection_mean, 2)).reduce((a,b) => a+b) / (11);
       return Math.sqrt(variance);
-    }, 
+    },
+
+    deposits_tendency_factor: function () {
+      if (this.dep_proj_standard_deviation === 0 || !this.nivel_riesgo) return null;
+      var dep_quad_cub_12 = this.deposits_quadratic_cubic_projections(12)
+      var dep_quot_proj_sd =  (-this.deposits_projection + (dep_quad_cub_12[0]+dep_quad_cub_12[1])/2) / this.dep_proj_standard_deviation;
+      if (dep_quot_proj_sd <= 1.25) {
+        return this.nivel_riesgo.factor_tendencia_negativa_0;
+      } else if (dep_quot_proj_sd<=2) {
+        return this.nivel_riesgo.factor_tendencia_negativa_1;
+      } else if (dep_quot_proj_sd>2) {
+        return this.nivel_riesgo.factor_tendencia_negativa_2;
+      } else {
+        return null;
+      }
+    },
 
     deposits_tendency: function () {
       if (this.deposits_sum.length == 0) return null;
@@ -511,6 +528,21 @@ const EvalFormWizard = Vue.component('eval-form', {
       var projection_mean = projections.reduce((a,b) => a + b) / 12;
       var variance = projections.map((item) => Math.pow(item - projection_mean, 2)).reduce((a,b) => a+b) / 11;
       return Math.sqrt(variance);
+    },
+
+    balances_tendency_factor: function () {
+      if (this.bal_proj_standard_deviation === 0 || !this.nivel_riesgo) return null;
+      var bal_quad_cub_12 = this.balances_quadratic_cubic_projections(12)
+      var bal_quot_proj_sd = (-this.balances_projection + (bal_quad_cub_12[0]+bal_quad_cub_12[1])/2) / this.bal_proj_standard_deviation;
+      if (bal_quot_proj_sd <= 1.25) {
+        return this.nivel_riesgo.factor_tendencia_negativa_0;
+      } else if (bal_quot_proj_sd<=2) {
+        return this.nivel_riesgo.factor_tendencia_negativa_1;
+      } else if (bal_quot_proj_sd>2) {
+        return this.nivel_riesgo.factor_tendencia_negativa_2;
+      } else {
+        return null;
+      }
     },
 
     guarantee_factor: function () {
