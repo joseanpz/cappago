@@ -97,6 +97,8 @@ select:focus select:before {
 	font-size:12px;
 	color: #3a5fab !important;	
 	font-weight: bold;
+	text-align: center;
+	padding-bottom: 0px;
 }
 
 .card-header{
@@ -204,14 +206,43 @@ select:focus select:before {
 }
 
 .header-sec-card{
-	border:1px solid #3a5fab;
+	border:0px solid #3a5fab;
 }
 
 .titulos{
 	text-align: right;
+	margin: auto;
+	padding: auto;
 }
 
 .alinea_text{
 	text-align: right;
 	font-weight: bold;
+}
+
+.btn-delete, .btn-delete:hover{
+	color:red;
+}
+
+.is-checkradio[type="checkbox"]:hover:not([disabled]) + label::before, .is-checkradio[type="checkbox"]:hover:not([disabled]) + label::before, .is-checkradio[type="radio"]:hover:not([disabled]) + label::before, .is-checkradio[type="radio"]:hover:not([disabled]) + label::before {
+    border-color: #3a5fab !important;
+}
+.is-checkradio[type=checkbox]:hover:not([disabled])+label::before, .is-checkradio[type=checkbox]:hover:not([disabled])+label:before, .is-checkradio[type=radio]:hover:not([disabled])+label::before, .is-checkradio[type=radio]:hover:not([disabled])+label:before {
+    border-color: #3a5fab!important;
+}
+.is-checkradio[type=checkbox]+label::after, .is-checkradio[type=checkbox]+label:after {
+    box-sizing: border-box;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    border-width: .1rem;
+    border-style: solid;
+    border-color: #3a5fab;
+    border-top: 0;
+    border-left: 0;
+}
+
+/* table style */
+
+.card  table td, th {
+	border: 0px !important;
 }

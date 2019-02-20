@@ -7,46 +7,82 @@ const Results = Vue.component('results', {
 			</header>
 			<div class="card-content">	
 				<div class="content columns">
-					<div class="column title-color" style="border:1px solid #3a5fab;">Simple:</div>
-					<div class="column title-color" style="border:1px solid #3a5fab;">Revolvente</div>
-				</div> 
-				<div class="content columns">
-					<div class="column alinea_text">Monto solicitado</div>
-					<div class="column">{{monto_solicitado.simple}}</div>
-					<div class="column alinea_text">Monto solicitado</div>
-					<div class="column">{{monto_solicitado.revolvente}}</div>					
+					<div class="card column" style="margin: 5px;">
+						<header class="header-sec-card">
+							<p class="card-header-title title-color">Simples</p>
+						</header>
+						<div class="card-content">	
+							<div class="content columns">
+								<table class="column table  " style="width:100%">
+									<tr>
+										<td class="alinea_text">Monto solicitado</td>
+										<td>{{monto_solicitado.simple}}</td>
+									</tr>
+									<tr>
+										<td class="alinea_text">Capacidad de pago por flujo mensual</td>
+										<td>{{capacidad_pago.simple}}</td>
+									</tr>
+									<tr>
+										<td class="alinea_text">Diferencia entre ingreso anual y deuda actual</td>
+										<td>{{ingreso_vs_deuda.simple}}</td>
+									</tr>
+									<tr>
+										<td class="alinea_text">Razón entre flujo y factor recuperación de capital</td>
+										<td>{{razon_flujo_rec_capital}}</td>
+									</tr>
+									<tr>
+										<td class="alinea_text">Monto máximo por buró</td>
+										<td>{{Math.round(monto_maximo.simple)}}</td>
+									</tr>
+ 										<td class="alinea_text">Monto</td>
+										<td>{{ Math.round(linea.simple) }}</td>
+									</tr>
+								</table>
+							</div> 
+						</div>
+					</div>
+					<div class="card column" style="margin: 5px;">
+						<header class="header-sec-card">
+							<p class="card-header-title title-color">Revolventes</p>
+						</header> 
+						<div class="card-content">	
+							<div class="content columns">
+								<table class="column table " style="width:100%">
+									<tr>
+										<td class="alinea_text">Monto solicitado</td>
+										<td>{{monto_solicitado.revolvente}}</td>
+									</tr>
+									<tr>
+										<td class="alinea_text">Capacidad de pago por ingreso mensual</td>
+										<td>{{capacidad_pago.revolvente}}</td>
+									</tr>
+									<tr>
+										<td class="alinea_text">Diferencia entre ingreso anual y deuda actual</td>
+										<td>{{ingreso_vs_deuda.revolvente}}</td>
+									</tr>
+									<tr>
+										<td class="alinea_text">Razón entre flujo y tasa anual</td>
+										<td>{{razon_flujo_tasa}}</td>
+									</tr>
+									<tr>
+										<td class="alinea_text">Monto máximo por buró:</td>
+										<td>{{ Math.round(monto_maximo.revolvente)}}</td>
+									</tr>
+									<tr>
+										<td class="alinea_text">Línea</td>
+										<td>{{ Math.round(linea.revolvente)  }}</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="content columns">
-					<div class="column alinea_text">Capacidad de pago por flujo mensual</div>
-					<div class="column">{{capacidad_pago.simple}}</div>
-					<div class="column alinea_text">Capacidad de pago por ingreso mensual</div>
-					<div class="column">{{capacidad_pago.revolvente}}</div>					
-				</div>
-				<div class="content columns">
-					<div class="column alinea_text">Diferencia entre ingreso anual y deuda actual</div>
-					<div class="column">{{ingreso_vs_deuda.simple}}</div>
-					<div class="column alinea_text">Diferencia entre ingreso anual y deuda actual</div>
-					<div class="column">{{ingreso_vs_deuda.revolvente}}</div>					
-				</div>
-				<div class="content columns">
-					<div class="column alinea_text">Razon entre flujo y factor recuperacion de capital</div>
-					<div class="column">{{razon_flujo_rec_capital}}</div>
-					<div class="column alinea_text">Razon entre flujo y tasa anual</div>
-					<div class="column">{{razon_flujo_tasa}}</div>					
-				</div>
-				<div class="content columns">
-					<div class="column alinea_text">Monto maximo</div>
-					<div class="column">{{monto_maximo.simple}}</div>
-					<div class="column alinea_text">Monto maximo</div>
-					<div class="column">{{monto_maximo.revolvente}}</div>					
-				</div>
-				<div class="content columns">
-					<div class="column alinea_text">Linea</div>
-					<div class="column">{{linea.simple}}</div>
-					<div class="column alinea_text">Linea</div>
-					<div class="column">{{linea.revolvente}}</div>					
+				<div class="columns">
+					<label style="color:#3a5fab;" class="column"><b>*</b>Cantidades en Miles</label>
 				</div>
 			</div>
 		</div>
 	`
-});
+}
+
+);

@@ -12,7 +12,7 @@ const HomeController = {
           <div class="column" style="padding:50px;">        
             <h2  style="color: #fff; font-size: 1.0em;">Segmento Negocios</h2>
             <h3 style="color: white; font-size: 3.0em;"><b>Cálculo de capacidad de pago</b></h3>
-            <h3 style="color:white; font-size: 1.5em;">Conoce el valor de la Línea Asignada (Simple y/o Revolvente) <br/> para la Empresa analizada</h3>        
+            <h3 style="color:white; font-size: 1.5em;">Evaluación y asignación de líneas simple y revolvente <br/> para el Segmento Negocios.</h3>        
           </div>      
         </div> 
       </section>
@@ -43,15 +43,23 @@ const EvalFormController = {
       <section class="container" style="margin-top: 20px;">
         <div class="columns"> 
           <div class="column">
-            <eval-form></eval-form>
+            <eval-form @move-to-success-route="moveToListRoute"></eval-form>
           </div>  
         </div> 
       </section>
     </div>
   `,
+  
 	components: {
 		EvalFormWizard,
-	} 
+	},
+
+  methods: {
+    moveToListRoute: function () {
+      console.log('pushing list route')
+      this.$router.push('/evaluaciones');
+    }
+  }
 };
 
 const EvalDetailController = {
@@ -72,13 +80,21 @@ const EvalUpdateFormController = {
       <section class="container">
         <div class="columns"> 
           <div class="column">
-            <eval-form :id_solicitud="id"></eval-form>
+            <eval-form :id_solicitud="id" @move-to-success-route="moveToListRoute"></eval-form>
           </div>  
         </div> 
       </section>
     </div>
   `,
+
   components: {
     EvalFormWizard,
+  },
+
+  methods: {
+    moveToListRoute: function () {
+      console.log('pushing list route')
+      this.$router.push('/evaluaciones');
+    }
   }
 };

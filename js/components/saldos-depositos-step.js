@@ -4,7 +4,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 		<section> 		
 			<div class="columns">
 				<div  class="column is-2">
-					<label class="label titulos">Seleccione un Banco</label>
+					<label class="label titulos" style="text-align:center; margin:auto;">Seleccione un Banco</label>
 				</div>
 				<div class="column is-2">
  					<b-select placeholder="Select a name" v-model="selected_bank"> 
@@ -19,43 +19,57 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
                       
 				</div>
 				<div class="column is-2">
-					<a class="button is-info is-outlined" @click="addAccountStetment">
+					<a class="button is-info is-outlined" @click="addAccountStatment">
 						<span class="icon is-small">
 							<i class="fas fa-check"></i>
 						</span>
 						<span>Agregar</span>
 					</a>
 				</div>
+				<div class="column"></div>
 			</div>
 			<hr/>
 			<div v-if="account_statements.length">
 				<div class="columns" >
 					<div class="column" v-for="acc_smnt in account_statements" :key="acc_smnt.id_local">
 						<div v-bind:class="{ 'is-6': account_statements.length===1 }" class="card column">
-							<header class="header-sec-card" >
-								<p class="card-header-title title-color">{{acc_smnt.bank_name}}</p>
-							</header>  
-
+							
 							<div class="card-content"> 
 								<div class="columns">
-									<label class="label_color column is-2" >Meses</label>
-									<label class="label_color column" >Depositos</label>
-									<label class="label_color column" >Saldos</label>
+									<table class="column table is-bordered is-striped ">
+										<tr>
+											<td colspan="2" class="title-color" style="text-align:left;">
+												<b>{{acc_smnt.bank_name}}</b>
+											</td>
+											<td style="text-align:right;"><a  class="btn-delete is-outlined tooltip is-tooltip-right" data-tooltip="Borrar banco" @click="deleteAccountStatement(acc_smnt.id_local)"><i class="fas fa-times fa-2x" ></i></a></td>
+										</tr>
+										<tr>
+											<td class="label_color">Meses</td>
+											<td class="label_color">Depósitos</td>
+											<td class="label_color">Saldos</td>
+										</tr>	
+										<tr v-for="statement in acc_smnt.statements" :key="statement.id_local">
+											<td style="vertical-align:middle;"><label class="lbl_months" >{{statement.mes}}</label></td>
+											<td><b-input type="number"  step="0.001"  v-model="statement.deposito"></b-input></td>
+											<td><b-input type="number"  step="0.001" v-model="statement.saldo"></b-input></td>										
+										</tr>																		
+										</table>
+									</div>							
 								</div>
-								<div class="content">
+								<!--<div class="content">
 									<b-field v-for="statement in acc_smnt.statements" :key="statement.id_local">
 									<div class="columns">
-										<label class="lbl_months column is-2">{{statement.mes}}</label>
+										<label class="lbl_months column is-2" >{{statement.mes}}</label>
 										<b-input type="number" class="column" step="0.001"  v-model="statement.deposito"></b-input> &nbsp
 										<b-input type="number" class="column" step="0.001" v-model="statement.saldo"></b-input>
 									</div>
 									</b-field>
-								</div>
+								</div>-->
 							</div>
-							<footer class="card-footer">
-								<!--<a class="card-footer-item" @click="addStatement(acc_smnt.id_local)">Agregar registro</a> -->
+							<!--<footer class="card-footer">
+								<a class="card-footer-item" @click="addStatement(acc_smnt.id_local)">Agregar registro</a> 
 								<a class="card-footer-item button is-danger is-outlined" @click="deleteAccountStatement(acc_smnt.id_local)">Borrar banco</a>
-							</footer>
+							</footer> -->
 						</div>
 					</div>						
 				</div>	  						
@@ -101,7 +115,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
               	console.log(response);
               	self.banks = response.records;
               	if (typeof self.id_solicitud != 'undefined' && !!self.id_solicitud) {
-					self.readAccountStetments();	
+					self.readAccountStatments();	
 				}
             })
             .withFailureHandler(function(err){
@@ -111,13 +125,19 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
             .readCatalog('banco')
         },
 
-	    addAccountStetment: function () {
+	    addAccountStatment: function () {
 	    	console.log("adding acc statement");
 	    	
 	    	var count = this.acc_stmnt_count;
 	    	var statements = this.loadStatements(12);
-	    	console.log(statements);
+			
 	    	if (this.account_statements.length < 3) {
+	    		for ( var i=0; i<this.account_statements.length; i++) {
+					if (this.selected_bank === this.account_statements[i].bank_id) {
+						alert("Por favor elija otro banco que no haya seleccionado anteriormente");
+						return;
+					}
+				}
 	    		this.acc_stmnt_count++;
 	    		this.account_statements.push({
 	        		id_local: count,
@@ -125,27 +145,29 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
     				bank_name: this.selected_bank_name,
     				statements: statements
     			});    			
+	    	} else {
+	    		alert("No puede elegir más de tres bancos.");
 	    	}
 	    	//console.log('meh');
 	    	//console.log(this.account_statements[0]);	        
 	    },
 
-	    readAccountStetments: function () {
+	    readAccountStatments: function () {
 			var self = this;
 	        google.script.run
 	        .withSuccessHandler(function(response){
-	          console.log('Reading saldos depositos');
-	          console.log(response);
-	          self.setAccountStetments(response.records);  // solicitud.numero_solicitud = response.numero_solicitud;
+				console.log('Reading saldos depositos');
+				console.log(response);
+				self.setAccountStatments(response.records);  // solicitud.numero_solicitud = response.numero_solicitud;
 	        })
 	        .withFailureHandler(function(err){
-	          console.log('An error ocurred while reading saldos depositos');
-	          console.log(err);
+				console.log('An error ocurred while reading saldos depositos');
+				console.log(err);
 	        })
 	        .readFKRelation('deposito_saldo', 'id_solicitud', this.id_solicitud);
 		},
 
-		setAccountStetments: function (records) {
+		setAccountStatments: function (records) {
 
 			var l = records.length;
 			if (l > 0) {
@@ -179,23 +201,9 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 						this.acc_stmnt_count +=1
 					}
 				}
-			}
-
-			
+			}		
 			
 		},
-	    /*addStatement: function(id) {
-
-	    	if (this.account_statements.find(elm => elm.id == id).statements.length < 12) {
-		    	this.account_statements.find(elm => elm.id == id).statements.push({
-		    		id: this.acc_stmnt_count,
-	    			month: null,
-	    			deposits: null,
-	    			balance: null
-	    		});
-	    		this.acc_stmnt_count++;
-	    	}	
-	    },*/
 
 	    deleteAccountStatement: function(id) {
 	    	var self = this;
@@ -237,17 +245,24 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 			    		id_local: i,
 			    		id_solicitud: this.id_solicitud,
 			    		id_banco: this.selected_bank,
-		    			mes: '2019-01',
+		    			mes: this.getdate(i),
 		    			deposito: 0,
 		    			saldo: 0,
 		    			synced: false
 		    		});
 	    	  	}
-	    	return stmnts;
+	    	return stmnts; 
+	    },
+
+	    getdate:function(i){
+	    	var fechaAct = new Date();
+	    	fechaAct = new Date(fechaAct.getFullYear(), fechaAct.getMonth() - 11, 0); 	    	
+	    	var nuevafecha =  new Date(new Date(fechaAct.getFullYear(), fechaAct.getMonth() +i,1)).toJSON().slice(0,7);
+	    	return nuevafecha;
 	    },
 
 	    save: function () {
-	    	console.log('thrid marker');
+	    	
 	    	var to_be_created = [], to_be_updated = [];
 	    	for (var i=0; i < this.account_statements.length; i++ ) {
 	    		var statement = this.account_statements[i];

@@ -10,7 +10,7 @@ var SolicitudStep = Vue.component('solicitud-step',{
 					<div class="content">
 						<div class="columns">
 							<div class="column is-2">
-								<label class="label titulos">Numero solicitud: </label>
+								<label class="label titulos">Número solicitud: </label>
 							</div>
 							<div class="column is-4" > 
 								<input type="text" v-model="numero_solicitud" class="input" id="numero_solicitud"/>

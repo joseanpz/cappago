@@ -11,26 +11,26 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 						<div class="columns">
 							<div class="column">
 								<div class="card">
-									<header class="card-header">
-										<p class="card-header-title">Segmento califica</p>
+									<header class="header-sec-card">
+										<p class="card-header-title title-color">Segmento califica</p>
 									</header>
 									<div class="card-content">	
 										<div class="content">
-											<table class="table is-bordered">
+											<table class="table ">
 												<tr>
 													<td><label class="label">Indicadora de Acreditados Sin Atraso (<b>BK12_CLEAN</b>): </label></td>
 													<td><input type="number" step="0.001" v-model="BK12_CLEAN" class="input" /> </td>
 												</tr>
 												<tr>
-													<td><label class="label">Monto máximo de crédito otorgado por instituciones financieras bancarias en los ultimos 12 meses. (<b>BK12_MAX_CREDIT_AMT</b>): </label></td>
+													<td><label class="label">Monto máximo de crédito otorgado por instituciones financieras bancarias en los últimos 12 meses. (<b>BK12_MAX_CREDIT_AMT</b>): </label></td>
 													<td><input type="number" step="0.001" v-model="BK12_MAX_CREDIT_AMT" class="input" /> </td>
 												</tr>
 												<tr>
-													<td><label class="label">Deuda Total de Acreditado (<b>BK_DEUDA_TOT</b>): </label></td>
+													<td><label class="label">Deuda Total de Acreditado (<b>DEUDA_TOT</b>): </label></td>
 													<td><input type="number" step="0.001" v-model="deuda_total" class="input" /> </td>
 												</tr>
 												<tr>
-													<td><label class="label">Antigüedad en sociedad de informacion crediticia (<b>MONTHS_ON_FILE_BANKING</b>): </label></td>
+													<td><label class="label">Antigüedad en sociedad de información crediticia (<b>MONTHS_ON_FILE_BANKING</b>): </label></td>
 													<td><input type="number" step="0.001" v-model="MONTHS_ON_FILE_BANKING" class="input" /> </td>
 												</tr>
 											</table>
@@ -40,44 +40,44 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 							</div>
 							<div class="column">
 								<div class="card">
-									<header class="card-header">
-										<p class="card-header-title">Reporte de buro de credito (Resumen)</p>
+									<header class="header-sec-card">
+										<p class="card-header-title title-color">Reporte de buró de crédito (Resumen)</p>
 									</header>
 									<div class="card-content">	
 										<div class="content">								
-											<table class="table is-bordered">
+											<table class="table ">
 												<thead>
 													<tr>
-														<th style="border: 1px solid #3a5fab;">Tipo de credito</th>
-														<th style="border: 1px solid #3a5fab;">Numero de creditos</th>
-														<th style="border: 1px solid #3a5fab;">Original</th>
-														<th style="border: 1px solid #3a5fab;">Vigente</th>
+														<th >Tipo de crédito</th>
+														<th >Número de créditos</th>
+														<th >Monto original</th>
+														<th >Monto vigente</th>
 													</tr>								
 												</thead>
 												<tbody>
 													<tr>
 														<td><b>Revolvente</b></td>
 														<td><input type="number"  v-model="num_cred_act_revol" class="input" /></td>
-														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_revol" class="input" /></td>
 														<td><input type="number" step="0.001" v-model="sal_orig_cred_act_revol" class="input" /></td>
+														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_revol" class="input" /></td>
 													</tr>
 													<tr>
 														<td><b>Factorajes</b></td>
 														<td><input type="number"  v-model="num_cred_act_fact" class="input" /></td>
-														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_fact" class="input" /></td>
 														<td><input type="number" step="0.001" v-model="sal_orig_cred_act_fact" class="input" /></td>
+														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_fact" class="input" /></td>
 													</tr>
 													<tr>
 														<td><b>Arrendamientos</b></td>
 														<td><input type="number"  v-model="num_cred_act_arren" class="input" /></td>
-														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_arren" class="input" /></td>
 														<td><input type="number" step="0.001" v-model="sal_orig_cred_act_arren" class="input" /></td>
+														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_arren" class="input" /></td>
 													</tr>
 													<tr>
 														<td><b>Simples</b></td>
 														<td><input type="number"  v-model="num_cred_act_simp" class="input" /></td>
-														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_simp" class="input" /></td>
 														<td><input type="number" step="0.001" v-model="sal_orig_cred_act_simp" class="input" /></td>
+														<td><input type="number" step="0.001" v-model="sal_vig_cred_act_simp" class="input" /></td>
 													</tr>
 												</tbody>
 											</table>
@@ -87,6 +87,34 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 							</div>
 						</div>					
 					</div>
+
+						<div class="columns">
+							<div class="column is-6">
+								<div class="card">
+									<header class="header-sec-card">
+										<p class="card-header-title title-color"> Experiencia crediticia</p>
+									</header>
+									<div class="card-content">	
+										<div class="content">								
+											<table class="table">												
+												<tbody>
+													<tr>
+														<td>
+															<div class="field">
+															  <input class="is-checkradio" v-model="exp_creditos_largos" id="exp_creditos_largos" type="checkbox" name="exp_creditos_largos">
+															  <label for="exp_creditos_largos"><b>Tiene experiencia con créditos simples > 48 meses?</b></label>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
 				</div>
 			</div>
 			<results v-bind="$props"></results>			
@@ -109,7 +137,8 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 			sal_orig_cred_act_arren: null,
 			sal_orig_cred_act_fact: null,
 			sal_orig_cred_act_revol: null,
-			sal_orig_cred_act_simp: null
+			sal_orig_cred_act_simp: null,
+			exp_creditos_largos: null
 		}
 	},
 
@@ -165,6 +194,9 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 		},
 		sal_orig_cred_act_simp: function (val) {
 			this.$emit('sal-orig-simp-change', val);
+		},
+		exp_creditos_largos: function (val) {
+			this.$emit('large-credit-experience', val);
 		},
 		
 	}

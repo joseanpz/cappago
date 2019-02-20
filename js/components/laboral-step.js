@@ -4,19 +4,19 @@ var LaboralStep = Vue.component('laboral-step',{
 		<section class="container">
 			<div class="card">
 				<header class="card-header">
-					<p class="card-header-title">Información laboral</p>
+					<p class="card-header-title">Características PyME</p>
 				</header>
 				<div class="card-content">		
 					<div class="content">				
 						<div class="columns">
 							<div class="column is-2">
-								<label class="label titulos">Antiguedad operacion: </label>
+								<label class="label titulos">Antigüedad operación: </label>
 							</div>
 							<div class="column is-4">
 								<input type="date" v-model="antiguedad_operacion" class="input" />
 							</div>
 							<div class="column is-2">
-								<label class="label titulos">Antiguedad actividad: </label>
+								<label class="label titulos">Antigüedad actividad: </label>
 							</div>
 							<div class="column is-4">							
 								<div class="select is-fullwidth">
@@ -32,24 +32,32 @@ var LaboralStep = Vue.component('laboral-step',{
 							            <option value="8">8</option>
 							            <option value="9">9</option>
 							            <option value="10">10</option>
-							            <option value="11">Mas de 10 años</option>
+							            <option value="11">Más de 10 años</option>
 							         </select>
 						        </div>
 							</div>
 						</div>
 
 						<div class="columns">	
-							<div class="column is-6">						
-								<label class="label">Tipo de comprobantes de ingresos: </label>
-								<b-radio v-model="tipo_comprobante" size="is-normal"  native-value="account_statements"> 
-						        	Estados de Cuenta 
-					    		</b-radio>
-								<b-radio v-model="tipo_comprobante" size="is-normal" class="form-color" native-value="financial_statements"> 
-						        	Estados Financieros  
-						    	</b-radio>
+							<div class="column is-6">	
+								<div class="columns">
+								<div class="column"><label class="label">Tipo de comprobantes de ingresos: </label></div>
+								</div>
+								<div class="columns">
+									<div class="column">
+										<b-radio class="label titulos" v-model="tipo_comprobante" size="is-normal"  native-value="account_statements"> 
+								        	Estados de Cuenta 
+							    		</b-radio>
+									</div>
+									<div class="column">
+										<b-radio class="label titulos" v-model="tipo_comprobante" size="is-normal"  native-value="financial_statements"> 
+								        	Estados Financieros  
+								    	</b-radio>
+									</div>
+								</div>																										
 							</div>
 							<div class="column is-2">
-								<label class="label titulos">Actividad: </label>
+								<label class="label titulos">Sector: </label>
 							</div>
 							<div class="column">
 								<b-select placeholder="Select a name" v-model="id_actividad" expanded>
@@ -116,7 +124,7 @@ var LaboralStep = Vue.component('laboral-step',{
 			.readCatalog('actividad')
         },
         saveBalancesDeposits: function () {
-        	console.log('second marker');
+        	if(typeof this.$refs.saldo_deposito === 'undefined') return;
         	this.$refs.saldo_deposito.save();
         },
 
