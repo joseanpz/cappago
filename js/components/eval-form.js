@@ -145,7 +145,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         </resultado-perfilador-step>
       </tab-content>         
 
-      <pre>{{ data | pretty }}</pre>
+      <!--<pre>{{ data | pretty }}</pre>-->
 
       <template slot="footer" slot-scope="props">
         <div class="wizard-footer-left">
