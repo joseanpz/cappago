@@ -52,10 +52,10 @@ const DataTable = Vue.component('data-table', {
                     <b-table-column field="tipo_comprobante" label="Comprobantes">
                         {{ props.row.tipo_comprobante | comprobante }}
                     </b-table-column> 
-                    <b-table-column field="linea_simple" label="Linea simple">
+                    <b-table-column field="linea_simple" label="Línea simple">
                         {{ Math.round(props.row.linea_simple_sugerida) }}
                     </b-table-column>
-                    <b-table-column field="linea_revolvente" label="Linea revolvente">
+                    <b-table-column field="linea_revolvente" label="Línea revolvente">
                         {{ Math.round(props.row.linea_revolvente_sugerida) }}
                     </b-table-column>                    
   

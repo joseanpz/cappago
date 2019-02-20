@@ -45,7 +45,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 										</tr>
 										<tr>
 											<td class="label_color">Meses</td>
-											<td class="label_color">Depositos</td>
+											<td class="label_color">Depósitos</td>
 											<td class="label_color">Saldos</td>
 										</tr>	
 										<tr v-for="statement in acc_smnt.statements" :key="statement.id_local">

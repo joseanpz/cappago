@@ -4,19 +4,19 @@ var CreditoStep = Vue.component('credito-step',{
 		<section class="container">
 			<div class="card">
 				<header class="card-header">
-					<p class="card-header-title">Datos del credito</p>
+					<p class="card-header-title">Datos del crédito</p>
 				</header>
 				<div class="card-content">				
 					<div class="content">
 						<div class="columns">
 							<div class="column is-2">
-								<label class="label titulos">Destino credito: </label>
+								<label class="label titulos">Destino crédito: </label>
 							</div>
 							<div class="column is-4">
 								<input type="text" v-model="destino_credito" class="input" />
 							</div>
 							<div class="column is-2">
-								<label class="label titulos">Garantia: </label>
+								<label class="label titulos">Garantía: </label>
 							</div>
 							<div class="column is-4">
 								<div class="select is-fullwidth">

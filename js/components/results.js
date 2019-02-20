@@ -27,11 +27,11 @@ const Results = Vue.component('results', {
 										<td>{{ingreso_vs_deuda.simple}}</td>
 									</tr>
 									<tr>
-										<td class="alinea_text">Razon entre flujo y factor recuperacion de capital</td>
+										<td class="alinea_text">Razón entre flujo y factor recuperación de capital</td>
 										<td>{{razon_flujo_rec_capital}}</td>
 									</tr>
 									<tr>
-										<td class="alinea_text">Monto maximo por buró</td>
+										<td class="alinea_text">Monto máximo por buró</td>
 										<td>{{Math.round(monto_maximo.simple)}}</td>
 									</tr>
  										<td class="alinea_text">Monto</td>
@@ -61,15 +61,15 @@ const Results = Vue.component('results', {
 										<td>{{ingreso_vs_deuda.revolvente}}</td>
 									</tr>
 									<tr>
-										<td class="alinea_text">Razon entre flujo y tasa anual</td>
+										<td class="alinea_text">Razón entre flujo y tasa anual</td>
 										<td>{{razon_flujo_tasa}}</td>
 									</tr>
 									<tr>
-										<td class="alinea_text">Monto maximo por buró:</td>
+										<td class="alinea_text">Monto máximo por buró:</td>
 										<td>{{ Math.round(monto_maximo.revolvente)}}</td>
 									</tr>
 									<tr>
-										<td class="alinea_text">Linea</td>
+										<td class="alinea_text">Línea</td>
 										<td>{{ Math.round(linea.revolvente)  }}</td>
 									</tr>
 								</table>
