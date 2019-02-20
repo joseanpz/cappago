@@ -260,8 +260,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         //id_solicitud: this.id_solicitud,
         //account_statements: this.account_statements,
         //solicited_credits: this.solicited_credits,
-        //balances_sum: this.balances_sum,
-        //deposits_sum: this.deposits_sum,
+        balances_sum: this.balances_sum,
+        deposits_sum: this.deposits_sum,
         //max_balance: this.max_balance,
         //min_balance: this.min_balance,
         //max_deposit: this.max_deposit,
@@ -295,6 +295,12 @@ const EvalFormWizard = Vue.component('eval-form', {
         BK12_MAX_CREDIT_AMT: this.solicitud.BK12_MAX_CREDIT_AMT,
         monto_maximo: this.monto_maximo,
         deposits_movil_means: this.deposits_movil_means,
+        balances_movil_means: this.balances_movil_means,
+        deposits_polynomial_tendency: this.deposits_polynomial_tendency,
+        balances_polynomial_tendency: this.balances_polynomial_tendency,
+        balances_projection: this.balances_projection,
+        deposits_projection: this.deposits_projection,
+
 
         /*factor_monto_maximo: this.factor_monto_maximo,
         factor_recuperacion_capital: this.factor_recuperacion_capital,
@@ -387,24 +393,47 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     deposits_movil_means: function () {
+      if (this.deposits_sum.length === 0) return [];
       var self = this;
       var first_mm = [], second_mm = [];
+
       for (var i=0; i<11; i++) {
-        first_mm.push((this.deposits_sum[i] + this.deposits_sum[i+1]) / 2)
+        //continue
+        var tmp = (this.deposits_sum[i] + this.deposits_sum[i+1]) / 2;
+        first_mm.push(tmp);
       }
+      console.log(first_mm)
       for (var i=0; i<10; i++) {
-        second_mm.push((this.first_mm[i] + this.first_mm[i+1]) / 2)
+        //continue
+        var tmp = (first_mm[i] + first_mm[i+1]) / 2;
+        second_mm.push(tmp);
       }
+      console.log(second_mm);
       return second_mm.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / 10;
     },
 
     deposits_polynomial_tendency: function () {
-      var quadratic_interpolation = this.polynomial(this.deposits_sum.map(function(item, index){
+      if (this.deposits_sum.length == 0) return null;
+      var deposit_sum_pond = [];
+      for (var i=0; i<12; i++) {
+        var elm = 0;
+        for (var j=i; j>=0; j--) {
+          elm += this.deposits_sum[j] * (j+1) / ((i+1)*(i+2)/2) ;
+        }
+        deposit_sum_pond.push(elm);
+      }
+      var quadratic_interpolation = this.polynomial(deposit_sum_pond.map(function(item, index){
         return [index+1, item];
       }), 2, {precision: 3});
-      var cubic_interpolation = this.polynomial(this.deposits_sum.map(function(item, index){
+      var cubic_interpolation = this.polynomial(deposit_sum_pond.map(function(item, index){
         return [index+1, item];
       }), 3, {precision: 3});
+      return [quadratic_interpolation, cubic_interpolation];
+    },
+
+    deposits_projection: function () {
+      var projection = this.deposits_quadratic_cubic_projections(14);
+      return (projection[0] + projection[1]) / 2; 
     },
 
     deposits_tendency: function () {
@@ -416,9 +445,8 @@ const EvalFormWizard = Vue.component('eval-form', {
       return line[0];
     },
 
-    balances_month_avg: function () {
-      var self = this;
-      
+    balances_month_avg: function () {      
+      var self = this;      
       if (this.deposits_tendency < 0) {
         return this.balances_sum.slice(8).reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / 4
       } else {
@@ -431,15 +459,40 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     balances_movil_means: function () {
+      if (this.balances_sum.length === 0) return [];
       var self = this;
       var first_mm = [], second_mm = [];
       for (var i=0; i<11; i++) {
         first_mm.push((this.balances_sum[i] + this.balances_sum[i+1]) / 2)
       }
       for (var i=0; i<10; i++) {
-        second_mm.push((this.first_mm[i] + this.first_mm[i+1]) / 2)
+        second_mm.push((first_mm[i] + first_mm[i+1]) / 2)
       }
       return second_mm.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / 10;
+    },
+
+    balances_polynomial_tendency: function () {
+      if (this.balances_sum.length == 0) return null;
+      var balances_sum_pond = [];
+      for (var i=0; i<12; i++) {
+        var elm = 0;
+        for (var j=i; j>=0; j--) {
+          elm += this.balances_sum[j] * (j+1) / ((i+1)*(i+2)/2) ;
+        }
+        balances_sum_pond.push(elm);
+      }
+      var quadratic_interpolation = this.polynomial(balances_sum_pond.map(function(item, index){
+        return [index+1, item];
+      }), 2, {precision: 3});
+      var cubic_interpolation = this.polynomial(balances_sum_pond.map(function(item, index){
+        return [index+1, item];
+      }), 3, {precision: 3});
+      return [quadratic_interpolation, cubic_interpolation];
+    },
+
+    balances_projection: function () {
+      var projection = this.balances_quadratic_cubic_projections(14);
+      return (projection[0] + projection[1]) / 2; 
     },
 
     guarantee_factor: function () {
@@ -803,6 +856,26 @@ const EvalFormWizard = Vue.component('eval-form', {
       .readCatalog('config')
     },
 
+    balances_quadratic_cubic_projections: function (value) {
+      if(this.balances_polynomial_tendency === null) return [0,0];
+      console.log("balances quad cib proj");
+      console.log(this.balances_polynomial_tendency);
+      var quadratic_equation = this.balances_polynomial_tendency[0].equation;
+      var cubic_equation = this.balances_polynomial_tendency[1].equation;
+      var quadratic_value = quadratic_equation[0] + quadratic_equation[1]*value + quadratic_equation[2]*value*value;
+      var cubic_value = cubic_equation[0] + cubic_equation[1]*value + cubic_equation[2]*value*value + cubic_equation[3]*value*value*value;
+      return [quadratic_value, cubic_value]
+    },
+
+    deposits_quadratic_cubic_projections: function (value) {
+      if(this.deposits_polynomial_tendency === null) return [0,0];
+      var quadratic_equation = this.deposits_polynomial_tendency[0].equation;
+      var cubic_equation = this.deposits_polynomial_tendency[1].equation;
+      var quadratic_value = quadratic_equation[0] + quadratic_equation[1]*value + quadratic_equation[2]*value*value;
+      var cubic_value = cubic_equation[0] + cubic_equation[1]*value + cubic_equation[2]*value*value + cubic_equation[3]*value*value*value;
+      return [quadratic_value, cubic_value]
+    },
+
     readNivelesRiesgo: function () {
       var self = this;
       google.script.run
@@ -1149,6 +1222,8 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.solicitud.exp_creditos_largos = val;
     },  
     setAccountStatements: function(val) {
+      console.log("updating");
+      console.log(val);
     	this.account_statements = val;
     },
     setSimpleCredits: function(val) {

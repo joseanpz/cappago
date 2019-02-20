@@ -107,6 +107,7 @@ var LaboralStep = Vue.component('laboral-step',{
 
 	methods: {
 		emmitAccountStatements: function (val) {
+			console.log("updating from child");
 			this.$emit('acc-statements-change', val);
 		},
 		readActivities: function () {
