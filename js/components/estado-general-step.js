@@ -16,7 +16,7 @@ var EstadoGeneralStep = Vue.component('estado-general-step',{
 								<input type="number" step="0.001" v-model="deuda_cortoplazo" class="input" />
 							</div>
 							<div class="column is-2">
-								<label class="label">Calificacion deudor: </label>
+								<label class="label">Calificación deudor: </label>
 							</div>
 							<div class="column is-4">		
 								<input type="text" v-model="calificacion_deudor" class="input" />

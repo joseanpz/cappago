@@ -23,7 +23,7 @@ const DetailForm = Vue.component('detail', {
                   <td>{{ solicitud.numero_solicitud }}</td>
                 </tr>
                 <tr>
-                  <td><label class="label">Tipo evaluacion:</label></td>
+                  <td><label class="label">Tipo evaluación:</label></td>
                   <td>{{ solicitud.tipo_evaluacion_perfilador | tipo_evaluacion_perfilador }}</td>
                   <td><label class="label">Calificación deudor:</label></td>
                   <td>{{this.solicitud.calificacion_deudor}}</td>
@@ -59,7 +59,7 @@ const DetailForm = Vue.component('detail', {
                 <tr>
                   <td><label class="label">Monto* :</label></td>
                   <td class="td-cantidad">{{ solicitud.linea_simple_sugerida | monto_redondeado}}</td>
-                  <td><label class="label">Linea** :</label></td>
+                  <td><label class="label">Línea** :</label></td>
                   <td class="td-cantidad">{{ solicitud.linea_revolvente_sugerida | monto_redondeado }}</td>
                 </tr>
                 
@@ -380,7 +380,7 @@ const DetailForm = Vue.component('detail', {
       if(value >1000){
         return  "Cantidad en múltiplos de 50K"       
       }else{
-        return  "Cantidad en múltiplos en 10K"
+        return  "Cantidad en múltiplos de 10K"
         }
       }else{
         return null;
