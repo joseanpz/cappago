@@ -32,7 +32,7 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-step',{
 								<div class="column is-4">
 									<input type="text" v-model="score" class="input" />
 								</div>
-								<div class="column is-2"><label class="label">Tipo evaluacion del perfilador:</label></div>
+								<div class="column is-2"><label class="label">Tipo evaluación del perfilador:</label></div>
 								<div class="column is-4">
 									<b-select placeholder="Select a name" v-model="tipo_evaluacion_perfilador" expanded>	                			
 										<option value selected>-- seleccione -- </option>

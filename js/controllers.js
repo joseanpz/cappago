@@ -12,7 +12,7 @@ const HomeController = {
           <div class="column" style="padding:50px;">        
             <h2  style="color: #fff; font-size: 1.0em;">Segmento Negocios</h2>
             <h3 style="color: white; font-size: 3.0em;"><b>Cálculo de capacidad de pago</b></h3>
-            <h3 style="color:white; font-size: 1.5em;">Evaluación y asignación de lineas simple y revolvente para el segmento negocios.</h3>        
+            <h3 style="color:white; font-size: 1.5em;">Evaluación y asignación de líneas simple y revolvente <br/> para el Segmento Negocios.</h3>        
           </div>      
         </div> 
       </section>
