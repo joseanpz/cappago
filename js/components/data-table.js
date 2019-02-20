@@ -53,10 +53,10 @@ const DataTable = Vue.component('data-table', {
                         {{ props.row.tipo_comprobante | comprobante }}
                     </b-table-column> 
                     <b-table-column field="linea_simple" label="Línea simple">
-                        {{ Math.round(props.row.linea_simple_sugerida) }}
+                        {{ props.row.linea_simple_sugerida | redondeo_cantidad }}
                     </b-table-column>
                     <b-table-column field="linea_revolvente" label="Línea revolvente">
-                        {{ Math.round(props.row.linea_revolvente_sugerida) }}
+                        {{ props.row.linea_revolvente_sugerida | redondeo_cantidad }}
                     </b-table-column>                    
   
                     <!--
@@ -175,6 +175,10 @@ const DataTable = Vue.component('data-table', {
             //console.log('pretty');
             //console.log(value);
             return JSON.stringify(value, null, 2);
+        },
+        redondeo_cantidad: function(value){
+            //var c = Math.pow(10 , 2);
+            return Math.round(value * 100) / 100;
         },
 
     },

@@ -16,26 +16,26 @@ const Results = Vue.component('results', {
 								<table class="column table  " style="width:100%">
 									<tr>
 										<td class="alinea_text">Monto solicitado</td>
-										<td>{{monto_solicitado.simple}}</td>
+										<td>{{monto_solicitado.simple | redondeo_cantidad}}</td>
 									</tr>
 									<tr>
 										<td class="alinea_text">Capacidad de pago por flujo mensual</td>
-										<td>{{capacidad_pago.simple}}</td>
+										<td>{{capacidad_pago.simple | redondeo_cantidad}}</td>
 									</tr>
 									<tr>
 										<td class="alinea_text">Diferencia entre ingreso anual y deuda actual</td>
-										<td>{{ingreso_vs_deuda.simple}}</td>
+										<td>{{ingreso_vs_deuda.simple | redondeo_cantidad}}</td>
 									</tr>
 									<tr>
 										<td class="alinea_text">Razón entre flujo y factor recuperación de capital</td>
-										<td>{{razon_flujo_rec_capital}}</td>
+										<td>{{razon_flujo_rec_capital | redondeo_cantidad}}</td>
 									</tr>
 									<tr>
 										<td class="alinea_text">Monto máximo por buró</td>
-										<td>{{Math.round(monto_maximo.simple)}}</td>
+										<td>{{ monto_maximo.simple| redondeo_cantidad}}</td>
 									</tr>
  										<td class="alinea_text">Monto</td>
-										<td>{{ Math.round(linea.simple) }}</td>
+										<td>{{ linea.simple | redondeo_cantidad }}</td>
 									</tr>
 								</table>
 							</div> 
@@ -50,27 +50,27 @@ const Results = Vue.component('results', {
 								<table class="column table " style="width:100%">
 									<tr>
 										<td class="alinea_text">Monto solicitado</td>
-										<td>{{monto_solicitado.revolvente}}</td>
+										<td>{{monto_solicitado.revolvente | redondeo_cantidad}}</td>
 									</tr>
 									<tr>
 										<td class="alinea_text">Capacidad de pago por ingreso mensual</td>
-										<td>{{capacidad_pago.revolvente}}</td>
+										<td>{{capacidad_pago.revolvente | redondeo_cantidad}}</td>
 									</tr>
 									<tr>
 										<td class="alinea_text">Diferencia entre ingreso anual y deuda actual</td>
-										<td>{{ingreso_vs_deuda.revolvente}}</td>
+										<td>{{ingreso_vs_deuda.revolvente | redondeo_cantidad}}</td>
 									</tr>
 									<tr>
 										<td class="alinea_text">Razón entre flujo y tasa anual</td>
-										<td>{{razon_flujo_tasa}}</td>
+										<td>{{razon_flujo_tasa | redondeo_cantidad}}</td>
 									</tr>
 									<tr>
 										<td class="alinea_text">Monto máximo por buró:</td>
-										<td>{{ Math.round(monto_maximo.revolvente)}}</td>
+										<td>{{ monto_maximo.revolvente | redondeo_cantidad}}</td>
 									</tr>
 									<tr>
 										<td class="alinea_text">Línea</td>
-										<td>{{ Math.round(linea.revolvente)  }}</td>
+										<td>{{ linea.revolvente | redondeo_cantidad }}</td>
 									</tr>
 								</table>
 							</div>
@@ -82,7 +82,13 @@ const Results = Vue.component('results', {
 				</div>
 			</div>
 		</div>
-	`
+	`,
+	filters:{
+		redondeo_cantidad: function(value){
+			//var c = Math.pow(10 , 2);
+			return Math.round(value * 100) / 100;
+		}
+	}
 }
 
 );
