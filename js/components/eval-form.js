@@ -296,8 +296,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         monto_maximo: this.monto_maximo,
         deposits_movil_means: this.deposits_movil_means,
         balances_movil_means: this.balances_movil_means,
-        deposits_polynomial_tendency: this.deposits_polynomial_tendency,
-        balances_polynomial_tendency: this.balances_polynomial_tendency,
+        //deposits_polynomial_tendency: this.deposits_polynomial_tendency,
+        //balances_polynomial_tendency: this.balances_polynomial_tendency,
         balances_projection: this.balances_projection,
         deposits_projection: this.deposits_projection,
         bal_proj_standard_deviation: this.bal_proj_standard_deviation,
@@ -557,14 +557,18 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     INGRESO_MENSUAL: function () {        
       if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (!this.deposits_month_avg || !this.balances_month_avg || !this.solicitud.id_nivel_riesgo) return null;
-        if (parseInt(this.solicitud.id_nivel_riesgo) < 4) {
-          return Math.max(this.deposits_month_avg * this.guarantee_factor, this.balances_month_avg * this.guarantee_factor / this.config.factor1) ; 
-        } else if (parseInt(this.solicitud.id_nivel_riesgo) < 6) {
-          return (parseFloat(this.deposits_month_avg * this.guarantee_factor) + parseFloat(this.balances_month_avg * this.guarantee_factor / this.config.factor1)) / 2 ; 
+        if (this.deposits_movil_means.length === 0 || !this.deposits_tendency_factor || !this.solicitud.id_nivel_riesgo) return null;
+        var comparatives = [this.deposits_movil_means, this.deposits_projection * this.deposits_tendency_factor];
+        var id_nr = parseInt(this.solicitud.id_nivel_riesgo);
+        if (id_nr < 4) {           
+          return Math.max(comparatives[0], comparatives[1]) ; 
+        } else if (id_nr < 6) {
+          return (parseFloat(comparatives[0]) + parseFloat(comparatives[1])) / 2 ; 
+        } else if (id_nr >= 6) {
+          return Math.min(comparatives[0], comparatives[1]) ;   
         } else {
-          return Math.min(this.deposits_month_avg * this.guarantee_factor, this.balances_month_avg * this.guarantee_factor / this.config.factor1) ;   
-        }        
+          return null;
+        }     
       } else {
         if (!this.solicitud.ventas_anuales) return null;
         console.log('ingreso mensual estado financieros');
@@ -573,14 +577,8 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     INGRESO_ANUAL: function () {
-      if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (!this.deposits_month_avg || !this.balances_month_avg || !this.solicitud.id_nivel_riesgo) return null;
-        return 12 * this.INGRESO_MENSUAL;
-      } else {
-        if (!this.solicitud.ventas_anuales) return null;
-        console.log('ingreso anual estado financieros');
-        return this.solicitud.ventas_anuales;          
-      } 
+      if (!this.INGRESO_MENSUAL) return null;
+      return 12 * this.INGRESO_MENSUAL;
     },
 
     factor_uafir: function () {
@@ -594,17 +592,22 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     FLUJO_MENSUAL: function () {
       if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (!this.deposits_month_avg || !this.balances_month_avg || !this.solicitud.id_nivel_riesgo) return null;
-        if (parseInt(this.solicitud.id_nivel_riesgo) < 4) {
-          return Math.max(this.deposits_month_avg * this.factor_uafir, this.balances_month_avg * this.guarantee_factor) ; 
-        } else if (parseInt(this.solicitud.id_nivel_riesgo) < 6) {
-          return (parseFloat(this.deposits_month_avg * this.factor_uafir) + parseFloat(this.balances_month_avg * this.guarantee_factor)) / 2 ; 
-        } else {
-          return Math.min(this.deposits_month_avg * this.factor_uafir, this.balances_month_avg * this.guarantee_factor) ;   
-        }        
+        if (this.balances_movil_means.length === 0 || !this.balances_tendency_factor || !this.solicitud.id_nivel_riesgo) return null;
+        var comparatives = [this.balances_movil_means, this.balances_projection * this.balances_tendency_factor];
+        var id_nr = parseInt(this.solicitud.id_nivel_riesgo);
+        if (id_nr < 4) {           
+          return Math.max(comparatives[0], comparatives[1]) ; 
+        } else if (id_nr < 6) {
+          return (parseFloat(comparatives[0]) + parseFloat(comparatives[1])) / 2 ; 
+        } else if (id_nr >= 6) {
+          return Math.min(comparatives[0], comparatives[1]) ;   
+        }  else {
+          return null;
+        }      
       } else {
         if (!this.solicitud.id_nivel_riesgo || !this.solicitud.id_actividad || !this.INGRESO_MENSUAL || !this.solicitud.uafir) return null;
-        if (parseInt(this.solicitud.id_nivel_riesgo) < 5 ) {
+        var id_nr = parseInt(this.solicitud.id_nivel_riesgo);
+        if (id_nr < 5 ) {
           console.log('flujo mensual preaprobado');
           return Math.min(this.INGRESO_MENSUAL*this.factor_uafir*1.2, this.solicitud.uafir/12);
         } else {
@@ -615,13 +618,8 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     FLUJO_ANUAL: function () {
-      if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (!this.deposits_month_avg || !this.balances_month_avg || !this.solicitud.id_nivel_riesgo) return null;
-        return   12 * this.FLUJO_MENSUAL;
-      } else {
-        if (!this.solicitud.id_nivel_riesgo || !this.solicitud.id_actividad || !this.INGRESO_MENSUAL || !this.solicitud.uafir) return null;
-        return this.FLUJO_MENSUAL * 12;          
-      } 
+      if (!this.FLUJO_MENSUAL) return null;
+      return   12 * this.FLUJO_MENSUAL;
     },
 
     nivel_riesgo: function () {
