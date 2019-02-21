@@ -366,9 +366,9 @@ const DetailForm = Vue.component('detail', {
     monto_redondeado:function(value){
     if(!!value){      
       if(value >1000){
-        return  Math.round(value/50);       
+        return  Math.round((value/50)* 100) / 100;       
       }else{
-        return  Math.round(value/10);       
+        return  Math.round((value/10)* 100)/ 100;       
         }
       }else{
         return null;

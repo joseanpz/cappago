@@ -33,6 +33,10 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 													<td><label class="label">Antigüedad en sociedad de información crediticia (<b>MONTHS_ON_FILE_BANKING</b>): </label></td>
 													<td><input type="number" step="0.001" v-model="MONTHS_ON_FILE_BANKING" class="input" /> </td>
 												</tr>
+												<tr>
+													<td><label class="label">Deuda a Corto Plazo Total (instituciones Bancarias y No Bancarias: <b>BK_DEUDA_CP+NBK_DEUDA_CP</b>): </label></td>
+													<td><input type="number" step="0.001" v-model="deuda_cortoplazo" class="input" /></td>
+												</tr>
 											</table>
 										</div>
 									</div>
@@ -126,6 +130,7 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 			MONTHS_ON_FILE_BANKING: null,
 			BK12_CLEAN: null,
 			BK12_MAX_CREDIT_AMT: null,
+			deuda_cortoplazo: null,
 			num_cred_act_arren: null,
 			num_cred_act_fact: null,
 			num_cred_act_revol: null,
@@ -158,6 +163,9 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 		},
 		BK12_MAX_CREDIT_AMT: function (val) {
 			this.$emit('bk12maxcred-amt-change', val);
+		},
+		deuda_cortoplazo: function (val) {
+			this.$emit('short-term-debt-change', val);
 		},
 		num_cred_act_arren: function (val) {
 			this.$emit('num-arren-change', val);

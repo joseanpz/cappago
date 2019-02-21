@@ -46,7 +46,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         </credito-step>
       </tab-content>
 
-      <tab-content :before-change="saveSolicitudeBalDep" title="Información laboral">
+      <tab-content :before-change="saveSolicitudeBalDep" title="Características PyME">
         <laboral-step
         @act-seniority-change="setActSeniority"
         @oper-seniority-change="setOperSeniority"
@@ -74,6 +74,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         @monfile-banking-change="setMonfileBanking"
         @bk12-clean-change="setBk12Clean"
         @bk12maxcred-amt-change="setBk12maxcredAmt"
+        @short-term-debt-change="setShortTermDebt"
         @num-arren-change="setNumArren"
         @num-fact-change="setNumFact"
         @num-revol-change="setNumRevol"
@@ -107,8 +108,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         @uafir-change="setUafir"
         @acc-capital-change="setAccCapital"
         @debtor-qual-change="setDebtorQual"
-        @annual-sales-change="setAnnualSales"
-        @short-term-debt-change="setShortTermDebt"
+        @annual-sales-change="setAnnualSales"        
         @finantial-passive-change="setFinantialPassive"
 
         ref="estado_general"
@@ -260,8 +260,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         //id_solicitud: this.id_solicitud,
         //account_statements: this.account_statements,
         //solicited_credits: this.solicited_credits,
-        //balances_sum: this.balances_sum,
-        //deposits_sum: this.deposits_sum,
+        balances_sum: this.balances_sum,
+        deposits_sum: this.deposits_sum,
         //max_balance: this.max_balance,
         //min_balance: this.min_balance,
         //max_deposit: this.max_deposit,
@@ -288,12 +288,24 @@ const EvalFormWizard = Vue.component('eval-form', {
         ventas_anuales: this.solicitud.ventas_anuales,
         nivel_riesgo: this.nivel_riesgo,
         exp_creditos_largos: this.solicitud.exp_creditos_largos,
+        factor_monto_maximo: this.factor_monto_maximo,
         monto_simple_buro: this.monto_simple_buro,
         monto_revolvente_buro: this.monto_revolvente_buro,
         monto_factoraje_buro: this.monto_factoraje_buro,
         monto_arrendamiento_buro: this.monto_arrendamiento_buro,
         BK12_MAX_CREDIT_AMT: this.solicitud.BK12_MAX_CREDIT_AMT,
         monto_maximo: this.monto_maximo,
+        deposits_movil_means: this.deposits_movil_means,
+        balances_movil_means: this.balances_movil_means,
+        //deposits_polynomial_tendency: this.deposits_polynomial_tendency,
+        //balances_polynomial_tendency: this.balances_polynomial_tendency,
+        balances_projection: this.balances_projection,
+        deposits_projection: this.deposits_projection,
+        bal_proj_standard_deviation: this.bal_proj_standard_deviation,
+        dep_proj_standard_deviation: this.dep_proj_standard_deviation,
+        balances_tendency_factor: this.balances_tendency_factor,
+        deposits_tendency_factor: this.deposits_tendency_factor
+
 
         /*factor_monto_maximo: this.factor_monto_maximo,
         factor_recuperacion_capital: this.factor_recuperacion_capital,
@@ -385,6 +397,73 @@ const EvalFormWizard = Vue.component('eval-form', {
       return val_deposits.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / val_deposits.length;
     },
 
+    deposits_movil_means: function () {
+      if (this.deposits_sum.length === 0) return [];
+      var self = this;
+      var first_mm = [], second_mm = [];
+
+      for (var i=0; i<11; i++) {
+        //continue
+        var tmp = (this.deposits_sum[i] + this.deposits_sum[i+1]) / 2;
+        first_mm.push(tmp);
+      }
+      console.log(first_mm)
+      for (var i=0; i<10; i++) {
+        //continue
+        var tmp = (first_mm[i] + first_mm[i+1]) / 2;
+        second_mm.push(tmp);
+      }
+      console.log(second_mm);
+      return second_mm.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / 10;
+    },
+
+    deposits_polynomial_tendency: function () {
+      if (this.deposits_sum.length == 0) return null;
+      var deposit_sum_pond = [];
+      for (var i=0; i<12; i++) {
+        var elm = 0;
+        for (var j=i; j>=0; j--) {
+          elm += this.deposits_sum[j] * (j+1) / ((i+1)*(i+2)/2) ;
+        }
+        deposit_sum_pond.push(elm);
+      }
+      var quadratic_interpolation = this.polynomial(deposit_sum_pond.map(function(item, index){
+        return [index+1, item];
+      }), 2, {precision: 3});
+      var cubic_interpolation = this.polynomial(deposit_sum_pond.map(function(item, index){
+        return [index+1, item];
+      }), 3, {precision: 3});
+      return [quadratic_interpolation, cubic_interpolation];
+    },
+
+    deposits_projection: function () {
+      var projection = this.deposits_quadratic_cubic_projections(14);
+      return (projection[0] + projection[1]) / 2; 
+    },
+
+    dep_proj_standard_deviation: function () {
+      var x = [1,2,3,4,5,6,7,8,9,10,11,12],
+      projections = x.map((item) => (this.deposits_quadratic_cubic_projections(item)[0] + this.deposits_quadratic_cubic_projections(item)[1]) / 2);
+      var projection_mean = projections.reduce((a,b) => a + b) / 12;
+      var variance = projections.map((item) => Math.pow(item - projection_mean, 2)).reduce((a,b) => a+b) / (11);
+      return Math.sqrt(variance);
+    },
+
+    deposits_tendency_factor: function () {
+      if (this.dep_proj_standard_deviation === 0 || !this.nivel_riesgo) return null;
+      var dep_quad_cub_12 = this.deposits_quadratic_cubic_projections(12)
+      var dep_quot_proj_sd =  (-this.deposits_projection + (dep_quad_cub_12[0]+dep_quad_cub_12[1])/2) / this.dep_proj_standard_deviation;
+      if (dep_quot_proj_sd <= 1.25) {
+        return this.nivel_riesgo.factor_tendencia_negativa_0;
+      } else if (dep_quot_proj_sd<=2) {
+        return this.nivel_riesgo.factor_tendencia_negativa_1;
+      } else if (dep_quot_proj_sd>2) {
+        return this.nivel_riesgo.factor_tendencia_negativa_2;
+      } else {
+        return null;
+      }
+    },
+
     deposits_tendency: function () {
       if (this.deposits_sum.length == 0) return null;
       var y_values = this.deposits_sum.slice(8), x_values = [0, 1, 2, 3];
@@ -394,9 +473,8 @@ const EvalFormWizard = Vue.component('eval-form', {
       return line[0];
     },
 
-    balances_month_avg: function () {
-      var self = this;
-      
+    balances_month_avg: function () {      
+      var self = this;      
       if (this.deposits_tendency < 0) {
         return this.balances_sum.slice(8).reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / 4
       } else {
@@ -405,6 +483,66 @@ const EvalFormWizard = Vue.component('eval-form', {
         //console.log('var_valances');
         //console.log(val_balances);
         return val_balances.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / val_balances.length;
+      }
+    },
+
+    balances_movil_means: function () {
+      if (this.balances_sum.length === 0) return [];
+      var self = this;
+      var first_mm = [], second_mm = [];
+      for (var i=0; i<11; i++) {
+        first_mm.push((this.balances_sum[i] + this.balances_sum[i+1]) / 2)
+      }
+      for (var i=0; i<10; i++) {
+        second_mm.push((first_mm[i] + first_mm[i+1]) / 2)
+      }
+      return second_mm.reduce((a,b) => parseFloat(a) + parseFloat(b), 0) / 10;
+    },
+
+    balances_polynomial_tendency: function () {
+      if (this.balances_sum.length == 0) return null;
+      var balances_sum_pond = [];
+      for (var i=0; i<12; i++) {
+        var elm = 0;
+        for (var j=i; j>=0; j--) {
+          elm += this.balances_sum[j] * (j+1) / ((i+1)*(i+2)/2) ;
+        }
+        balances_sum_pond.push(elm);
+      }
+      var quadratic_interpolation = this.polynomial(balances_sum_pond.map(function(item, index){
+        return [index+1, item];
+      }), 2, {precision: 3});
+      var cubic_interpolation = this.polynomial(balances_sum_pond.map(function(item, index){
+        return [index+1, item];
+      }), 3, {precision: 3});
+      return [quadratic_interpolation, cubic_interpolation];
+    },
+
+    balances_projection: function () {
+      var projection = this.balances_quadratic_cubic_projections(14);
+      return (projection[0] + projection[1]) / 2; 
+    },
+
+    bal_proj_standard_deviation: function () {
+      var x = [1,2,3,4,5,6,7,8,9,10,11,12],
+      projections = x.map((item) => (this.balances_quadratic_cubic_projections(item)[0] + this.balances_quadratic_cubic_projections(item)[1]) / 2);
+      var projection_mean = projections.reduce((a,b) => a + b) / 12;
+      var variance = projections.map((item) => Math.pow(item - projection_mean, 2)).reduce((a,b) => a+b) / 11;
+      return Math.sqrt(variance);
+    },
+
+    balances_tendency_factor: function () {
+      if (this.bal_proj_standard_deviation === 0 || !this.nivel_riesgo) return null;
+      var bal_quad_cub_12 = this.balances_quadratic_cubic_projections(12)
+      var bal_quot_proj_sd = (-this.balances_projection + (bal_quad_cub_12[0]+bal_quad_cub_12[1])/2) / this.bal_proj_standard_deviation;
+      if (bal_quot_proj_sd <= 1.25) {
+        return this.nivel_riesgo.factor_tendencia_negativa_0;
+      } else if (bal_quot_proj_sd<=2) {
+        return this.nivel_riesgo.factor_tendencia_negativa_1;
+      } else if (bal_quot_proj_sd>2) {
+        return this.nivel_riesgo.factor_tendencia_negativa_2;
+      } else {
+        return null;
       }
     },
 
@@ -420,14 +558,18 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     INGRESO_MENSUAL: function () {        
       if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (!this.deposits_month_avg || !this.balances_month_avg || !this.solicitud.id_nivel_riesgo) return null;
-        if (parseInt(this.solicitud.id_nivel_riesgo) < 4) {
-          return Math.max(this.deposits_month_avg * this.guarantee_factor, this.balances_month_avg * this.guarantee_factor / this.config.factor1) ; 
-        } else if (parseInt(this.solicitud.id_nivel_riesgo) < 6) {
-          return (parseFloat(this.deposits_month_avg * this.guarantee_factor) + parseFloat(this.balances_month_avg * this.guarantee_factor / this.config.factor1)) / 2 ; 
+        if (this.deposits_movil_means.length === 0 || !this.deposits_tendency_factor || !this.solicitud.id_nivel_riesgo) return null;
+        var comparatives = [this.deposits_movil_means, this.deposits_projection * this.deposits_tendency_factor];
+        var id_nr = parseInt(this.solicitud.id_nivel_riesgo);
+        if (id_nr < 4) {           
+          return Math.max(comparatives[0], comparatives[1]) ; 
+        } else if (id_nr < 6) {
+          return (parseFloat(comparatives[0]) + parseFloat(comparatives[1])) / 2 ; 
+        } else if (id_nr >= 6) {
+          return Math.min(comparatives[0], comparatives[1]) ;   
         } else {
-          return Math.min(this.deposits_month_avg * this.guarantee_factor, this.balances_month_avg * this.guarantee_factor / this.config.factor1) ;   
-        }        
+          return null;
+        }     
       } else {
         if (!this.solicitud.ventas_anuales) return null;
         console.log('ingreso mensual estado financieros');
@@ -436,14 +578,8 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     INGRESO_ANUAL: function () {
-      if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (!this.deposits_month_avg || !this.balances_month_avg || !this.solicitud.id_nivel_riesgo) return null;
-        return 12 * this.INGRESO_MENSUAL;
-      } else {
-        if (!this.solicitud.ventas_anuales) return null;
-        console.log('ingreso anual estado financieros');
-        return this.solicitud.ventas_anuales;          
-      } 
+      if (!this.INGRESO_MENSUAL) return null;
+      return 12 * this.INGRESO_MENSUAL;
     },
 
     factor_uafir: function () {
@@ -457,17 +593,22 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     FLUJO_MENSUAL: function () {
       if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (!this.deposits_month_avg || !this.balances_month_avg || !this.solicitud.id_nivel_riesgo) return null;
-        if (parseInt(this.solicitud.id_nivel_riesgo) < 4) {
-          return Math.max(this.deposits_month_avg * this.factor_uafir, this.balances_month_avg * this.guarantee_factor) ; 
-        } else if (parseInt(this.solicitud.id_nivel_riesgo) < 6) {
-          return (parseFloat(this.deposits_month_avg * this.factor_uafir) + parseFloat(this.balances_month_avg * this.guarantee_factor)) / 2 ; 
-        } else {
-          return Math.min(this.deposits_month_avg * this.factor_uafir, this.balances_month_avg * this.guarantee_factor) ;   
-        }        
+        if (this.balances_movil_means.length === 0 || !this.balances_tendency_factor || !this.solicitud.id_nivel_riesgo) return null;
+        var comparatives = [this.balances_movil_means, this.balances_projection * this.balances_tendency_factor];
+        var id_nr = parseInt(this.solicitud.id_nivel_riesgo);
+        if (id_nr < 4) {           
+          return Math.max(comparatives[0], comparatives[1]) ; 
+        } else if (id_nr < 6) {
+          return (parseFloat(comparatives[0]) + parseFloat(comparatives[1])) / 2 ; 
+        } else if (id_nr >= 6) {
+          return Math.min(comparatives[0], comparatives[1]) ;   
+        }  else {
+          return null;
+        }      
       } else {
         if (!this.solicitud.id_nivel_riesgo || !this.solicitud.id_actividad || !this.INGRESO_MENSUAL || !this.solicitud.uafir) return null;
-        if (parseInt(this.solicitud.id_nivel_riesgo) < 5 ) {
+        var id_nr = parseInt(this.solicitud.id_nivel_riesgo);
+        if (id_nr < 5 ) {
           console.log('flujo mensual preaprobado');
           return Math.min(this.INGRESO_MENSUAL*this.factor_uafir*1.2, this.solicitud.uafir/12);
         } else {
@@ -478,13 +619,8 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     FLUJO_ANUAL: function () {
-      if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (!this.deposits_month_avg || !this.balances_month_avg || !this.solicitud.id_nivel_riesgo) return null;
-        return   12 * this.FLUJO_MENSUAL;
-      } else {
-        if (!this.solicitud.id_nivel_riesgo || !this.solicitud.id_actividad || !this.INGRESO_MENSUAL || !this.solicitud.uafir) return null;
-        return this.FLUJO_MENSUAL * 12;          
-      } 
+      if (!this.FLUJO_MENSUAL) return null;
+      return   12 * this.FLUJO_MENSUAL;
     },
 
     nivel_riesgo: function () {
@@ -492,7 +628,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       return this.niveles_riesgo.find( nivrie => nivrie.id === this.solicitud.id_nivel_riesgo);
     },
 
-    /*factor_monto_maximo: function () {
+    /*factor_monto_maximo: function () {  // old
       if (!this.solicitud.score || this.solicitud.score < 0) return null;
 
       if (this.solicitud.score <= 450) {
@@ -687,51 +823,25 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     linea_simple: function () {
       if (!this.linea_simple_prev) return null;
-      if (!this.linea_revolvente_prev) return this.linea_simple_prev;
+      if (!this.linea_revolvente_prev) return Math.max(0, this.linea_simple_prev);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
-        return  Math.ceil((this.linea_simple_prev -  offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))) / 10 ) * 10;
+        return  Math.max(0, Math.ceil((this.linea_simple_prev -  offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))) / 10 ) * 10);
       } else {
-        return Math.ceil(this.linea_simple_prev / 10) * 10;
+        return Math.max(0, Math.ceil(this.linea_simple_prev / 10) * 10);
       }
-
     },
 
     linea_revolvente: function () {
       if (!this.linea_revolvente_prev) return null;
-      if (!this.linea_simple_prev) return this.linea_revolvente_prev;
+      if (!this.linea_simple_prev) return Math.max(0, this.linea_revolvente_prev);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
-        return  Math.ceil((this.linea_revolvente_prev -  offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10;
+        return  Math.max(0, Math.ceil((this.linea_revolvente_prev -  offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10);
       } else {
-        return Math.ceil(this.linea_revolvente_prev / 10) * 10;
+        return Math.max(0, Math.ceil(this.linea_revolvente_prev / 10) * 10);
       }
-
-
     },
-
-    // props for results
-    /*linea: function () {
-
-    }, 
-    capacidad_pago: function () {
-
-    }, 
-    monto_solicitado: function () {
-
-    }, 
-    monto_maximo: function () {
-
-    }, 
-    ingreso_vs_deuda: function () {
-
-    }, 
-    razon_flujo_tasa: function () {
-
-    }, 
-    razon_flujo_rec_capital: function () {
-
-    },*/
   },
 
   filters: {
@@ -749,9 +859,11 @@ const EvalFormWizard = Vue.component('eval-form', {
       console.log('about to emit');
       this.$emit('move-to-success-route');
     },
+
     saveForm: function(){
       alert('Saving form!');
     },
+
     readConfig: function () {
       var self = this;
       google.script.run
@@ -766,6 +878,27 @@ const EvalFormWizard = Vue.component('eval-form', {
       })
       .readCatalog('config')
     },
+
+    balances_quadratic_cubic_projections: function (value) {
+      if(this.balances_polynomial_tendency === null) return [0,0];
+      console.log("balances quad cib proj");
+      console.log(this.balances_polynomial_tendency);
+      var quadratic_equation = this.balances_polynomial_tendency[0].equation;
+      var cubic_equation = this.balances_polynomial_tendency[1].equation;
+      var quadratic_value = quadratic_equation[0] + quadratic_equation[1]*value + quadratic_equation[2]*value*value;
+      var cubic_value = cubic_equation[0] + cubic_equation[1]*value + cubic_equation[2]*value*value + cubic_equation[3]*value*value*value;
+      return [quadratic_value, cubic_value]
+    },
+
+    deposits_quadratic_cubic_projections: function (value) {
+      if(this.deposits_polynomial_tendency === null) return [0,0];
+      var quadratic_equation = this.deposits_polynomial_tendency[0].equation;
+      var cubic_equation = this.deposits_polynomial_tendency[1].equation;
+      var quadratic_value = quadratic_equation[0] + quadratic_equation[1]*value + quadratic_equation[2]*value*value;
+      var cubic_value = cubic_equation[0] + cubic_equation[1]*value + cubic_equation[2]*value*value + cubic_equation[3]*value*value*value;
+      return [quadratic_value, cubic_value]
+    },
+
     readNivelesRiesgo: function () {
       var self = this;
       google.script.run
@@ -880,6 +1013,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         
       return true;
     },
+
     findLineByLeastSquares: function(values_x, values_y) {
       var sum_x = 0;
       var sum_y = 0;
@@ -941,6 +1075,79 @@ const EvalFormWizard = Vue.component('eval-form', {
       return [result_values_x, result_values_y];*/
       return [m, b]
     },
+
+    a: function (a, b) {
+        var c = a.reduce(function(a, b) {
+                return a + b[1]
+            }, 0),
+            d = c / a.length,
+            e = a.reduce(function(a, b) {
+                var c = b[1] - d;
+                return a + c * c
+            }, 0),
+            f = a.reduce(function(a, c, d) {
+                var e = b[d],
+                    f = c[1] - e[1];
+                return a + f * f
+            }, 0);
+        return 1 - f / e
+    },
+
+    b: function (a, b) {
+      var c = 0,
+          d = 0,
+          e = 0,
+          f = 0,
+          g = 0,
+          h = a.length - 1,
+          i = new Array(b);
+      for (c = 0; h > c; c++) {
+          for (f = c, d = c + 1; h > d; d++) Math.abs(a[c][d]) > Math.abs(a[c][f]) && (f = d);
+          for (e = c; h + 1 > e; e++) g = a[e][c], a[e][c] = a[e][f], a[e][f] = g;
+          for (d = c + 1; h > d; d++)
+              for (e = h; e >= c; e--) a[e][d] -= a[e][c] * a[c][d] / a[c][c]
+      }
+      for (d = h - 1; d >= 0; d--) {
+          for (g = 0, e = d + 1; h > e; e++) g += a[e][d] * i[e];
+          i[d] = (a[h][d] - g) / a[d][d]
+      }
+      return i
+    },
+
+    c: function (a, b) {
+      var c = Math.pow(10, b);
+      return Math.round(a * c) / c
+    },
+
+    polynomial: function(d, e, f) { // data, grade, conf.precision
+      var g, h, i, j, k, l, m, n, o = [],
+          p = [],
+          q = 0,
+          r = 0,
+          s = d.length;
+      for (h = "undefined" == typeof e ? 3 : e + 1, i = 0; h > i; i++) {
+          for (k = 0; s > k; k++) null !== d[k][1] && (q += Math.pow(d[k][0], i) * d[k][1]);
+          for (o.push(q), q = 0, g = [], j = 0; h > j; j++) {
+              for (k = 0; s > k; k++) null !== d[k][1] && (r += Math.pow(d[k][0], i + j));
+              g.push(r), r = 0
+          }
+          p.push(g)
+      }
+      for (p.push(o), m = this.b(p, h), l = d.map(function(a) {
+              var b = a[0],
+                  c = m.reduce(function(a, c, d) {
+                      return a + c * Math.pow(b, d)
+                  }, 0);
+              return [b, c]
+          }), n = "y = ", i = m.length - 1; i >= 0; i--) n += i > 1 ? this.c(m[i], f.precision) + "x^" + i + " + " : 1 === i ? this.c(m[i], f.precision) + "x + " : this.c(m[i], f.precision);
+      return {
+          r2: this.a(d, l),
+          equation: m,
+          points: l,
+          string: n
+      }
+    },
+
     setActivity: function(val) {
       this.solicitud.id_actividad = val;
     },
@@ -1038,6 +1245,8 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.solicitud.exp_creditos_largos = val;
     },  
     setAccountStatements: function(val) {
+      console.log("updating");
+      console.log(val);
     	this.account_statements = val;
     },
     setSimpleCredits: function(val) {

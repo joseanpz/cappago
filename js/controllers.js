@@ -43,7 +43,7 @@ const EvalFormController = {
       <section class="container" style="margin-top: 20px;">
         <div class="columns"> 
           <div class="column">
-            <eval-form @move-to-success-route="moveToListRoute"></eval-form>
+            <eval-form ref="eval_form" @move-to-success-route="moveToListRoute"></eval-form>
           </div>  
         </div> 
       </section>
@@ -80,7 +80,7 @@ const EvalUpdateFormController = {
       <section class="container">
         <div class="columns"> 
           <div class="column">
-            <eval-form :id_solicitud="id" @move-to-success-route="moveToListRoute"></eval-form>
+            <eval-form ref="eval_form" :id_solicitud="id" @move-to-success-route="moveToListRoute"></eval-form>
           </div>  
         </div> 
       </section>

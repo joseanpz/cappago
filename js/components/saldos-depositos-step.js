@@ -368,6 +368,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	},
 	watch: {
 		account_statements: function(val) {
+			console.log("updating from grandchild")
 			this.$emit('acc-statements-change', val);
 		}
 	}
