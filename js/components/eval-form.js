@@ -46,7 +46,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         </credito-step>
       </tab-content>
 
-      <tab-content :before-change="saveSolicitudeBalDep" title="Información laboral">
+      <tab-content :before-change="saveSolicitudeBalDep" title="Características PyME">
         <laboral-step
         @act-seniority-change="setActSeniority"
         @oper-seniority-change="setOperSeniority"
