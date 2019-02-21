@@ -145,7 +145,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         </resultado-perfilador-step>
       </tab-content>         
 
-      <!--<pre>{{ data | pretty }}</pre>-->
+      <pre>{{ data | pretty }}</pre>
 
       <template slot="footer" slot-scope="props">
         <div class="wizard-footer-left">
@@ -260,8 +260,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         //id_solicitud: this.id_solicitud,
         //account_statements: this.account_statements,
         //solicited_credits: this.solicited_credits,
-        balances_sum: this.balances_sum,
-        deposits_sum: this.deposits_sum,
+        //balances_sum: this.balances_sum,
+        //deposits_sum: this.deposits_sum,
         //max_balance: this.max_balance,
         //min_balance: this.min_balance,
         //max_deposit: this.max_deposit,
@@ -269,12 +269,19 @@ const EvalFormWizard = Vue.component('eval-form', {
         //simple_credits: this.simple_credits,
         //revolving_credits: this.revolving_credits,
         //id_nivel_riesgo: this.solicitud.id_nivel_riesgo,
-        //niveles_riesgo: this.niveles_riesgo,        
+        //niveles_riesgo: this.niveles_riesgo,  
+        monto_simple: this.monto_simple,
+        monto_revolvente: this.monto_revolvente,
+        linea_simple: this.linea_simple,
+        linea_revolvente: this.linea_revolvente, 
+        linea_simple_sugerida: this.solicitud.linea_simple_sugerida,
+        linea_revolvente_sugerida: this.solicitud.linea_revolvente_sugerida,     
 
-        deposits_month_avg: this.deposits_month_avg,
-        balances_month_avg: this.balances_month_avg,
-        deposits_tendency: this.deposits_tendency,
+        //deposits_month_avg: this.deposits_month_avg,
+        //balances_month_avg: this.balances_month_avg,
+        //deposits_tendency: this.deposits_tendency,
         //config: this.config,
+        deuda_cortoplazo: this.deuda_cortoplazo,
         capital_contable: this.solicitud.capital_contable,
         guarantee_factor: this.guarantee_factor,
         INGRESO_MENSUAL: this.INGRESO_MENSUAL,
@@ -295,16 +302,16 @@ const EvalFormWizard = Vue.component('eval-form', {
         monto_arrendamiento_buro: this.monto_arrendamiento_buro,
         BK12_MAX_CREDIT_AMT: this.solicitud.BK12_MAX_CREDIT_AMT,
         monto_maximo: this.monto_maximo,
-        deposits_movil_means: this.deposits_movil_means,
-        balances_movil_means: this.balances_movil_means,
+        //deposits_movil_means: this.deposits_movil_means,
+        //balances_movil_means: this.balances_movil_means,
         //deposits_polynomial_tendency: this.deposits_polynomial_tendency,
         //balances_polynomial_tendency: this.balances_polynomial_tendency,
-        balances_projection: this.balances_projection,
-        deposits_projection: this.deposits_projection,
-        bal_proj_standard_deviation: this.bal_proj_standard_deviation,
-        dep_proj_standard_deviation: this.dep_proj_standard_deviation,
-        balances_tendency_factor: this.balances_tendency_factor,
-        deposits_tendency_factor: this.deposits_tendency_factor
+        //balances_projection: this.balances_projection,
+        //deposits_projection: this.deposits_projection,
+        //bal_proj_standard_deviation: this.bal_proj_standard_deviation,
+        //dep_proj_standard_deviation: this.dep_proj_standard_deviation,
+        //balances_tendency_factor: this.balances_tendency_factor,
+        //deposits_tendency_factor: this.deposits_tendency_factor
 
 
         /*factor_monto_maximo: this.factor_monto_maximo,
@@ -808,7 +815,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     linea_revolvente_prev: function () {
       if (this.solicitud.tipo_comprobante === "account_statements"){
-        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return null;
+        if (!this.monto_revolvente || !this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return null;
         return Math.min(this.monto_revolvente, this.capacidad_pago_rev, 
           this.razon_FDA_tasa_rev, this.monto_maximo);
       } else {
@@ -941,6 +948,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.buro_credito.MONTHS_ON_FILE_BANKING = response.MONTHS_ON_FILE_BANKING;
       this.$refs.buro_credito.BK12_CLEAN = response.BK12_CLEAN;
       this.$refs.buro_credito.BK12_MAX_CREDIT_AMT = response.BK12_MAX_CREDIT_AMT;
+      this.$refs.buro_credito.deuda_cortoplazo = response.deuda_cortoplazo;
       this.$refs.buro_credito.num_cred_act_arren = response.num_cred_act_arren;
       this.$refs.buro_credito.num_cred_act_fact = response.num_cred_act_fact;
       this.$refs.buro_credito.num_cred_act_revol = response.num_cred_act_revol;
@@ -956,8 +964,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.buro_credito.exp_creditos_largos = (response.exp_creditos_largos === "true");  
       this.$refs.estado_general.uafir = response.uafir;
       this.$refs.estado_general.capital_contable = response.capital_contable;
-      this.$refs.estado_general.ventas_anuales = response.ventas_anuales;
-      this.$refs.estado_general.deuda_cortoplazo = response.deuda_cortoplazo;
+      this.$refs.estado_general.ventas_anuales = response.ventas_anuales;      
       this.$refs.estado_general.pasivo_financiero_corto = response.pasivo_financiero_corto;
       this.$refs.estado_general.calificacion_deudor = response.calificacion_deudor;
       this.$refs.resultado_perfilador.tipo_evaluacion_perfilador = response.tipo_evaluacion_perfilador;
@@ -1266,15 +1273,27 @@ const EvalFormWizard = Vue.component('eval-form', {
 
   watch: {
     linea_simple: function(val) {
-      this.solicitud.linea_simple_sugerida = val;
+      if (val === null) {
+        this.solicitud.linea_simple_sugerida = "";
+      } else {
+        this.solicitud.linea_simple_sugerida = val;  
+      }
     },
 
     linea_revolvente: function(val) {
-      this.solicitud.linea_revolvente_sugerida = val;
+      if (val === null) {
+        this.solicitud.linea_revolvente_sugerida = "";
+      } else {
+        this.solicitud.linea_revolvente_sugerida = val;  
+      }      
     },
 
     plazo_simple: function(val) {
-      this.solicitud.plazo_simple = val;
+      if (val === null) {
+        this.solicitud.plazo_simple = "";
+      } else {
+        this.solicitud.plazo_simple = val;  
+      }
     }
   }
 });
