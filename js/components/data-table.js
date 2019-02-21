@@ -178,6 +178,9 @@ const DataTable = Vue.component('data-table', {
         },
         redondeo_cantidad: function(value){
             //var c = Math.pow(10 , 2);
+           //  if(isNaN(value) || value ===0) return parseFloat(0).toFixed(2);
+
+            // amount = '' + amount.toFixed(decimals);
             return Math.round(value * 100) / 100;
         },
 
