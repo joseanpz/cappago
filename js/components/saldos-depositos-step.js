@@ -1,5 +1,5 @@
 var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
-	props: ["bank_list", "id_solicitud"],
+	props: ["bank_list", "id_solicitud", "fecha_solicitud"],
 	template: `
 		<section> 		
 			<div class="columns">
@@ -254,8 +254,8 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	    	return stmnts; 
 	    },
 
-	    getdate:function(i){
-	    	var fechaAct = new Date();
+	    getdate:function(i){	    	
+	    	var fechaAct = new Date(this.fecha_solicitud);
 	    	fechaAct = new Date(fechaAct.getFullYear(), fechaAct.getMonth() - 11, 0); 	    	
 	    	var nuevafecha =  new Date(new Date(fechaAct.getFullYear(), fechaAct.getMonth() +i,1)).toJSON().slice(0,7);
 	    	return nuevafecha;

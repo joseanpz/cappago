@@ -1,5 +1,5 @@
 var LaboralStep = Vue.component('laboral-step',{
-	props: ['id_solicitud', 'linea', 'capacidad_pago', 'monto_solicitado', 'monto_maximo', 'ingreso_vs_deuda', 'razon_flujo_tasa', 'razon_flujo_rec_capital'],
+	props: ['id_solicitud', 'fecha_solicitud', 'linea', 'capacidad_pago', 'monto_solicitado', 'monto_maximo', 'ingreso_vs_deuda', 'razon_flujo_tasa', 'razon_flujo_rec_capital'],
 	template: `
 		<section class="container">
 			<div class="card">
@@ -76,6 +76,7 @@ var LaboralStep = Vue.component('laboral-step',{
 					<div class="content">
 						<saldos-depositos-step
 						:id_solicitud="id_solicitud"
+						:fecha_solicitud="fecha_solicitud"
 						@acc-statements-change="emmitAccountStatements"
 						ref="saldo_deposito"> 
 						</saldos-depositos-step>

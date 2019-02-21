@@ -57,6 +57,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
         :tipo_comprobante="solicitud.tipo_comprobante"
         :id_solicitud="solicitud.id"
+        :fecha_solicitud="solicitud.fecha_solicitud"
         ref="laboral"
         :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
         :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
