@@ -74,6 +74,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         @monfile-banking-change="setMonfileBanking"
         @bk12-clean-change="setBk12Clean"
         @bk12maxcred-amt-change="setBk12maxcredAmt"
+        @short-term-debt-change="setShortTermDebt"
         @num-arren-change="setNumArren"
         @num-fact-change="setNumFact"
         @num-revol-change="setNumRevol"
@@ -107,8 +108,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         @uafir-change="setUafir"
         @acc-capital-change="setAccCapital"
         @debtor-qual-change="setDebtorQual"
-        @annual-sales-change="setAnnualSales"
-        @short-term-debt-change="setShortTermDebt"
+        @annual-sales-change="setAnnualSales"        
         @finantial-passive-change="setFinantialPassive"
 
         ref="estado_general"

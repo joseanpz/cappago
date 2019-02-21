@@ -15,11 +15,8 @@ var EstadoGeneralStep = Vue.component('estado-general-step',{
 							<div class="column is-4">		
 								<input type="text" v-model="calificacion_deudor" class="input" />
 							</div>
-							<div class="column"></div>
-							
-						</div>					
-						
-
+							<div class="column"></div>							
+						</div>	
 					</div>
 
 					<div class="content" v-if="tipo_comprobante!='account_statements'">
@@ -63,8 +60,7 @@ var EstadoGeneralStep = Vue.component('estado-general-step',{
 			uafir: null,
 			capital_contable: null,
 			ventas_anuales: null,
-			calificacion_deudor: null,
-			deuda_cortoplazo: null,
+			calificacion_deudor: null,			
 			pasivo_financiero_corto: null
 		}
 	},
@@ -85,11 +81,7 @@ var EstadoGeneralStep = Vue.component('estado-general-step',{
 		},
 		calificacion_deudor: function (val) {
 			this.$emit('debtor-qual-change', val);
-		},
-
-		deuda_cortoplazo: function (val) {
-			this.$emit('short-term-debt-change', val);
-		},
+		},		
 		pasivo_financiero_corto: function (val) {
 			this.$emit('finantial-passive-change', val);
 		}
