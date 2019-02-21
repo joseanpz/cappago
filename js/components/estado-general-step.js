@@ -8,19 +8,14 @@ var EstadoGeneralStep = Vue.component('estado-general-step',{
 				</header>
 				<div class="card-content">	
 					<div class="content">
-						<div class="columns">
-							<div class="column is-2">
-								<label class="label">Deuda a Corto Plazo (Bancarias + No Bancarias): </label>
-							</div>
-							<div class="column is-4">
-								<input type="number" step="0.001" v-model="deuda_cortoplazo" class="input" />
-							</div>
+						<div class="columns">							
 							<div class="column is-2">
 								<label class="label">Calificación deudor: </label>
 							</div>
 							<div class="column is-4">		
 								<input type="text" v-model="calificacion_deudor" class="input" />
 							</div>
+							<div class="column"></div>
 							
 						</div>					
 						
