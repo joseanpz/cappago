@@ -13,7 +13,8 @@ const EvalFormWizard = Vue.component('eval-form', {
       <h1 slot="title">Proceso de cálculo de capacidad de pago</h1>
       <tab-content :before-change="saveSolicitude" title="Datos de la solicitud">
         <solicitud-step 
-        @sol-number-change="setSolNumber" 
+        @sol-number-change="setSolNumber"
+        @sol-date-change="setSolDate"
         ref="solicitud" 
         :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
         :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
@@ -171,6 +172,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         id_actividad: null,
         id_nivel_riesgo: null,
         numero_solicitud: null,
+        fecha_solicitud: null,
         tipo_comprobante: "account_statements",
         linea_simple_sugerida: null,
         plazo_simple: null,
@@ -938,6 +940,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     setSolicitud: function (response) {
       this.$refs.solicitud.numero_solicitud = response.numero_solicitud;
+      this.$refs.solicitud.fecha_solicitud = response.fecha_solicitud;
       this.$refs.credito.destino_credito = response.destino_credito;
       this.$refs.credito.garantia = response.garantia;
       this.$refs.laboral.id_actividad = response.id_actividad;
@@ -1163,6 +1166,9 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
     setSolNumber: function(val) {
       this.solicitud.numero_solicitud = val;
+    },
+    setSolDate: function(val) {
+      this.solicitud.fecha_solicitud = val;
     },
     setEvalType: function(val) {
       this.solicitud.tipo_comprobante = val;

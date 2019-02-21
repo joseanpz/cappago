@@ -19,7 +19,7 @@ var SolicitudStep = Vue.component('solicitud-step',{
 								<label class="label titulos">Fecha solicitud: </label>
 							</div>
 							<div class="column is-4" style="text-align:left;">
-								<input type="text"  class="input" id="fecha_solicitud"/>
+								<input type="date"  v-model="fecha_solicitud" class="input" id="fecha_solicitud"/>
 							</div>
 						</div>
 					</div>			
@@ -31,6 +31,7 @@ var SolicitudStep = Vue.component('solicitud-step',{
 	data () {
 		return {
 			numero_solicitud: null,
+			fecha_solicitud: null
 
 		}
 	},
@@ -41,6 +42,9 @@ var SolicitudStep = Vue.component('solicitud-step',{
 	watch: {
 		numero_solicitud: function (val) {
 			this.$emit('sol-number-change', val);
+		},
+		fecha_solicitud: function (val) {
+			this.$emit('sol-date-change', val);
 		},
 
 	}
