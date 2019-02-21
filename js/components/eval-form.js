@@ -628,7 +628,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       return this.niveles_riesgo.find( nivrie => nivrie.id === this.solicitud.id_nivel_riesgo);
     },
 
-    /*factor_monto_maximo: function () {
+    /*factor_monto_maximo: function () {  // old
       if (!this.solicitud.score || this.solicitud.score < 0) return null;
 
       if (this.solicitud.score <= 450) {
@@ -823,51 +823,25 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     linea_simple: function () {
       if (!this.linea_simple_prev) return null;
-      if (!this.linea_revolvente_prev) return this.linea_simple_prev;
+      if (!this.linea_revolvente_prev) return Math.max(0, this.linea_simple_prev);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
         return  Math.max(0, Math.ceil((this.linea_simple_prev -  offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))) / 10 ) * 10);
       } else {
         return Math.max(0, Math.ceil(this.linea_simple_prev / 10) * 10);
       }
-
     },
 
     linea_revolvente: function () {
       if (!this.linea_revolvente_prev) return null;
-      if (!this.linea_simple_prev) return this.linea_revolvente_prev;
+      if (!this.linea_simple_prev) return Math.max(0, this.linea_revolvente_prev);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
         return  Math.max(0, Math.ceil((this.linea_revolvente_prev -  offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10);
       } else {
         return Math.max(0, Math.ceil(this.linea_revolvente_prev / 10) * 10);
       }
-
-
     },
-
-    // props for results
-    /*linea: function () {
-
-    }, 
-    capacidad_pago: function () {
-
-    }, 
-    monto_solicitado: function () {
-
-    }, 
-    monto_maximo: function () {
-
-    }, 
-    ingreso_vs_deuda: function () {
-
-    }, 
-    razon_flujo_tasa: function () {
-
-    }, 
-    razon_flujo_rec_capital: function () {
-
-    },*/
   },
 
   filters: {
