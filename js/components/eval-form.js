@@ -5,7 +5,7 @@ Vue.use(VueFormGenerator);
 const EvalFormWizard = Vue.component('eval-form', {
   props: ['id_solicitud'],
 	template: `
-    <form-wizard @on-complete="onComplete"
+    <form-wizard @on-complete="onComplete" ref="form_wizard"
       subtitle="subtitulo" nextButtonText="Siguiente"
       backButtonText="Atras" finishButtonText="Guardar" stepSize="sm"
       color="#3a5fab"  errorColor="#8b0000" shape="circle" transition=""
@@ -235,11 +235,6 @@ const EvalFormWizard = Vue.component('eval-form', {
     BuroCreditoStep,
     EstadoGeneralStep,
     ResultadoPerfiladorStep
-
-  	/*FirstFormStep,
-  	SecondFormStep,
-  	ThirdFormStep,
-    FourthFormStep]*/
   },
 
   created: function () {
@@ -250,6 +245,12 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.readSolicitud();
     }  
   },
+
+  mounted: function () {
+    if (!!this.id_solicitud) {
+      this.$refs.form_wizard.activateAll();
+    } 
+  },  
 
   computed: {
   	
@@ -891,8 +892,6 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     balances_quadratic_cubic_projections: function (value) {
       if(this.balances_polynomial_tendency === null) return [0,0];
-      console.log("balances quad cib proj");
-      console.log(this.balances_polynomial_tendency);
       var quadratic_equation = this.balances_polynomial_tendency[0].equation;
       var cubic_equation = this.balances_polynomial_tendency[1].equation;
       var quadratic_value = quadratic_equation[0] + quadratic_equation[1]*value + quadratic_equation[2]*value*value;
@@ -1274,8 +1273,7 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
     setFinantialPassive: function(val) {
       this.solicitud.pasivo_financiero_corto = val;      
-    }
-
+    },
   },
 
   watch: {
