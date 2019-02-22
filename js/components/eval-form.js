@@ -266,7 +266,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         //solicitud: this.solicitud,
         //id_solicitud: this.id_solicitud,
         //account_statements: this.account_statements,
-        //solicited_credits: this.solicited_credits,
+        solicited_credits: this.solicited_credits,
         //balances_sum: this.balances_sum,
         //deposits_sum: this.deposits_sum,
         //max_balance: this.max_balance,
@@ -278,7 +278,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         //id_nivel_riesgo: this.solicitud.id_nivel_riesgo,
         //niveles_riesgo: this.niveles_riesgo,  
         tipo_comprobante: this.solicitud.tipo_comprobante,
-        monto_simple: this.monto_simple,
+        /*monto_simple: this.monto_simple,
         monto_revolvente: this.monto_revolvente,
         linea_simple: this.linea_simple,
         linea_revolvente: this.linea_revolvente, 
@@ -288,7 +288,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         //deposits_month_avg: this.deposits_month_avg,
         //balances_month_avg: this.balances_month_avg,
         //deposits_tendency: this.deposits_tendency,
-        //config: this.config,
+        //config: this.config,*/
+        valor_actual: this.valor_actual,
         deuda_cortoplazo: this.deuda_cortoplazo,
         capital_contable: this.solicitud.capital_contable,
         guarantee_factor: this.guarantee_factor,
@@ -681,7 +682,8 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     plazo_simple: function () {
-      if (this.simple_credits.length === 0) return null;
+      if (!this.config) return null;
+      if (this.simple_credits.length === 0) return this.config.plazo; // default 36 o null?
       var ret = 0;
       for(var i=0; i<this.simple_credits.length; i++) {
         ret += parseFloat(this.simple_credits[i].plazo) * parseFloat(this.simple_credits[i].monto);
@@ -798,6 +800,11 @@ const EvalFormWizard = Vue.component('eval-form', {
     capacidad_pago_rev: function () {
       if (!this.nivel_riesgo || !this.INGRESO_MENSUAL) return null;
       return this.INGRESO_MENSUAL * this.nivel_riesgo.n_veces_riesgo;
+    },
+    valor_actual: function () {
+      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.config ) return null;
+
+      return this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva;       
     },
 
     capacidad_pago_smp: function () {
