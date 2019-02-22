@@ -178,7 +178,19 @@ const DataTable = Vue.component('data-table', {
         },
         redondeo_cantidad: function(value){
             //var c = Math.pow(10 , 2);
-            return Math.round(value * 100) / 100;
+            if(isNaN(value) || value ===0) return parseFloat(0).toFixed(2);
+            
+                value = Math.round(value * 100) / 100;
+                value += '';
+                   var splitStr = value.split(',');
+                   var splitLeft = splitStr[0];
+                   var splitRight = splitStr.length > 1 ? ',' + splitStr[1] : '';
+                   var regx = /(\d+)(\d{3})/;
+                   while (regx.test(splitLeft)) {
+                      splitLeft = splitLeft.replace(regx, '$1' + ',' + '$2');
+                   }
+            return '$ ' + splitLeft + splitRight;
+           
         },
 
     },

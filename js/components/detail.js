@@ -364,15 +364,27 @@ const DetailForm = Vue.component('detail', {
     
 
     monto_redondeado:function(value){
-    if(!!value){      
+    if(!!value){     
+    /* 
       if(value >1000){
-        return  Math.round((value/50)* 100) / 100;       
+        var valor =  Math.round((value/50)* 100) / 100;       
       }else{
-        return  Math.round((value/10)* 100)/ 100;       
-        }
+        var valor =  Math.round((value/10)* 100)/ 100;       
+        } */
+         value += '';
+         var splitStr = value.split(',');
+         var splitLeft = splitStr[0];
+         var splitRight = splitStr.length > 1 ? ',' + splitStr[1] : '';
+         var regx = /(\d+)(\d{3})/;
+         while (regx.test(splitLeft)) {
+            splitLeft = splitLeft.replace(regx, '$1' + ',' + '$2');
+         }
+      return '$ ' + splitLeft + splitRight;
+
       }else{
         return null;
-      }
+      }      
+
     },
 
     monto_etiquetas:function(value){
