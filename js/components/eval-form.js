@@ -105,46 +105,46 @@ const EvalFormWizard = Vue.component('eval-form', {
         </buro-credito-step>
       </tab-content>
 
-      <tab-content :before-change="saveSolicitude" title="Estados financieros">
-        <estado-general-step
-        @uafir-change="setUafir"
-        @acc-capital-change="setAccCapital"
-        @debtor-qual-change="setDebtorQual"
-        @annual-sales-change="setAnnualSales"        
-        @finantial-passive-change="setFinantialPassive"
+      <tab-content :before-change="saveSolicitude" :title="tab_titles.estado_general">
+        <section class="container">
+          <estado-financiero-card 
+            @uafir-change="setUafir"
+            @acc-capital-change="setAccCapital"            
+            @annual-sales-change="setAnnualSales"        
+            @finantial-passive-change="setFinantialPassive"
 
-        ref="estado_general"
-        :tipo_comprobante="solicitud.tipo_comprobante"
-        :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
-        :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
-        :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
-        :razon_flujo_tasa="razon_FDA_tasa_rev"
-        :razon_flujo_rec_capital="razon_FDA_FRC_smp"
-        :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
+            ref="estado_financiero"
+            :tipo_comprobante="solicitud.tipo_comprobante"                    
+          >
+          </estado-financiero-card>
 
-        
-        > 
-        </estado-general-step>
+          <resultado-perfilador-card
+            @decree-change="setDecree"
+            @risk-level-change="setRiskLevel"
+            @score-change="setScore"
+            @eval-type-prfl-change="setPrfEvalType"
+            @debtor-qual-change="setDebtorQual"
+            ref="resultado_perfilador"            
+          >
+
+          </resultado-perfilador-card>
+
+          <results 
+            :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+            :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+            :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+            :razon_flujo_tasa="razon_FDA_tasa_rev"
+            :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+            :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+            :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
+          >
+          </results>
+
+        </section>
       </tab-content>
 
-      <tab-content title="Perfilador">
-        <resultado-perfilador-step
-        @decree-change="setDecree"
-        @risk-level-change="setRiskLevel"
-        @score-change="setScore"
-        @eval-type-prfl-change="setPrfEvalType"
-
-        ref="resultado_perfilador"
-        :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
-        :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
-        :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
-        :razon_flujo_tasa="razon_FDA_tasa_rev"
-        :razon_flujo_rec_capital="razon_FDA_FRC_smp"
-        :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
-        > 
-        </resultado-perfilador-step>
+      <tab-content title="Asignación Crédito">
+        meh
       </tab-content>         
 
       <pre>{{ data | pretty }}</pre>
@@ -215,6 +215,9 @@ const EvalFormWizard = Vue.component('eval-form', {
   		revolving_credits: [],
       config: null,
       niveles_riesgo: [],
+      tab_titles: {
+        estado_general: "Perfilador"
+      },
   		//solicited_credits: [],
   		
   		// static, must be loaded from backend
@@ -225,7 +228,7 @@ const EvalFormWizard = Vue.component('eval-form', {
   			"Banorte",
   			"Banamex"
   		]		   
-      }
+    }
   },
   components : {
     SolicitudStep,
@@ -274,6 +277,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         //revolving_credits: this.revolving_credits,
         //id_nivel_riesgo: this.solicitud.id_nivel_riesgo,
         //niveles_riesgo: this.niveles_riesgo,  
+        tipo_comprobante: this.solicitud.tipo_comprobante,
         monto_simple: this.monto_simple,
         monto_revolvente: this.monto_revolvente,
         linea_simple: this.linea_simple,
@@ -354,6 +358,10 @@ const EvalFormWizard = Vue.component('eval-form', {
         linea_simple: this.linea_simple,
         linea_revolvente: this.linea_revolvente*/
       }
+    },
+
+    tipo_comprobante: function () {
+      return this.solicitud.tipo_comprobante;
     },
     
     saved: function() {
@@ -866,8 +874,6 @@ const EvalFormWizard = Vue.component('eval-form', {
   methods: {
   	onComplete: function(){
       this.saveSolicitude();
-      //alert('Yay. Done!');
-      console.log('about to emit');
       this.$emit('move-to-success-route');
     },
 
@@ -965,11 +971,11 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.buro_credito.sal_orig_cred_act_revol = response.sal_orig_cred_act_revol;
       this.$refs.buro_credito.sal_orig_cred_act_simp = response.sal_orig_cred_act_simp;
       this.$refs.buro_credito.exp_creditos_largos = (response.exp_creditos_largos === "true");  
-      this.$refs.estado_general.uafir = response.uafir;
-      this.$refs.estado_general.capital_contable = response.capital_contable;
-      this.$refs.estado_general.ventas_anuales = response.ventas_anuales;      
-      this.$refs.estado_general.pasivo_financiero_corto = response.pasivo_financiero_corto;
-      this.$refs.estado_general.calificacion_deudor = response.calificacion_deudor;
+      this.$refs.estado_financiero.uafir = response.uafir;
+      this.$refs.estado_financiero.capital_contable = response.capital_contable;
+      this.$refs.estado_financiero.ventas_anuales = response.ventas_anuales;      
+      this.$refs.estado_financiero.pasivo_financiero_corto = response.pasivo_financiero_corto;
+      this.$refs.estado_financiero.calificacion_deudor = response.calificacion_deudor;
       this.$refs.resultado_perfilador.tipo_evaluacion_perfilador = response.tipo_evaluacion_perfilador;
       this.$refs.resultado_perfilador.decreto = response.decreto;
       this.$refs.resultado_perfilador.score = response.score;
@@ -1069,20 +1075,6 @@ const EvalFormWizard = Vue.component('eval-form', {
       var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
       var b = (sum_y/count) - (m*sum_x)/count;
 
-      /*
-       * We will make the x and y result line now
-       */
-      /*var result_values_x = [];
-      var result_values_y = [];
-
-      for (var v = 0; v &lt; values_length; v++) {
-        x = values_x[v];
-        y = x * m + b;
-        result_values_x.push(x);
-        result_values_y.push(y);
-      }
-
-      return [result_values_x, result_values_y];*/
       return [m, b]
     },
 
@@ -1277,6 +1269,14 @@ const EvalFormWizard = Vue.component('eval-form', {
   },
 
   watch: {
+    tipo_comprobante: function (val) {
+      if(val === "account_statements") {
+        this.tab_titles.estado_general = "Perfilador"
+      } else if (val === "financial_statements") {
+        this.tab_titles.estado_general = "Perfilador/Estados Financieros"
+      }
+    },
+
     linea_simple: function(val) {
       if (val === null) {
         this.solicitud.linea_simple_sugerida = "";
