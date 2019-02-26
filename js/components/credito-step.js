@@ -48,148 +48,146 @@ var CreditoStep = Vue.component('credito-step',{
 								<span>Agregar Cr&eacute;dito</span>
 			              	</a>
 		              	</div>
-			        </div>
-			        
-			        
+			        </div>		        
 						
-						<div class="columns card " v-if="revolving_credits.length" v-for="credit in revolving_credits" :key="credit.id_local">
-							<header class="header-sec-card" >
-	                			<p class="card-header-title title-color">Crédito Revolvente</p>
-	              			</header>
-							<div class="card-content">                     
-	                			<div class="content">
-	                				<div class="columns">
-										<div class="column is-2">
-											<label class="label titulos">Monto: </label>
-										</div>
-										<div class="column is-4" > 
-											<input type="text" v-model="credit.monto" class="input" id="numero_solicitud"/>
-										</div>
-										<div class="column is-2">
-											<label class="label titulos">Plazo: </label>
-										</div>
-										<div class="column is-4" style="text-align:left;">
-											<input type="text"  v-model="credit.plazo" class="input" id="fecha_solicitud"/>
-										</div>
+					<div class="columns card " v-if="revolving_credits.length" v-for="credit in revolving_credits" :key="credit.id_local">
+						<header class="header-sec-card" >
+                			<p class="card-header-title title-color">Crédito Revolvente</p>
+              			</header>
+						<div class="card-content">                     
+                			<div class="content">
+                				<div class="columns">
+									<div class="column is-2">
+										<label class="label titulos">Monto: </label>
 									</div>
-									<div class="columns">
-										<div class="column is-2">
-											<label class="label titulos">Periodo de Gracia </label>
-										</div>
-										<div class="column is-4" > 
-											<input type="text" v-model="credit.periodo_gracia" class="input" />
-										</div>
-										<div class="column is-2">
-											<label class="label titulos">HSC: </label>
-										</div>
-										<div class="column is-4" style="text-align:left;">
-											<input type="date"  v-model="credit.hsc" class="input" />
-										</div>
+									<div class="column is-4" > 
+										<input type="text" v-model="credit.monto" class="input" id="numero_solicitud"/>
 									</div>
-									<div class="columns">
-										<div class="column is-2">
-											<label class="label titulos">Destino: </label>
-										</div>
-										<div class="column is-4" > 
-											<input type="text" v-model="credit.destino" class="input" />
-										</div>
-										<div class="column is-2">
-											<label class="label titulos">Clasificación B6: </label>
-										</div>
-										<div class="column is-4" style="text-align:left;">
-											<input type="date"  v-model="credit.clasif_b6" class="input" />
-										</div>
+									<div class="column is-2">
+										<label class="label titulos">Plazo: </label>
 									</div>
-									<div class="columns">
-										<div class="column is-2">
-											<label class="label titulos">Garantía Fondos: </label>
-										</div>
-										<div class="column is-4" > 
-											<input type="text" v-model="credit.garantia_fondos" class="input" />
-										</div>
-										<div class="column is-2">
-											<label class="label titulos">Empresa: </label>
-										</div>
-										<div class="column is-4" > 
-											<input type="text" v-model="credit.empresa" class="input" />
-										</div>
-									</div>	
-	                				<div class="columns">
-	                					<a class="btn-delete is-outlined tooltip is-tooltip-right" data-tooltip="Eliminar" @click="deleteCredit(credit.id_local, 'revolvente')"><i class="fas fa-times fa-2x"></i></a>				                					
-	                				</div>
-		                		</div>								
-							</div>	 		 			
-						</div> 
+									<div class="column is-4" style="text-align:left;">
+										<input type="text"  v-model="credit.plazo" class="input" id="fecha_solicitud"/>
+									</div>
+								</div>
+								<div class="columns">
+									<div class="column is-2">
+										<label class="label titulos">Periodo de Gracia </label>
+									</div>
+									<div class="column is-4" > 
+										<input type="text" v-model="credit.periodo_gracia" class="input" />
+									</div>
+									<div class="column is-2">
+										<label class="label titulos">HSC: </label>
+									</div>
+									<div class="column is-4" style="text-align:left;">
+										<input type="date"  v-model="credit.hsc" class="input" />
+									</div>
+								</div>
+								<div class="columns">
+									<div class="column is-2">
+										<label class="label titulos">Destino: </label>
+									</div>
+									<div class="column is-4" > 
+										<input type="text" v-model="credit.destino" class="input" />
+									</div>
+									<div class="column is-2">
+										<label class="label titulos">Clasificación B6: </label>
+									</div>
+									<div class="column is-4" style="text-align:left;">
+										<input type="date"  v-model="credit.clasif_b6" class="input" />
+									</div>
+								</div>
+								<div class="columns">
+									<div class="column is-2">
+										<label class="label titulos">Garantía Fondos: </label>
+									</div>
+									<div class="column is-4" > 
+										<input type="text" v-model="credit.garantia_fondos" class="input" />
+									</div>
+									<div class="column is-2">
+										<label class="label titulos">Empresa: </label>
+									</div>
+									<div class="column is-4" > 
+										<input type="text" v-model="credit.empresa" class="input" />
+									</div>
+								</div>	
+                				<div class="columns">
+                					<a class="btn-delete is-outlined tooltip is-tooltip-right" data-tooltip="Eliminar" @click="deleteCredit(credit.id_local, 'revolvente')"><i class="fas fa-times fa-2x"></i></a>				                					
+                				</div>
+	                		</div>								
+						</div>	 		 			
+					</div> 
 
-						<div class="columns card " v-if="simple_credits.length" v-for="credit in simple_credits" :key="credit.id_local">
-							<header class="header-sec-card" >
-	                			<p class="card-header-title title-color">Crédito Simple</p>
-	              			</header>
-							<div class="card-content">                     
-	                			<div class="content">
+					<div class="columns card " v-if="simple_credits.length" v-for="credit in simple_credits" :key="credit.id_local">
+						<header class="header-sec-card" >
+                			<p class="card-header-title title-color">Crédito Simple</p>
+              			</header>
+						<div class="card-content">                     
+                			<div class="content">
 
-	                				<div class="columns">
-										<div class="column is-2">
-											<label class="label titulos">Monto: </label>
-										</div>
-										<div class="column is-4" > 
-											<input type="text" v-model="credit.monto" class="input" id="numero_solicitud"/>
-										</div>
-										<div class="column is-2">
-											<label class="label titulos">Plazo: </label>
-										</div>
-										<div class="column is-4" style="text-align:left;">
-											<input type="text"  v-model="credit.plazo" class="input" id="fecha_solicitud"/>
-										</div>
+                				<div class="columns">
+									<div class="column is-2">
+										<label class="label titulos">Monto: </label>
 									</div>
-									<div class="columns">
-										<div class="column is-2">
-											<label class="label titulos">Periodo de Gracia </label>
-										</div>
-										<div class="column is-4" > 
-											<input type="text" v-model="credit.periodo_gracia" class="input" />
-										</div>
-										<div class="column is-2">
-											<label class="label titulos">HSC: </label>
-										</div>
-										<div class="column is-4" style="text-align:left;">
-											<input type="date"  v-model="credit.hsc" class="input" />
-										</div>
+									<div class="column is-4" > 
+										<input type="text" v-model="credit.monto" class="input" id="numero_solicitud"/>
 									</div>
-									<div class="columns">
-										<div class="column is-2">
-											<label class="label titulos">Destino: </label>
-										</div>
-										<div class="column is-4" > 
-											<input type="text" v-model="credit.destino" class="input" />
-										</div>
-										<div class="column is-2">
-											<label class="label titulos">Clasificación B6: </label>
-										</div>
-										<div class="column is-4" style="text-align:left;">
-											<input type="date"  v-model="credit.clasif_b6" class="input" />
-										</div>
+									<div class="column is-2">
+										<label class="label titulos">Plazo: </label>
 									</div>
-									<div class="columns">
-										<div class="column is-2">
-											<label class="label titulos">Garantía Fondos: </label>
-										</div>
-										<div class="column is-4" > 
-											<input type="text" v-model="credit.garantia_fondos" class="input" />
-										</div>
-										<div class="column is-2">
-											<label class="label titulos">Empresa: </label>
-										</div>
-										<div class="column is-4" > 
-											<input type="text" v-model="credit.empresa" class="input" />
-										</div>
-									</div>	
-	                				<div class="columns">
-	                					<a class="btn-delete is-outlined tooltip is-tooltip-right" data-tooltip="Eliminar" @click="deleteCredit(credit.id_local, 'revolvente')"><i class="fas fa-times fa-2x"></i></a>				                					
-	                				</div>
-		                		</div>								
-							</div>	 		 			
-						</div> 						
+									<div class="column is-4" style="text-align:left;">
+										<input type="text"  v-model="credit.plazo" class="input" id="fecha_solicitud"/>
+									</div>
+								</div>
+								<div class="columns">
+									<div class="column is-2">
+										<label class="label titulos">Periodo de Gracia </label>
+									</div>
+									<div class="column is-4" > 
+										<input type="text" v-model="credit.periodo_gracia" class="input" />
+									</div>
+									<div class="column is-2">
+										<label class="label titulos">HSC: </label>
+									</div>
+									<div class="column is-4" style="text-align:left;">
+										<input type="date"  v-model="credit.hsc" class="input" />
+									</div>
+								</div>
+								<div class="columns">
+									<div class="column is-2">
+										<label class="label titulos">Destino: </label>
+									</div>
+									<div class="column is-4" > 
+										<input type="text" v-model="credit.destino" class="input" />
+									</div>
+									<div class="column is-2">
+										<label class="label titulos">Clasificación B6: </label>
+									</div>
+									<div class="column is-4" style="text-align:left;">
+										<input type="date"  v-model="credit.clasif_b6" class="input" />
+									</div>
+								</div>
+								<div class="columns">
+									<div class="column is-2">
+										<label class="label titulos">Garantía Fondos: </label>
+									</div>
+									<div class="column is-4" > 
+										<input type="text" v-model="credit.garantia_fondos" class="input" />
+									</div>
+									<div class="column is-2">
+										<label class="label titulos">Empresa: </label>
+									</div>
+									<div class="column is-4" > 
+										<input type="text" v-model="credit.empresa" class="input" />
+									</div>
+								</div>	
+                				<div class="columns">
+                					<a class="btn-delete is-outlined tooltip is-tooltip-right" data-tooltip="Eliminar" @click="deleteCredit(credit.id_local, 'revolvente')"><i class="fas fa-times fa-2x"></i></a>				                					
+                				</div>
+	                		</div>								
+						</div>	 		 			
+					</div> 						
 					
 				</div>
 			</div>
@@ -396,6 +394,7 @@ var CreditoStep = Vue.component('credito-step',{
 				google.script.run
 				.withSuccessHandler(function(response){
 					console.log('Deleting credito_solicitado response!')
+					// todo: reindex (id_local)
 					console.log(response);
 					//self.solicitud.id = response.id;
 				})
