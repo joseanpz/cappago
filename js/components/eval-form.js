@@ -15,6 +15,14 @@ const EvalFormWizard = Vue.component('eval-form', {
         <solicitud-step 
         @sol-number-change="setSolNumber"
         @sol-date-change="setSolDate"
+        @ced-prosp-change="setCedProspect"
+        @promoter-change="setPromoter"
+        @subdiretor-change="setSubdirector"
+        @analyst-change="setAnalyst"
+        @shareholder-change="setShareholder"
+        @checks-date-change="setChecksdate"
+        @credit-date-change="setCreditDate"
+
         ref="solicitud" 
         :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
         :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
@@ -257,7 +265,15 @@ const EvalFormWizard = Vue.component('eval-form', {
         sal_orig_cred_act_fact: null,
         sal_orig_cred_act_revol: null,
         sal_orig_cred_act_simp: null,
-        exp_creditos_largos: null
+        exp_creditos_largos: null,
+        cedente_prosp: null,
+        promotor: null,
+        subdirector: null,
+        analista: null,
+        accionistas: null,
+        cheques_fecha: null,
+        credito_fecha: null,
+
       },        
   		account_statements: [],
   		simple_credits: [],
@@ -1002,6 +1018,13 @@ const EvalFormWizard = Vue.component('eval-form', {
     setSolicitud: function (response) {
       this.$refs.solicitud.numero_solicitud = response.numero_solicitud;
       this.$refs.solicitud.fecha_solicitud = response.fecha_solicitud;
+      this.$refs.solicitud.cedente_prosp = response.cedente_prosp;
+      this.$refs.solicitud.promotor = response.promotor;
+      this.$refs.solicitud.subdirector = response.subdirector;
+      this.$refs.solicitud.analista = response.analista;
+      this.$refs.solicitud.accionistas = response.accionistas;
+      this.$refs.solicitud.cheques_fecha = response.cheques_fecha;
+      this.$refs.solicitud.credito_fecha = response.credito_fecha;
       this.$refs.credito.destino_credito = response.destino_credito;
       this.$refs.credito.garantia = response.garantia;
       this.$refs.laboral.id_actividad = response.id_actividad;
@@ -1218,6 +1241,27 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
     setSolDate: function(val) {
       this.solicitud.fecha_solicitud = val;
+    },
+    setCedProspect: function(val) {
+      this.solicitud.cedente_prosp = val;
+    },
+    setPromoter: function(val) {
+      this.solicitud.promotor = val;
+    },
+    setSubdirector: function(val) {
+      this.solicitud.subdirector = val;
+    },
+    setAnalyst: function(val) {
+      this.solicitud.analista = val;
+    },
+    setShareholder: function(val) {
+      this.solicitud.accionistas = val;
+    },
+    setChecksdate: function(val) {
+      this.solicitud.cheques_fecha = val;
+    },
+    setCreditDate: function(val) {
+      this.solicitud.credito_fecha = val;
     },
     setEvalType: function(val) {
       this.solicitud.tipo_comprobante = val;
