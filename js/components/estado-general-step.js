@@ -7,7 +7,7 @@ var EstadoGeneralStep = Vue.component('estado-financiero-card',{
 			</header>
 			<div class="card-content">	
 				<div class="content" >
-					<div class="columns">							
+					<div class="columns">						
 						<div class="column is-2">
 							<label class="label">Ventas anuales: </label>
 						</div>
@@ -35,8 +35,6 @@ var EstadoGeneralStep = Vue.component('estado-financiero-card',{
 							<input type="number" step="0.001" v-model="capital_contable" class="input" :disabled="tipo_comprobante=='account_statements'"/>
 						</div>												
 					</div>
-					
-
 				</div>
 			</div>
 		</div>

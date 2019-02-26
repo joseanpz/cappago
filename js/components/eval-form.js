@@ -842,17 +842,15 @@ const EvalFormWizard = Vue.component('eval-form', {
         return Math.min(this.monto_revolvente, this.capacidad_pago_rev,
           this.razon_FDA_tasa_rev, this.monto_maximo);
       }
-
     },
 
-
-
+    // TODO: Ajustar lógica para multiples créditos
     linea_simple: function () {
       if (!this.linea_simple_prev) return null;
       if (!this.linea_revolvente_prev) return Math.max(0, this.linea_simple_prev);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
-        return  Math.max(0, Math.ceil((this.linea_simple_prev -  offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))) / 10 ) * 10);
+        return  Math.max(0, Math.ceil((this.linea_simple_prev - offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))) / 10 ) * 10);
       } else {
         return Math.max(0, Math.ceil(this.linea_simple_prev / 10) * 10);
       }
@@ -863,7 +861,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       if (!this.linea_simple_prev) return Math.max(0, this.linea_revolvente_prev);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
-        return  Math.max(0, Math.ceil((this.linea_revolvente_prev -  offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10);
+        return  Math.max(0, Math.ceil((this.linea_revolvente_prev - offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10);
       } else {
         return Math.max(0, Math.ceil(this.linea_revolvente_prev / 10) * 10);
       }

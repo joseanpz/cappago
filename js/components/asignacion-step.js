@@ -1,5 +1,5 @@
-var CreditoStep = Vue.component('credito-step',{
-	props:['id_solicitud', 'linea', 'capacidad_pago', 'monto_solicitado', 'monto_maximo', 'ingreso_vs_deuda', 'razon_flujo_tasa', 'razon_flujo_rec_capital'],
+var AsignacionStep = Vue.component('asignacion-step',{
+	props:['id_solicitud', 'initial_simple_credits', 'initial_revolving_credits'],
 	template: `
 		<section class="container">
 			<div class="card">
@@ -121,8 +121,8 @@ var CreditoStep = Vue.component('credito-step',{
 			garantia: null,
 			credits_count: 0,
 			selected_type: null,
-			simple_credits: [],
-			revolving_credits: [],
+			simple_credits: this.initial_simple_credits,
+			revolving_credits: this.initial_revolving_credits,
 		}
 	},
 

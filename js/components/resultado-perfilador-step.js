@@ -29,7 +29,7 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 					<div class="columns">
 						<div class="column is-2"><label class="label">Score:</label></div>
 						<div class="column is-4">
-							<input type="text" v-model="score" class="input" />
+							<input type="numeric" v-model="score" class="input" />
 						</div>
 						<div class="column is-2"><label class="label">Tipo evaluación del perfilador:</label></div>
 						<div class="column is-4">
