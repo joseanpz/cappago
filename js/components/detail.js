@@ -2,85 +2,196 @@ const DetailForm = Vue.component('detail', {
   props: ['id'],
 	template: `
 	<section class="container" >
-  <div id="detail-print" style="padding:30px;">        
+  <div id="detail-print" style="padding:30px;">          
+
         <header class="columns navbar is-primary" id="header_PDF" style="display:none; padding-bottom:20px;">
           <a class="navbar-item" href="#" style="font-weight:bold; padding-left:50px;">
               banregio  
           </a>
         </header>
+        <div class="columns">
+          <p style="font-size:12px; text-align:right;" class="column"> 
+            ACUERDO PARA AUTORIZACIÓN DE LÍNEA DE CRÉDITO <br/>
+            <span style="font-size:10px;"><b>Crédito negocio hasta 500 mil</b></span> <br/>
+            <span style="font-size:10px;"><b>Fecha de presentación: 2019-02-05</b></span> <br/>
+          </p>
+        </div>
         <br/>
         <div class="columns" style="padding-bottom: 250px;">
           <div class="column">
             <table class="table is-bordered is-striped" style="width:100%;">
               <tbody>
                 <tr>
-                  <td colspan="4" class="div-titulos">Información General</td>
+                  <td colspan="6" class="div-titulos">Información General</td>
                 <tr>
                 <tr>
-                  <td><label class="label">RFC:</label></td>
-                  <td>{{ rfc }}</td> 
+                  <td><label class="label">Solicitante:</label></td>
+                  <td colspan="3">Jacob Mendoza Contreras</td>
                   <td><label class="label">Solicitud:</label></td>
                   <td>{{ solicitud.numero_solicitud }}</td>
                 </tr>
                 <tr>
-                  <td><label class="label">Tipo evaluación:</label></td>
-                  <td>{{ solicitud.tipo_evaluacion_perfilador | tipo_evaluacion_perfilador }}</td>
-                  <td><label class="label">Calificación deudor:</label></td>
-                  <td>{{this.solicitud.calificacion_deudor}}</td>
-                </tr> 
+                  <td><label class="label">Domicilio:</label></td>
+                  <td colspan="3">Amapola 421, Tres Caminos, Gpe. NL.</td>
+                  <td><label class="label">RFC:</label></td>
+                  <td>{{ rfc }}</td>
+                </tr>
                 <tr>
-                  <td><label class="label">Tipo comprobante:</label></td>
-                  <td> {{ solicitud.tipo_comprobante | comprobante }}</td>
                   <td><label class="label">Actividad:</label></td>
                   <td>{{ actividad }}</td>
-                </tr>
-                <tr>
-                  <td colspan="4" class="div-titulos">Perfil</td>
-                <tr>
-                <tr>
-                  <td><label class="label">Decreto:</label></td>
-                  <td class="">{{ decreto }}</td>
-                  <td><label class="label">Score:</label></td>
-                  <td class="">{{ solicitud.score }}</td>
-                </tr>
-                <tr>
-                  <td><label class="label">Nivel de riesgo:</label></td>
-                  <td class="">{{ nivel_riesgo_nombre }}</td>
-                  <td><label class="label"></label></td>
-                  <td class=""></td>
-                </tr>
-                <tr>
-                  <td colspan="4" class="div-titulos">Capacidad de pago</td>
-                <tr>
-                <tr>
-                  <td colspan="2"><label class="label">Simple:</label></td>
-                  <td colspan="2"><label class="label">Revolvente</label></td>
-                </tr>
-                <tr>
-                  <td><label class="label">Monto* :</label></td>
-                  <td class="td-cantidad">{{ solicitud.linea_simple_sugerida | monto_redondeado}}</td>
-                  <td><label class="label">Línea** :</label></td>
-                  <td class="td-cantidad">{{ solicitud.linea_revolvente_sugerida | monto_redondeado }}</td>
-                </tr>
-                
-                <tr>
-                  <td><label class="label">Tasa :</label></td>
-                  <td class="td-cantidad">{{ nivel_riesgo_tasa * 100 }}%</td>
-                  <td></td>
+                  <td><label class="label">Promotor:</label></td>
+                  <td>Eduardo Alfonso solorio vega</td>
+                  <td><label class="label">Cheques:</label></td>
                   <td></td>
                 </tr>
+                <tr>
+                  <td><label class="label">Cedente/prosp:</label></td>
+                  <td>70321</td>
+                  <td><label class="label">Subdirector:</label></td>
+                  <td>Ismael anguiano carrillo</td>
+                  <td><label class="label">Credito:</label></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td><label class="label">Accionistas:</label></td>
+                  <td>PM</td>
+                  <td><label class="label">Analista:</label></td>
+                  <td>Rosalia martinez hernandez</td>
+                  <td><label class="label">Inicio de operaciones:</label></td>
+                  <td>2016-05-01</td>
+                </tr>                
+                <tr>
+                  <td colspan="6" class="div-titulos">Lineas de crédito</td>
+                </tr>
+                <tr>
+                  <td colspan="6">
+                    <table style="font-size:13px;">
+                      <tr>
+                        <td><label class="label">Ref</label></td>
+                        <td><label class="label">Emp</label></td>
+                        <td><label class="label">Tipo</label></td>
+                        <td><label class="label">importe</label></td>
+                        <td><label class="label">Respons.</label></td>
+                        <td><label class="label">Vencimiento</label></td>
+                        <td><label class="label">Linea solicitada</label></td>
+                        <td><label class="label">linea autorizada</label></td>
+                        <td><label class="label">Plazo</label></td>
+                        <td><label class="label">Gtia. fondos</label></td>
+                        <td><label class="label">Clasif B-6</label></td>
+                        <td><label class="label">Destino</label></td>
+                        <td><label class="label">Hsc</label></td>
+                        <td><label class="label">Periodo gracia</label></td>
+                      </tr>
+                      <tr>
+                        <td>01</td>
+                        <td>BR</td>
+                        <td>Simple</td>
+                        <td>4,152.25</td>
+                        <td></td>
+                        <td></td>
+                        <td>450</td> 
+                        <td></td>
+                        <td>36 meses</td>
+                        <td>x</td>
+                        <td>NA</td>
+                        <td>CT</td>
+                        <td>x</td>
+                        <td>NA</td>
+                      </tr>
+                      <tr>
+                        <td>02</td>
+                        <td>BR</td>
+                        <td>Simple</td>
+                        <td>2,152.25</td>
+                        <td></td>
+                        <td></td>
+                        <td>460</td> 
+                        <td></td>
+                        <td>36 meses</td>
+                        <td>x</td>
+                        <td>NA</td>
+                        <td>CT</td>
+                        <td>x</td>
+                        <td>NA</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3">Total M.N.</td>
+                        <td>0 M.N.</td>
+                        <td>0</td>
+                        <td>T.de.C.(0.00)</td>
+                        <td>0</td>
+                        <td></td>
+                        <td colspan="6" rowspan="3">
+                          Riesgo potencial grupo 450
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3">Total Dls.</td>
+                        <td>0 M.N.</td>
+                        <td>0</td>
+                        <td>T.de.C.(0.00)</td>
+                        <td>0</td>
+                        <td></td>                        
+                      </tr>
+                      <tr>
+                        <td colspan="3">Total Valorizados.</td>
+                        <td>0 M.N.</td>
+                        <td>0</td>
+                        <td>T.de.C.(0.00)</td>
+                        <td>0</td>
+                        <td></td>                        
+                      </tr>
+
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="6" class="div-titulos">Avales/ Obligados solidarios / fiadores</td>
+                <tr>
+                <tr>
+                  <td colspan="2"><label class="label">Ref:</label></td>
+                  <td colspan="4"><label class="label">Nombre:</label></td>                  
+                </tr>
+                <tr>
+                  <td colspan="2">01-01</td>
+                  <td colspan="4">Ana Herrara Corea</td>                  
+                </tr>
+                <tr>
+                  <td colspan="6" class="div-titulos">Decreto del estudio de credito</td>
+                <tr>                
+                <tr>
+                  <td colspan="6" style="text-align:center;"><b>{{ decreto }}</b></td>
+                </tr>
+                <tr>
+                  <td colspan="6" class="div-titulos">Calificación de cartera</td>
+                <tr>
+                <tr>
+                  <td colspan="2">Fecha</td>
+                  <td colspan="4">2018-02-05</td>                  
+                </tr>
+                <tr>
+                  <td colspan="2">Calif</td>
+                  <td colspan="4">0.0000%</td>                  
+                </tr>
+                <tr>
+                  <td colspan="2">Pre-calif</td>
+                  <td colspan="4">0.000%</td>                  
+                </tr>
+                <tr>
+                  <td colspan="2">Calif. de buro</td>
+                  <td colspan="4">1A1</td>                  
+                </tr>
+                <tr>
+                  <td colspan="6" class="div-titulos">Firmas facultadas</td>
+                <tr>
+                <tr>
+                  <td colspan="6" class="div-titulos"><br/><br/></td>
+                <tr>
               </tbody>
             </table>            
           </div>            
         </div>
-        <div class="columns">
-          <div class="column">
-            <label style="color:#3a5fab;" class="column"><b>*</b>{{ solicitud.linea_simple_sugerida | monto_etiquetas}}</label>
-          </div>
-          <div class="column">
-            <label style="color:#3a5fab;" class="column"><b>**</b>{{ solicitud.linea_revolvente_sugerida | monto_etiquetas}}</label>
-          </div>
-        </div>
+
         <div class="footer columns" style="display:none; bottom: 0; padding:10px; height:150px;" id="div_footer"> 
           <div style="font-weight:bold; font-size: 20px; text-align: center;" class="column is-4">banregio | Inteligencia de riesgos</div>
           <div class="column" style="text-align: right;">
@@ -381,7 +492,7 @@ const DetailForm = Vue.component('detail', {
          }
       return '$ ' + splitLeft + splitRight;
 
-      }else{
+      }else{ 
         return null;
       }      
 
