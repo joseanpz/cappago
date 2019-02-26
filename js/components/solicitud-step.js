@@ -22,6 +22,56 @@ var SolicitudStep = Vue.component('solicitud-step',{
 								<input type="date"  v-model="fecha_solicitud" class="input" id="fecha_solicitud"/>
 							</div>
 						</div>
+						<div class="columns">
+							<div class="column is-2">
+								<label class="label titulos">cedente/prosp: </label>
+							</div>
+							<div class="column is-4" > 
+								<input type="text" v-model="cedente_prosp" class="input" />
+							</div>
+							<div class="column is-2">
+								<label class="label titulos">Accionistas: </label>
+							</div>
+							<div class="column is-4" style="text-align:left;">
+								<input type="date"  v-model="accionistas" class="input" />
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column is-2">
+								<label class="label titulos">Promotor: </label>
+							</div>
+							<div class="column is-4" > 
+								<input type="text" v-model="promotor" class="input" />
+							</div>
+							<div class="column is-2">
+								<label class="label titulos">Subdirector: </label>
+							</div>
+							<div class="column is-4" style="text-align:left;">
+								<input type="date"  v-model="subdirector" class="input" />
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column is-2">
+								<label class="label titulos">Analista: </label>
+							</div>
+							<div class="column is-4" > 
+								<input type="text" v-model="analista" class="input" />
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column is-2">
+								<label class="label titulos">Cheques desde: </label>
+							</div>
+							<div class="column is-4" > 
+								<input type="text" v-model="cheques_fecha" class="input" />
+							</div>
+							<div class="column is-2">
+								<label class="label titulos">Crédito desde: </label>
+							</div>
+							<div class="column is-4" style="text-align:left;">
+								<input type="date"  v-model="credito_fecha" class="input" />
+							</div>
+						</div>
 					</div>			
 				</div>
 			</div>
@@ -31,7 +81,14 @@ var SolicitudStep = Vue.component('solicitud-step',{
 	data () {
 		return {
 			numero_solicitud: null,
-			fecha_solicitud: null
+			fecha_solicitud: null,
+			cedente_prosp: null,
+	        promotor: null,
+	        subdirector: null,
+	        analista: null,
+	        accionistas: null,
+	        cheques_fecha: null,
+	        credito_fecha: null,
 
 		}
 	},
@@ -46,6 +103,26 @@ var SolicitudStep = Vue.component('solicitud-step',{
 		fecha_solicitud: function (val) {
 			this.$emit('sol-date-change', val);
 		},
-
+		cedente_prosp: function (val) {
+			this.$emit('ced-prosp-change', val);
+		},
+		promotor: function (val) {
+			this.$emit('promoter-change', val);
+		},
+		subdirector: function (val) {
+			this.$emit('subdiretor-change', val);
+		},
+		analista: function (val) {
+			this.$emit('analyst-change', val);
+		},
+		accionistas: function (val) {
+			this.$emit('shareholder-change', val);
+		},
+		cheques_fecha: function (val) {
+			this.$emit('checks-date-change', val);
+		},
+		credito_fecha: function (val) {
+			this.$emit('credit-date-change', val);
+		},
 	}
 });

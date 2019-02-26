@@ -27,7 +27,7 @@ const DetailForm = Vue.component('detail', {
                 <tr>
                   <td><label class="label">Solicitante:</label></td>
                   <td colspan="3">Jacob Mendoza Contreras</td>
-                  <td><label class="label">Solicitud:</label></td>
+                  <td><label class="label">Folio:</label></td>
                   <td>{{ solicitud.numero_solicitud }}</td>
                 </tr>
                 <tr>
@@ -70,9 +70,11 @@ const DetailForm = Vue.component('detail', {
                         <td><label class="label">Ref</label></td>
                         <td><label class="label">Emp</label></td>
                         <td><label class="label">Tipo</label></td>
+                        <!--
                         <td><label class="label">Importe</label></td>
                         <td><label class="label">Respons.</label></td>
                         <td><label class="label">Vencimiento</label></td>
+                        -->
                         <td><label class="label">Linea solicitada</label></td>
                         <td><label class="label">linea autorizada</label></td>
                         <td><label class="label">Plazo</label></td>
@@ -86,9 +88,11 @@ const DetailForm = Vue.component('detail', {
                         <td>01</td>
                         <td>BR</td>
                         <td>Simple</td>
+                        <!--
                         <td>4,152.25</td>
                         <td></td>
                         <td></td>
+                        -->
                         <td>450</td> 
                         <td></td>
                         <td>36 meses</td>
@@ -101,10 +105,12 @@ const DetailForm = Vue.component('detail', {
                       <tr>
                         <td>02</td>
                         <td>BR</td>
-                        <td>Simple</td>
+                        <td>Simple</td>                        
+                        <!--
                         <td>2,152.25</td>
                         <td></td>
                         <td></td>
+                        -->
                         <td>460</td> 
                         <td></td>
                         <td>36 meses</td>
@@ -115,16 +121,19 @@ const DetailForm = Vue.component('detail', {
                         <td>NA</td>
                       </tr>
                       <tr>
+                        <!--
                         <td colspan="3">Total M.N.</td>
                         <td>0 M.N.</td>
                         <td>0</td>
                         <td>T.de.C.(0.00)</td>
                         <td>0</td>
                         <td></td>
+                        -->
                         <td colspan="6" rowspan="3">
                           Riesgo potencial grupo 450
                         </td>
                       </tr>
+                      <!--
                       <tr>
                         <td colspan="3">Total Dls.</td>
                         <td>0 M.N.</td>
@@ -141,6 +150,7 @@ const DetailForm = Vue.component('detail', {
                         <td>0</td>
                         <td></td>                        
                       </tr>
+                      -->
 
                     </table>
                   </td>
@@ -169,13 +179,15 @@ const DetailForm = Vue.component('detail', {
                   <td colspan="2">Fecha</td>
                   <td colspan="4">2018-02-05</td>                  
                 </tr>
+                <!--
                 <tr>
                   <td colspan="2">Calif</td>
                   <td colspan="4">0.0000%</td>                  
                 </tr>
+                -->
                 <tr>
                   <td colspan="2">Pre-calif</td>
-                  <td colspan="4">0.000%</td>                  
+                  <td colspan="4">A1</td>                  
                 </tr>
                 <tr>
                   <td colspan="2">Calif. de buro</td>
