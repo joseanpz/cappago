@@ -70,7 +70,7 @@ const DetailForm = Vue.component('detail', {
                         <td><label class="label">Ref</label></td>
                         <td><label class="label">Emp</label></td>
                         <td><label class="label">Tipo</label></td>
-                        <td><label class="label">importe</label></td>
+                        <td><label class="label">Importe</label></td>
                         <td><label class="label">Respons.</label></td>
                         <td><label class="label">Vencimiento</label></td>
                         <td><label class="label">Linea solicitada</label></td>
@@ -204,19 +204,46 @@ const DetailForm = Vue.component('detail', {
         
         <div id="editor" style="text-align:right;" class=" card" >
           <header class="card-header">
-              <p class="card-header-title">Captura de RFC:</p>
+              <p class="card-header-title">Información sensible:</p>
           </header>
           <div class="card-content">  
-          <div class="content columns">
-            <div class="column is-2">
-              <label class="label titulos">RFC: </label>
-            </div>
-            <div class="column is-4">
-              <input type="text" v-model="rfc" class="input" />
-            </div>
-            <div class="column">
-            <button class="button " @click = "genPDF" style="background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Descarga</button>
-            </div>
+            <div class="content columns">
+              <div class="column">
+                <label class="label" style="text-align:left;">
+                  Solicitante
+                  <input type="text" class="input"/>
+                </label>
+              </div>
+              <div class="column">
+                <label class="label" style="text-align:left;">
+                  Domicilio
+                  <input type="text" class="input"/>
+                </label>
+              </div>
+              <div class="column">
+                <label class="label" style="text-align:left;">
+                  RFC
+                  <input type="text" v-model="rfc" class="input" />
+                </label>
+              </div> 
+            </div>              
+          </div>                  
+        </div>
+        <br/>
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">Avales:</p>
+          </header>
+          <div class="card-content">  
+            <div class="content columns">
+              <div class="column">              
+                  <input type="text" class="input"/>              
+              </div>
+            </div>      
+            <div class="columns">
+              <div class="column">
+                <button class="button " @click = "genPDF" style="background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Descarga</button>
+              </div>
             </div>
           </div>
         </div>
