@@ -49,7 +49,25 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 						<div class="column is-4">		
 							<input type="text" v-model="calificacion_deudor" class="input" />
 						</div>
-						<div class="column"></div>							
+						<div class="column is-2">
+							<label class="label">Calificación interna: </label>
+						</div>
+						<div class="column is-4">		
+							<input type="text" v-model="calificacion_interna" class="input" />
+						</div>						
+					</div>	
+				</div>
+				<div class="content">
+					<div class="columns">							
+						<div class="column is-2">
+							<label class="label">Pre-calif: </label>
+						</div>
+						<div class="column is-4">		
+							<input type="text" v-model="pre_calif" class="input" />
+						</div>
+						<div class="column">							
+						</div>
+						
 					</div>	
 				</div>
 			</div>
@@ -62,6 +80,8 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 			score: null,
 			id_nivel_riesgo: null,
 			calificacion_deudor: null,
+			calificacion_interna: null,
+			pre_calif: null,			
 			risk_levels: []
 		}
 	},
@@ -104,6 +124,12 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 		},
 		calificacion_deudor: function (val) {
 			this.$emit('debtor-qual-change', val);
+		},
+		calificacion_interna: function (val) {
+			this.$emit('internal-calif', val);
+		},
+		pre_calif: function (val) {
+			this.$emit('calif-pre', val);
 		},
 		
 	}

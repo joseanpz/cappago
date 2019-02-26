@@ -22,21 +22,35 @@ var SolicitudStep = Vue.component('solicitud-step',{
 								<input type="date"  v-model="fecha_solicitud" class="input" id="fecha_solicitud"/>
 							</div>
 						</div>
-						<div class="columns">
+						<div class="columns">	
 							<div class="column is-2">
-								<label class="label titulos">cedente/prosp: </label>
+								<label class="label titulos">Cedente/prosp: </label>
 							</div>
 							<div class="column is-4" > 
 								<input type="text" v-model="cedente_prosp" class="input" />
-							</div>
+							</div>						
 							<div class="column is-2">
 								<label class="label titulos">Accionistas: </label>
 							</div>
 							<div class="column is-4" style="text-align:left;">
-								<input type="date"  v-model="accionistas" class="input" />
-							</div>
+								<input type="text"  v-model="accionistas" class="input" />
+							</div>														
 						</div>
 						<div class="columns">
+							<div class="column is-2">
+								<label class="label titulos">Cheques desde: </label>
+							</div>
+							<div class="column is-4" > 
+								<input type="date" v-model="cheques_fecha" class="input" />
+							</div>
+							<div class="column is-2">
+								<label class="label titulos">Crédito desde: </label>
+							</div>
+							<div class="column is-4" style="text-align:left;">
+								<input type="date"  v-model="credito_fecha" class="input" />
+							</div>																				
+						</div>
+						<div class="columns">							
 							<div class="column is-2">
 								<label class="label titulos">Promotor: </label>
 							</div>
@@ -47,8 +61,8 @@ var SolicitudStep = Vue.component('solicitud-step',{
 								<label class="label titulos">Subdirector: </label>
 							</div>
 							<div class="column is-4" style="text-align:left;">
-								<input type="date"  v-model="subdirector" class="input" />
-							</div>
+								<input type="text"  v-model="subdirector" class="input" />
+							</div>						
 						</div>
 						<div class="columns">
 							<div class="column is-2">
@@ -57,20 +71,7 @@ var SolicitudStep = Vue.component('solicitud-step',{
 							<div class="column is-4" > 
 								<input type="text" v-model="analista" class="input" />
 							</div>
-						</div>
-						<div class="columns">
-							<div class="column is-2">
-								<label class="label titulos">Cheques desde: </label>
-							</div>
-							<div class="column is-4" > 
-								<input type="text" v-model="cheques_fecha" class="input" />
-							</div>
-							<div class="column is-2">
-								<label class="label titulos">Crédito desde: </label>
-							</div>
-							<div class="column is-4" style="text-align:left;">
-								<input type="date"  v-model="credito_fecha" class="input" />
-							</div>
+													
 						</div>
 					</div>			
 				</div>

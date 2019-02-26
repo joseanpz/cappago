@@ -19,7 +19,7 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 											<table class="table ">
 												<tr>
 													<td><label class="label">Indicadora de Acreditados Sin Atraso (<b>BK12_CLEAN</b>): </label></td>
-													<td><input type="number" step="0.001" v-model="BK12_CLEAN" class="input" /> </td>
+													<td style="width:25%;"><input type="number" step="0.001" v-model="BK12_CLEAN" class="input" /> </td>
 												</tr>
 												<tr>
 													<td><label class="label">Monto máximo de crédito otorgado por instituciones financieras bancarias en los últimos 12 meses. (<b>BK12_MAX_CREDIT_AMT</b>): </label></td>
@@ -36,6 +36,14 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 												<tr>
 													<td><label class="label">Deuda a Corto Plazo Total (instituciones Bancarias y No Bancarias: <b>BK_DEUDA_CP+NBK_DEUDA_CP</b>): </label></td>
 													<td><input type="number" step="0.001" v-model="deuda_cortoplazo" class="input" /></td>
+												</tr>
+												<tr>
+													<td><label class="label">Fecha consulta: </label></td>
+													<td><input type="date" v-model="fecha_consulta" class="input" /></td>
+												</tr>
+												<tr>
+													<td><label class="label">Calificación buro: </label></td>
+													<td><input type="number" step="0.0001" v-model="calif_buro" class="input" /></td>
 												</tr>
 											</table>
 										</div>
@@ -143,7 +151,9 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 			sal_orig_cred_act_fact: null,
 			sal_orig_cred_act_revol: null,
 			sal_orig_cred_act_simp: null,
-			exp_creditos_largos: null
+			exp_creditos_largos: null,
+			calif_buro:null,
+			fecha_consulta:null
 		}
 	},
 
@@ -206,6 +216,12 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 		exp_creditos_largos: function (val) {
 			this.$emit('large-credit-experience', val);
 		},
+		calif_buro: function (val) {
+			this.$emit('buro-calif', val);
+		},
+		fecha_consulta: function (val) {
+			this.$emit('deuda-date', val);
+		},	
 		
 	}
 });

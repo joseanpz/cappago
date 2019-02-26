@@ -138,6 +138,8 @@ const EvalFormWizard = Vue.component('eval-form', {
           @sal-orig-revol-change="setSalOrigRevol"
           @sal-orig-simp-change="setSalOrigSimp"
           @large-credit-experience="setLargeExpCredit"
+          @buro-calif="setBuroCalif"
+          @deuda-date="setDeudaDate"
 
           ref="buro_credito"
           :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
@@ -163,6 +165,8 @@ const EvalFormWizard = Vue.component('eval-form', {
             @score-change="setScore"
             @eval-type-prfl-change="setPrfEvalType"
             @debtor-qual-change="setDebtorQual"
+            @internal-calif="setInternalCalif"
+            @calif-pre="setCalifPre"
             ref="resultado_perfilador"            
           >
 
@@ -266,6 +270,10 @@ const EvalFormWizard = Vue.component('eval-form', {
         sal_orig_cred_act_revol: null,
         sal_orig_cred_act_simp: null,
         exp_creditos_largos: null,
+        fecha_consulta: null,
+        calif_buro: null,
+        calificacion_interna: null,
+        pre_calif: null,
         cedente_prosp: null,
         promotor: null,
         subdirector: null,
@@ -273,7 +281,6 @@ const EvalFormWizard = Vue.component('eval-form', {
         accionistas: null,
         cheques_fecha: null,
         credito_fecha: null,
-
       },        
   		account_statements: [],
   		simple_credits: [],
@@ -1036,6 +1043,8 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.buro_credito.BK12_CLEAN = response.BK12_CLEAN;
       this.$refs.buro_credito.BK12_MAX_CREDIT_AMT = response.BK12_MAX_CREDIT_AMT;
       this.$refs.buro_credito.deuda_cortoplazo = response.deuda_cortoplazo;
+      this.$refs.buro_credito.fecha_consulta = response.fecha_consulta;
+      this.$refs.buro_credito.calif_buro = response.calif_buro;    
       this.$refs.buro_credito.num_cred_act_arren = response.num_cred_act_arren;
       this.$refs.buro_credito.num_cred_act_fact = response.num_cred_act_fact;
       this.$refs.buro_credito.num_cred_act_revol = response.num_cred_act_revol;
@@ -1048,7 +1057,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.buro_credito.sal_orig_cred_act_fact = response.sal_orig_cred_act_fact;
       this.$refs.buro_credito.sal_orig_cred_act_revol = response.sal_orig_cred_act_revol;
       this.$refs.buro_credito.sal_orig_cred_act_simp = response.sal_orig_cred_act_simp;
-      this.$refs.buro_credito.exp_creditos_largos = (response.exp_creditos_largos === "true");  
+      this.$refs.buro_credito.exp_creditos_largos = (response.exp_creditos_largos === "true"); 
       this.$refs.estado_financiero.uafir = response.uafir;
       this.$refs.estado_financiero.capital_contable = response.capital_contable;
       this.$refs.estado_financiero.ventas_anuales = response.ventas_anuales;      
@@ -1057,7 +1066,9 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.resultado_perfilador.tipo_evaluacion_perfilador = response.tipo_evaluacion_perfilador;
       this.$refs.resultado_perfilador.decreto = response.decreto;
       this.$refs.resultado_perfilador.score = response.score;
-      this.$refs.resultado_perfilador.id_nivel_riesgo = response.id_nivel_riesgo;
+      this.$refs.resultado_perfilador.id_nivel_riesgo = response.id_nivel_riesgo;      
+      this.$refs.resultado_perfilador.calificacion_interna = response.calificacion_interna; 
+      this.$refs.resultado_perfilador.pre_calif = response.pre_calif; 
     },
 
     saveSolicitudeCredit: function () {
@@ -1350,6 +1361,18 @@ const EvalFormWizard = Vue.component('eval-form', {
     setLargeExpCredit: function(val) {
       this.solicitud.exp_creditos_largos = val;
     },  
+    setBuroCalif: function(val) {
+      this.solicitud.calif_buro = val;
+    },  
+    setDeudaDate: function(val) {
+      this.solicitud.fecha_consulta = val;
+    },
+    setInternalCalif: function(val) {
+      this.solicitud.calificacion_interna = val;
+    },  
+    setCalifPre: function(val) {
+      this.solicitud.pre_calif = val;
+    },
     setAccountStatements: function(val) {
       console.log("updating");
       console.log(val);
