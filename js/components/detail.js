@@ -79,11 +79,31 @@ const DetailForm = Vue.component('detail', {
                         <td><label class="label">linea autorizada</label></td>
                         <td><label class="label">Plazo</label></td>
                         <td><label class="label">Gtia. fondos</label></td>
-                        <td><label class="label">Clasif B-6</label></td>
-                        <td><label class="label">Destino</label></td>
-                        <td><label class="label">Hsc</label></td>
+                        <td><label class="label">CLASIF B-6</label></td>
+                        <td><label class="label">DESTINO</label></td>
+                        <td><label class="label">SHC</label></td>
                         <td><label class="label">Periodo gracia</label></td>
                       </tr>
+                     
+                        <tr v-if="credits.length" v-for="credit in credits" :key="credit.id_local">
+                          <td>{{credit.id_local}}</td>
+                          <td>{{credit.empresa}}</td>
+                          <td>{{credit.tipo}}</td>
+                          <!--
+                          <td>4,152.25</td>
+                          <td></td>
+                          <td></td>
+                          -->
+                          <td>{{credit.monto}}</td> 
+                          <td>{{credit.autorizado}}</td>
+                          <td>{{credit.plazo}} meses</td>
+                          <td>{{credit.garantia_fondos}}</td>
+                          <td>{{credit.clasif_b6}}</td>
+                          <td>{{credit.destino}}</td>
+                          <td>{{credit.hsc}}</td>
+                          <td>{{credit.periodo_gracia}}</td>
+                        </tr>
+                        
                       <tr>
                         <td>01</td>
                         <td>BR</td>
@@ -305,6 +325,8 @@ const DetailForm = Vue.component('detail', {
       },
       risk_levels: [], 
       activities: [],
+      credits: [],
+      credits_count: 0,
       rfc: null 
 		}
 	},
@@ -312,7 +334,8 @@ const DetailForm = Vue.component('detail', {
   created: function () {   
     this.readDetail();
     this.readRiskLevels();
-    this.readActivities();  
+    this.readActivities();
+    this.readCredits();  
   },
 
   computed:{
@@ -437,6 +460,32 @@ const DetailForm = Vue.component('detail', {
       })
       .readCatalog('nivel_riesgo')
     },
+
+    readCredits: function () {
+      var self = this;
+      google.script.run
+      .withSuccessHandler(function(response){
+        console.log('Reading creditos');
+        console.log(response);
+        self.setCreditos(response.records);  // solicitud.numero_solicitud = response.numero_solicitud;
+      })
+      .withFailureHandler(function(err){
+        console.log('An error ocurred while reading creditos');
+        console.log(err);
+      })
+      .readFKRelation('credito_solicitado', 'id_solicitud', this.id);
+    },
+
+    setCreditos: function (records) {
+      this.credits_count = records.length;
+      if (this.credits_count > 0) {
+        for (var i=0; i < this.credits_count; i++) {
+          var record = records[i];
+          // do trasform
+          this.credits.push(record);
+        }
+      }
+    },
     setSolicitud: function (response) {
       this.solicitud.id = response.id,
       this.solicitud.numero_solicitud = response.numero_solicitud;
@@ -474,20 +523,7 @@ const DetailForm = Vue.component('detail', {
       this.solicitud.id_nivel_riesgo = response.id_nivel_riesgo;
       this.solicitud.linea_revolvente_sugerida = response.linea_revolvente_sugerida;
       this.solicitud.linea_simple_sugerida = response.linea_simple_sugerida;
-    },
-   
-    /* readActivities: function(){
-      var self = this;
-      google.script.run
-      .withSuccessHandler(function(response){
-        console.log(response);
-        self.activityName = response.records;
-      })
-      .withFailureHandler(function(err){
-        console.log(err);
-      })
-      .readCatalog('actividad')
-    },*/
+    },   
 	},
   
   filters: {        
