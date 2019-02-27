@@ -104,17 +104,12 @@ const DetailForm = Vue.component('detail', {
                           <td>{{credit.destino}}</td>
                           <td>{{credit.hsc}}</td>
                           <td>{{credit.periodo_gracia}}</td>
-                        </tr>
-                        
-                      
-                      <tr>
-                        
+                        </tr>                      
+                      <tr>                        
                         <td colspan="6" rowspan="3">
                           Riesgo potencial grupo 450
                         </td>
-                      </tr>
-                      
-
+                      </tr>                      
                     </table>
                   </td>
                 </tr>
@@ -141,13 +136,11 @@ const DetailForm = Vue.component('detail', {
                 <tr>
                   <td colspan="2">Fecha</td>
                   <td colspan="4">2018-02-05</td>                  
-                </tr>
-                <!--
+                </tr>                
                 <tr>
                   <td colspan="2">Calif</td>
                   <td colspan="4">0.0000%</td>                  
                 </tr>
-                -->
                 <tr>
                   <td colspan="2">Pre-calif</td>
                   <td colspan="4">A1</td>                  
