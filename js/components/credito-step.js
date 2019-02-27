@@ -39,7 +39,7 @@ var CreditoStep = Vue.component('credito-step',{
 		                					</tr>
 		                					<tr>
 		                						<td><label class="label titulos">Monto: </label></td>
-		                						<td><input type="text" v-model="credit.monto" class="input" id="numero_solicitud"/></td>
+		                						<td><input type="text" v-model="credit.monto" class="input"/></td>
 		                						<td><label class="label titulos">Destino: </label></td>
 		                						<td><input type="text" v-model="credit.destino" class="input" /></td>
 		                					</tr>
@@ -110,7 +110,7 @@ var CreditoStep = Vue.component('credito-step',{
 							<div style="margin:10px;" class=" card " v-if="simple_credits.length" v-for="credit in simple_credits" :key="credit.id_local">
 								<header class="header-sec-card columns" >
 		                			<p class="column card-header-title title-color">Crédito Simple</p>
-		                			<a class="column is-1 btn-delete is-outlined tooltip is-tooltip-right" data-tooltip="Eliminar" @click="deleteCredit(credit.id_local, 'revolvente')"><i class="fas fa-times fa-2x"></i></a>				                					
+		                			<a class="column is-1 btn-delete is-outlined tooltip is-tooltip-right" data-tooltip="Eliminar" @click="deleteCredit(credit.id_local, 'simple')"><i class="fas fa-times fa-2x"></i></a>				                					
 		              			</header>
 								<div class="card-content">                     
 		                			<div class="content">
@@ -120,13 +120,13 @@ var CreditoStep = Vue.component('credito-step',{
 												<label class="label titulos">Monto: </label>
 											</div>
 											<div class="column is-4" > 
-												<input type="text" v-model="credit.monto" class="input" id="numero_solicitud"/>
+												<input type="text" v-model="credit.monto" class="input"/>
 											</div>
 											<div class="column is-2">
 												<label class="label titulos">Plazo: </label>
 											</div>
 											<div class="column is-4" style="text-align:left;">
-												<input type="text"  v-model="credit.plazo" class="input" id="fecha_solicitud"/>
+												<input type="text"  v-model="credit.plazo" class="input"/>
 											</div>
 										</div>
 										<div class="columns">
