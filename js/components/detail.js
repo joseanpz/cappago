@@ -67,43 +67,43 @@ const DetailForm = Vue.component('detail', {
                 </tr>
                 <tr>
                   <td colspan="6">
-                    <table style="font-size:13px; width:100%" >
+                    <table style="font-size:12px; width:100%" >
                       <tr>
-                        <td><label class="label">Ref</label></td>
-                        <td><label class="label">Emp</label></td>
-                        <td><label class="label">Tipo</label></td>
+                        <td><label class="label">REF</label></td>
+                        <td><label class="label">EMP</label></td>
+                        <td><label class="label">TIPO</label></td>
                         <!--
-                        <td><label class="label">Importe</label></td>
-                        <td><label class="label">Respons.</label></td>
-                        <td><label class="label">Vencimiento</label></td>
+                        <td><label class="label">IMPORTE</label></td>
+                        <td><label class="label">RESPONS.</label></td>
+                        <td><label class="label">VENCIMIENTO</label></td>
                         -->
-                        <td><label class="label">Linea solicitada</label></td>
-                        <td><label class="label">linea autorizada</label></td>
-                        <td><label class="label">Plazo</label></td>
-                        <td><label class="label">Gtia. fondos</label></td>
+                        <td><label class="label">LINEA SOLICITADA</label></td>
+                        <td><label class="label">LINEA AUTORIZADA</label></td>
+                        <td><label class="label">PLAZO</label></td>
+                        <td><label class="label">GTIA. FONDOS</label></td>
                         <td><label class="label">CLASIF B-6</label></td>
                         <td><label class="label">DESTINO</label></td>
                         <td><label class="label">SHC</label></td>
-                        <td><label class="label">Periodo gracia</label></td>
+                        <td><label class="label">PERIODO GRACIA</label></td>
                       </tr>
                      
                         <tr v-if="credits.length" v-for="credit in credits" :key="credit.id_local">
                           <td>{{credit.id_local}}</td>
                           <td>{{credit.empresa}}</td>
-                          <td>{{credit.tipo}}</td>
+                          <td>{{credit.tipo | tipo_credito}}</td>
                           <!--
                           <td>4,152.25</td>
                           <td></td>
                           <td></td>
                           -->
-                          <td>{{credit.monto}}</td> 
-                          <td>{{credit.autorizado}}</td>
-                          <td>{{credit.plazo}} meses</td>
-                          <td>{{credit.garantia_fondos}}</td>
-                          <td>{{credit.clasif_b6}}</td>
+                          <td style="text-align:right;">{{credit.monto | monto_redondeado}}</td> 
+                          <td style="text-align:right;">{{credit.autorizado | monto_redondeado}}</td>
+                          <td>{{credit.plazo | plazo_credito}}</td>
+                          <td>{{credit.garantia_fondos | credito_garantia}}</td>
+                          <td>{{credit.clasif_b6 | credito_clasif_b6}}</td>
                           <td>{{credit.destino}}</td>
-                          <td>{{credit.hsc}}</td>
-                          <td>{{credit.periodo_gracia}}</td>
+                          <td>{{credit.hsc | etiqueta_aplica}}</td>
+                          <td>{{credit.periodo_gracia | etiqueta_aplica}}</td>
                         </tr>                      
                       <tr>                        
                         <td colspan="6" rowspan="3">
@@ -565,12 +565,7 @@ const DetailForm = Vue.component('detail', {
 
     monto_redondeado:function(value){
     if(!!value){     
-    /* 
-      if(value >1000){
-        var valor =  Math.round((value/50)* 100) / 100;       
-      }else{
-        var valor =  Math.round((value/10)* 100)/ 100;       
-        } */
+    
          value += '';
          var splitStr = value.split(',');
          var splitLeft = splitStr[0];
@@ -594,6 +589,50 @@ const DetailForm = Vue.component('detail', {
       }else{
         return  "Cantidad en múltiplos de 10K"
         }
+      }else{
+        return null;
+      }
+    },
+    tipo_credito:function(value){
+      if(!!value){
+        if(value==="1"){return "Simple";}
+        if(value==="2"){return "Revolvente";}
+      }
+    },
+    plazo_credito:function(value){
+      if(!!value){
+        return value+' meses';
+      }else{
+        return null;
+      }
+    },
+    etiqueta_aplica:function(value){
+      if(!!value){
+        if(value==="1"){return "Si";}
+        if(value==="2"){return "No";}
+        if(value==="3"){return "No aplica";}
+      }else{
+        return null;
+      }
+    }, 
+    credito_garantia:function(value){
+      if(!!value){
+          if(value==="1"){return "Hipotecaria";}
+          if(value==="2"){return "Líquida";}
+          if(value==="3"){return "Prendaria";}
+          if(value==="4"){return "Otras";}
+          if(value==="5"){return "No tiene";}
+      }else{
+        return null;
+      }
+    },
+    credito_clasif_b6:function(value){
+      if(!!value){
+          if(value==="1"){return "N/A";}
+          if(value==="2"){return "B-6";}
+          if(value==="3"){return "RE";}
+          if(value==="4"){return "REV";}
+          if(value==="5"){return "RV";}
       }else{
         return null;
       }
