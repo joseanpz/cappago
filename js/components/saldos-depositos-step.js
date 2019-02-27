@@ -1,81 +1,88 @@
 var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 	props: ["bank_list", "id_solicitud", "fecha_solicitud"],
 	template: `
-		<section> 		
-			<div class="columns">
-				<div  class="column is-2">
-					<label class="label titulos" style="text-align:center; margin:auto;">Seleccione un Banco</label>
-				</div>
-				<div class="column is-2">
- 					<b-select placeholder="Select a name" v-model="selected_bank"> 
-						<option 
-						v-for="bank in banks" 
-						:value="bank.id" 
-						:key="bank.id" 
-						> 
-							{{ bank.nombre}} 
-						</option> 
-					</b-select> 
-                      
-				</div>
-				<div class="column is-2">
-					<a class="button is-info is-outlined" @click="addAccountStatment">
-						<span class="icon is-small">
-							<i class="fas fa-check"></i>
-						</span>
-						<span>Agregar</span>
-					</a>
-				</div>
-				<div class="column"></div>
-			</div>
-			<hr/>
-			<div v-if="account_statements.length">
-				<div class="columns" >
-					<div class="column" v-for="acc_smnt in account_statements" :key="acc_smnt.id_local">
-						<div v-bind:class="{ 'is-6': account_statements.length===1 }" class="card column">
-							
-							<div class="card-content"> 
-								<div class="columns">
-									<table class="column table is-bordered is-striped ">
-										<tr>
-											<td colspan="2" class="title-color" style="text-align:left;">
-												<b>{{acc_smnt.bank_name}}</b>
-											</td>
-											<td style="text-align:right;"><a  class="btn-delete is-outlined tooltip is-tooltip-right" data-tooltip="Borrar banco" @click="deleteAccountStatement(acc_smnt.id_local)"><i class="fas fa-times fa-2x" ></i></a></td>
-										</tr>
-										<tr>
-											<td class="label_color">Meses</td>
-											<td class="label_color">Depósitos</td>
-											<td class="label_color">Saldos</td>
-										</tr>	
-										<tr v-for="statement in acc_smnt.statements" :key="statement.id_local">
-											<td style="vertical-align:middle;"><label class="lbl_months" >{{statement.mes}}</label></td>
-											<td><b-input type="number"  step="0.001"  v-model="statement.deposito"></b-input></td>
-											<td><b-input type="number"  step="0.001" v-model="statement.saldo"></b-input></td>										
-										</tr>																		
-										</table>
-									</div>							
-								</div>
-								<!--<div class="content">
-									<b-field v-for="statement in acc_smnt.statements" :key="statement.id_local">
-									<div class="columns">
-										<label class="lbl_months column is-2" >{{statement.mes}}</label>
-										<b-input type="number" class="column" step="0.001"  v-model="statement.deposito"></b-input> &nbsp
-										<b-input type="number" class="column" step="0.001" v-model="statement.saldo"></b-input>
-									</div>
-									</b-field>
-								</div>-->
-							</div>
-							<!--<footer class="card-footer">
-								<a class="card-footer-item" @click="addStatement(acc_smnt.id_local)">Agregar registro</a> 
-								<a class="card-footer-item button is-danger is-outlined" @click="deleteAccountStatement(acc_smnt.id_local)">Borrar banco</a>
-							</footer> -->
+		<div class="card">  
+            <header class="card-header">
+              <p class="card-header-title">Saldos y depositos</p>
+            </header>
+            <div class="card-content">    
+              	<div class="content">
+                	<div class="columns">
+						<div  class="column is-2">
+							<label class="label titulos" style="text-align:center; margin:auto;">Seleccione un Banco</label>
 						</div>
-					</div>						
-				</div>	  						
-			</div> 
-
-		</section> `,
+						<div class="column is-2">
+		 					<b-select placeholder="Select a name" v-model="selected_bank"> 
+								<option 
+								v-for="bank in banks" 
+								:value="bank.id" 
+								:key="bank.id" 
+								> 
+									{{ bank.nombre}} 
+								</option> 
+							</b-select> 
+		                      
+						</div>
+						<div class="column is-2">
+							<a class="button is-info is-outlined" @click="addAccountStatment">
+								<span class="icon is-small">
+									<i class="fas fa-check"></i>
+								</span>
+								<span>Agregar</span>
+							</a>
+						</div>
+						<div class="column"></div>
+					</div>
+					<hr/>
+					<div v-if="account_statements.length">
+						<div class="columns" >
+							<div class="column" v-for="acc_smnt in account_statements" :key="acc_smnt.id_local">
+								<div v-bind:class="{ 'is-6': account_statements.length===1 }" class="card column">
+									
+									<div class="card-content"> 
+										<div class="columns">
+											<table class="column table is-bordered is-striped ">
+												<tr>
+													<td colspan="2" class="title-color" style="text-align:left;">
+														<b>{{acc_smnt.bank_name}}</b>
+													</td>
+													<td style="text-align:right;"><a  class="btn-delete is-outlined tooltip is-tooltip-right" data-tooltip="Borrar banco" @click="deleteAccountStatement(acc_smnt.id_local)"><i class="fas fa-times fa-2x" ></i></a></td>
+												</tr>
+												<tr>
+													<td class="label_color">Meses</td>
+													<td class="label_color">Depósitos</td>
+													<td class="label_color">Saldos</td>
+												</tr>	
+												<tr v-for="statement in acc_smnt.statements" :key="statement.id_local">
+													<td style="vertical-align:middle;"><label class="lbl_months" >{{statement.mes}}</label></td>
+													<td><b-input type="number"  step="0.001"  v-model="statement.deposito"></b-input></td>
+													<td><b-input type="number"  step="0.001" v-model="statement.saldo"></b-input></td>										
+												</tr>																		
+												</table>
+											</div>							
+										</div>
+										<!--<div class="content">
+											<b-field v-for="statement in acc_smnt.statements" :key="statement.id_local">
+											<div class="columns">
+												<label class="lbl_months column is-2" >{{statement.mes}}</label>
+												<b-input type="number" class="column" step="0.001"  v-model="statement.deposito"></b-input> &nbsp
+												<b-input type="number" class="column" step="0.001" v-model="statement.saldo"></b-input>
+											</div>
+											</b-field>
+										</div>-->
+									</div>
+									<!--<footer class="card-footer">
+										<a class="card-footer-item" @click="addStatement(acc_smnt.id_local)">Agregar registro</a> 
+										<a class="card-footer-item button is-danger is-outlined" @click="deleteAccountStatement(acc_smnt.id_local)">Borrar banco</a>
+									</footer> -->
+								</div>
+							</div>						
+						</div>	  						
+					</div>
+				</div>
+            </div>
+        </div>
+	`,
 	data () {
 		return {
 			acc_stmnt_count: 0,

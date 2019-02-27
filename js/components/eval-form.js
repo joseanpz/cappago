@@ -87,21 +87,16 @@ const EvalFormWizard = Vue.component('eval-form', {
           > 
           </laboral-step>
 
-          <div class="card" v-if="tipo_comprobante=='account_statements'">  
-            <header class="card-header">
-              <p class="card-header-title">Saldos y depositos</p>
-            </header>
-            <div class="card-content">    
-              <div class="content">
-                <saldos-depositos-step
-                :id_solicitud="id_solicitud"
-                :fecha_solicitud="solicitud.fecha_solicitud"
-                @acc-statements-change="setAccountStatements"
-                ref="saldo_deposito"> 
-                </saldos-depositos-step>
-              </div>
-            </div>
-          </div>  
+          
+          <saldos-depositos-step  v-if="tipo_comprobante=='account_statements'"
+            :id_solicitud="id_solicitud"
+            :fecha_solicitud="solicitud.fecha_solicitud"
+            @acc-statements-change="setAccountStatements"
+            ref="saldo_deposito"
+          > 
+          
+          </saldos-depositos-step>
+              
 
           <estado-financiero-card
             @uafir-change="setUafir"
