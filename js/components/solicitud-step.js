@@ -10,13 +10,13 @@ var SolicitudStep = Vue.component('solicitud-step',{
 					<div class="content">
 						<div class="columns">
 							<div class="column is-2">
-								<label class="label titulos">Número solicitud: </label>
+								<label class="label titulos">Folio: </label>
 							</div>
 							<div class="column is-4" > 
 								<input type="text" v-model="numero_solicitud" class="input" id="numero_solicitud"/>
 							</div>
 							<div class="column is-2">
-								<label class="label titulos">Fecha solicitud: </label>
+								<label class="label titulos">Fecha presentación: </label>
 							</div>
 							<div class="column is-4" style="text-align:left;">
 								<input type="date"  v-model="fecha_solicitud" class="input" id="fecha_solicitud"/>
@@ -26,10 +26,11 @@ var SolicitudStep = Vue.component('solicitud-step',{
 							<div class="column is-2">
 								<label class="label titulos">Cedente/prosp: </label>
 							</div>
-							<div class="column" > 
+							<div class="column is-4" > 
 								<input type="text" v-model="cedente_prosp" class="input" />
 							</div>																										
 						</div>
+						<hr/>
 						<div class="columns">
 							<div class="column is-2">
 								<label class="label titulos">Cheques desde: </label>

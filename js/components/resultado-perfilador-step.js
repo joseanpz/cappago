@@ -8,7 +8,7 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 			<div class="card-content">	
 				<div class="content">
 					<div class="columns">
-						<div class="column is-2"><label class="label">Decreto:</label></div>
+						<div class="column is-2"><label class="label titulos">Decreto:</label></div>
 						<div class="column is-4">
 							<b-select placeholder="Select a name" v-model="decreto" expanded>	                			
 								<option value selected>-- seleccione -- </option>
@@ -17,7 +17,7 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 								<option value="3">PRE-APROBADO</option>
 							</b-select>									
 						</div>
-						<div class="column is-2"><label class="label">Nivel de riesgo:</label></div>
+						<div class="column is-2"><label class="label titulos">Nivel de riesgo:</label></div>
 						<div class="column is-4">
 							<b-select placeholder="Select a name" v-model="id_nivel_riesgo" expanded>	                			
 								<option v-for="risk_level in risk_levels" :value="risk_level.id">{{ risk_level.nombre }} </option>
@@ -27,11 +27,11 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 				</div>
 				<div class="content">
 					<div class="columns">
-						<div class="column is-2"><label class="label">Score:</label></div>
+						<div class="column is-2"><label class="label titulos">Score:</label></div>
 						<div class="column is-4">
 							<input type="numeric" v-model="score" class="input" />
 						</div>
-						<div class="column is-2"><label class="label">Tipo evaluación del perfilador:</label></div>
+						<div class="column is-2"><label class="label titulos">Tipo evaluación del perfilador:</label></div>
 						<div class="column is-4">
 							<b-select placeholder="Select a name" v-model="tipo_evaluacion_perfilador" expanded>	                			
 								<option value selected>-- seleccione -- </option>
@@ -44,13 +44,13 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 				<div class="content">
 					<div class="columns">							
 						<div class="column is-2">
-							<label class="label">Pre-calif: </label>
+							<label class="label titulos">Pre-calif: </label>
 						</div>
 						<div class="column is-4">		
 							<input type="text" v-model="calificacion_deudor" class="input" />
 						</div>
 						<div class="column is-2">
-							<label class="label">Calificación interna: </label>
+							<label class="label titulos">Calificación interna: </label>
 						</div>
 						<div class="column is-4">		
 							<input type="text" v-model="calificacion_interna" class="input" />
