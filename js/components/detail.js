@@ -13,7 +13,7 @@ const DetailForm = Vue.component('detail', {
           <p style="font-size:12px; text-align:right;" class="column"> 
             ACUERDO PARA AUTORIZACIÓN DE LÍNEA DE CRÉDITO <br/>
             <span style="font-size:10px;"><b>Crédito negocio hasta 500 mil</b></span> <br/>
-            <span style="font-size:10px;"><b>Fecha de presentación: 2019-02-05</b></span> <br/>
+            <span style="font-size:10px;"><b>Fecha de presentación: {{solicitud.fecha_solicitud}}</b></span> <br/>
           </p>
         </div>
         <br/>
