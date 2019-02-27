@@ -109,7 +109,7 @@ var CreditoStep = Vue.component('credito-step',{
 						</div>
 						<div class="column" >
 							<div class="" v-if="simple_credits.length" v-for="credit in simple_credits" :key="credit.id_local">
-							<div class="card" ">								
+							<div class="card">								
 								<div class="card-content">                     
 		                			<div class="content">
 		                				<table class="column">
