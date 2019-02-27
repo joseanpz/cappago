@@ -43,7 +43,7 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 												</tr>
 												<tr>
 													<td><label class="label">Calificación buro: </label></td>
-													<td><input type="number" step="0.0001" v-model="calif_buro" class="input" /></td>
+													<td><input type="text"  v-model="calif_buro" class="input" /></td>
 												</tr>
 											</table>
 										</div>

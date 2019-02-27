@@ -95,6 +95,7 @@ var AsignacionStep = Vue.component('asignacion-step',{
 			garantia: null,
 			credits_count: 0,
 			selected_type: null,
+			riesgo_potencial: null,
 			simple_credits: this.initial_simple_credits,
 			revolving_credits: this.initial_revolving_credits,
 		}
@@ -121,6 +122,9 @@ var AsignacionStep = Vue.component('asignacion-step',{
 		destino_credito: function (val) {
 			this.$emit('credit-dest-change', val);
 		},*/
+		riesgo_potencial: function(val) {
+			this.$emit('potential-risk-change', val);
+		},
 		simple_credits: function(val) {
 			this.$emit('smpl-credits-authoz-change', val);
 		},

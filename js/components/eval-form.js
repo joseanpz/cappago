@@ -193,6 +193,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       <tab-content title="Asignación Crédito">
         <section class="container">
           <asignacion-step ref="asignacion"
+            @potential-risk-change="setPotentialRisk"
             :id_solicitud="solicitud.id"
             :initial_simple_credits="simple_credits"
             :initial_revolving_credits="revolving_credits"
@@ -285,6 +286,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         accionistas: null,
         cheques_fecha: null,
         credito_fecha: null,
+        riesgo_potencial: null,
       },        
   		account_statements: [],
   		simple_credits: [],
@@ -1067,13 +1069,14 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.estado_financiero.capital_contable = response.capital_contable;
       this.$refs.estado_financiero.ventas_anuales = response.ventas_anuales;      
       this.$refs.estado_financiero.pasivo_financiero_corto = response.pasivo_financiero_corto;
-      this.$refs.estado_financiero.calificacion_deudor = response.calificacion_deudor;
+      this.$refs.resultado_perfilador.calificacion_deudor = response.calificacion_deudor;
       this.$refs.resultado_perfilador.tipo_evaluacion_perfilador = response.tipo_evaluacion_perfilador;
       this.$refs.resultado_perfilador.decreto = response.decreto;
       this.$refs.resultado_perfilador.score = response.score;
       this.$refs.resultado_perfilador.id_nivel_riesgo = response.id_nivel_riesgo;      
       this.$refs.resultado_perfilador.calificacion_interna = response.calificacion_interna; 
-      this.$refs.resultado_perfilador.pre_calif = response.pre_calif; 
+      this.$refs.resultado_perfilador.pre_calif = response.pre_calif;
+      this.$refs.asignacion.riesgo_potencial = response.riesgo_potencial;
     },
 
     saveSolicitudeCredit: function () {
@@ -1374,7 +1377,10 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
     setInternalCalif: function(val) {
       this.solicitud.calificacion_interna = val;
-    },  
+    },
+    setPotentialRisk: function(val) {
+      this.solicitud.riesgo_potencial = val;
+    },
     setCalifPre: function(val) {
       this.solicitud.pre_calif = val;
     },

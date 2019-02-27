@@ -26,13 +26,13 @@ const DetailForm = Vue.component('detail', {
                 <tr>
                 <tr>
                   <td><label class="label">Solicitante:</label></td>
-                  <td colspan="3">Jacob Mendoza Contreras</td>
+                  <td colspan="3">{{solicitante}}</td>
                   <td><label class="label">Folio:</label></td>
                   <td>{{ solicitud.numero_solicitud }}</td>
                 </tr>
                 <tr>
                   <td><label class="label">Domicilio:</label></td>
-                  <td colspan="3">Amapola 421, Tres Caminos, Gpe. NL.</td>
+                  <td colspan="3">{{domicilio}}</td>
                   <td><label class="label">RFC:</label></td>
                   <td>{{ rfc }}</td>
                 </tr>
@@ -40,27 +40,27 @@ const DetailForm = Vue.component('detail', {
                   <td><label class="label">Actividad:</label></td>
                   <td>{{ actividad }}</td>
                   <td><label class="label">Promotor:</label></td>
-                  <td>Eduardo Alfonso solorio vega</td>
+                  <td>{{solicitud.promotor}}</td>
                   <td><label class="label">Cheques:</label></td>
-                  <td></td>
+                  <td>{{solicitud.cheques_fecha}}</td>
                 </tr>
                 <tr>
                   <td><label class="label">Cedente/prosp:</label></td>
-                  <td>70321</td>
+                  <td>{{solicitud.cedente_prosp}}</td>
                   <td><label class="label">Subdirector:</label></td>
-                  <td>Ismael anguiano carrillo</td>
+                  <td>{{solicitud.subdirector}}</td>
                   <td><label class="label">Credito:</label></td>
-                  <td></td>
+                  <td>{{solicitud.credito_fecha}}</td>
                 </tr>
                 <tr>                
                   <td><label class="label">Analista:</label></td>
-                  <td colspan="3">Rosalia martinez hernandez</td>
+                  <td colspan="3">{{solicitud.analista}}</td>
                   <td><label class="label">Inicio de operaciones:</label></td>
                   <td>2016-05-01</td>
                 </tr> 
                 <tr>
                   <td><label class="label">Accionistas:</label></td>
-                  <td colspan="5"></td>
+                  <td colspan="5">{{accionistas}}</td>
                 </tr>               
                 <tr>
                   <td colspan="6" class="div-titulos">Lineas de crédito</td>
@@ -107,7 +107,7 @@ const DetailForm = Vue.component('detail', {
                         </tr>                      
                       <tr>                        
                         <td colspan="6" rowspan="3">
-                          Riesgo potencial grupo 450
+                          Riesgo potencial grupo: {{solicitud.riesgo_potencial}}
                         </td>
                       </tr>                      
                     </table>
@@ -122,7 +122,7 @@ const DetailForm = Vue.component('detail', {
                 </tr>
                 <tr>
                   <td colspan="2">01-01</td>
-                  <td colspan="4">Ana Herrara Corea</td>                  
+                  <td colspan="4">{{aval}}</td>                  
                 </tr>
                 <tr>
                   <td colspan="6" class="div-titulos">Decreto del estudio de credito</td>
@@ -135,19 +135,19 @@ const DetailForm = Vue.component('detail', {
                 <tr>
                 <tr>
                   <td colspan="2">Fecha</td>
-                  <td colspan="4">2018-02-05</td>                  
+                  <td colspan="4">{{solicitud.fecha_consulta}}</td>                  
                 </tr>                
                 <tr>
                   <td colspan="2">Calif</td>
-                  <td colspan="4">0.0000%</td>                  
+                  <td colspan="4">{{solicitud.calificacion_interna}}</td>                  
                 </tr>
                 <tr>
                   <td colspan="2">Pre-calif</td>
-                  <td colspan="4">A1</td>                  
+                  <td colspan="4">{{solicitud.calificacion_deudor}}</td>                  
                 </tr>
                 <tr>
                   <td colspan="2">Calif. de buro</td>
-                  <td colspan="4">1A1</td>                  
+                  <td colspan="4">{{solicitud.calif_buro}}</td>                  
                 </tr>
                 <tr>
                   <td colspan="6" class="div-titulos">Firmas facultadas</td>
@@ -181,13 +181,13 @@ const DetailForm = Vue.component('detail', {
               <div class="column">
                 <label class="label" style="text-align:left;">
                   Solicitante
-                  <input type="text" class="input"/>
+                  <input type="text" v-model="solicitante" class="input"/>
                 </label>
               </div>
               <div class="column">
                 <label class="label" style="text-align:left;">
                   Domicilio
-                  <input type="text" class="input"/>
+                  <input type="text" v-model="domicilio" class="input"/>
                 </label>
               </div>
               <div class="column">
@@ -213,7 +213,7 @@ const DetailForm = Vue.component('detail', {
           <div class="card-content">  
             <div class="content columns">
               <div class="column">              
-                  <input type="text" class="input"/>              
+                  <input type="text" v-model="aval" class="input"/>              
               </div>
             </div>      
             <div class="columns">
@@ -233,9 +233,10 @@ const DetailForm = Vue.component('detail', {
         id_actividad: null,
         id_nivel_riesgo: null,
         numero_solicitud: null,
-        tipo_comprobante: null,
-        plazo_simple: null,
+        fecha_solicitud: null,
+        tipo_comprobante: "account_statements",
         linea_simple_sugerida: null,
+        plazo_simple: null,
         linea_revolvente_sugerida: null,
         garantia: null,
         tipo_evaluacion_perfilador: null,
@@ -244,6 +245,8 @@ const DetailForm = Vue.component('detail', {
         ventas_anuales: null,
         // flujo_disponible_mensual : null,  
         uafir: null,
+        deuda_cortoplazo: null,
+        pasivo_financiero_corto: null,
         capital_contable: null,
         destino_credito: null,
         antiguedad_actividad: null,
@@ -265,13 +268,30 @@ const DetailForm = Vue.component('detail', {
         sal_orig_cred_act_fact: null,
         sal_orig_cred_act_revol: null,
         sal_orig_cred_act_simp: null,
-        exp_creditos_largos: null
+        exp_creditos_largos: null,
+        fecha_consulta: null,
+        calif_buro: null,
+        calificacion_interna: null,
+        pre_calif: null,
+        cedente_prosp: null,
+        promotor: null,
+        subdirector: null,
+        analista: null,
+        accionistas: null,
+        cheques_fecha: null,
+        credito_fecha: null,
+        riesgo_potencial: null,
       },
       risk_levels: [], 
       activities: [],
       credits: [],
+      avales: [],
+      aval: null,
       credits_count: 0,
-      rfc: null 
+      rfc: null,
+      solicitante: null,
+      domicilio: null,
+      accionistas: null,
 		}
 	},
 
@@ -432,7 +452,8 @@ const DetailForm = Vue.component('detail', {
     },
     setSolicitud: function (response) {
       this.solicitud.id = response.id,
-      this.solicitud.numero_solicitud = response.numero_solicitud;
+      
+      /*this.solicitud.numero_solicitud = response.numero_solicitud;
       this.solicitud.destino_credito = response.destino_credito;
       this.solicitud.garantia = response.garantia;
       this.solicitud.id_actividad = response.id_actividad;
@@ -466,7 +487,56 @@ const DetailForm = Vue.component('detail', {
       this.solicitud.score = response.score;
       this.solicitud.id_nivel_riesgo = response.id_nivel_riesgo;
       this.solicitud.linea_revolvente_sugerida = response.linea_revolvente_sugerida;
-      this.solicitud.linea_simple_sugerida = response.linea_simple_sugerida;
+      this.solicitud.linea_simple_sugerida = response.linea_simple_sugerida;*/
+
+
+      this.solicitud.numero_solicitud = response.numero_solicitud;
+      this.solicitud.fecha_solicitud = response.fecha_solicitud;
+      this.solicitud.cedente_prosp = response.cedente_prosp;
+      this.solicitud.promotor = response.promotor;
+      this.solicitud.subdirector = response.subdirector;
+      this.solicitud.analista = response.analista;
+      this.solicitud.accionistas = response.accionistas;
+      this.solicitud.cheques_fecha = response.cheques_fecha;
+      this.solicitud.credito_fecha = response.credito_fecha;
+      this.solicitud.destino_credito = response.destino_credito;
+      this.solicitud.garantia = response.garantia;
+      this.solicitud.id_actividad = response.id_actividad;
+      this.solicitud.tipo_comprobante = response.tipo_comprobante;
+      this.solicitud.antiguedad_actividad = response.antiguedad_actividad;
+      this.solicitud.antiguedad_operacion = response.antiguedad_operacion;
+      this.solicitud.deuda_total = response.deuda_total;
+      this.solicitud.MONTHS_ON_FILE_BANKING = response.MONTHS_ON_FILE_BANKING;
+      this.solicitud.BK12_CLEAN = response.BK12_CLEAN;
+      this.solicitud.BK12_MAX_CREDIT_AMT = response.BK12_MAX_CREDIT_AMT;
+      this.solicitud.deuda_cortoplazo = response.deuda_cortoplazo;
+      this.solicitud.fecha_consulta = response.fecha_consulta;
+      this.solicitud.calif_buro = response.calif_buro;    
+      this.solicitud.num_cred_act_arren = response.num_cred_act_arren;
+      this.solicitud.num_cred_act_fact = response.num_cred_act_fact;
+      this.solicitud.num_cred_act_revol = response.num_cred_act_revol;
+      this.solicitud.num_cred_act_simp = response.num_cred_act_simp;
+      this.solicitud.sal_vig_cred_act_arren = response.sal_vig_cred_act_arren;
+      this.solicitud.sal_vig_cred_act_fact = response.sal_vig_cred_act_fact;
+      this.solicitud.sal_vig_cred_act_revol = response.sal_vig_cred_act_revol;
+      this.solicitud.sal_vig_cred_act_simp = response.sal_vig_cred_act_simp;
+      this.solicitud.sal_orig_cred_act_arren = response.sal_orig_cred_act_arren;
+      this.solicitud.sal_orig_cred_act_fact = response.sal_orig_cred_act_fact;
+      this.solicitud.sal_orig_cred_act_revol = response.sal_orig_cred_act_revol;
+      this.solicitud.sal_orig_cred_act_simp = response.sal_orig_cred_act_simp;
+      this.solicitud.exp_creditos_largos = (response.exp_creditos_largos === "true"); 
+      this.solicitud.uafir = response.uafir;
+      this.solicitud.capital_contable = response.capital_contable;
+      this.solicitud.ventas_anuales = response.ventas_anuales;      
+      this.solicitud.pasivo_financiero_corto = response.pasivo_financiero_corto;
+      this.solicitud.calificacion_deudor = response.calificacion_deudor;
+      this.solicitud.tipo_evaluacion_perfilador = response.tipo_evaluacion_perfilador;
+      this.solicitud.decreto = response.decreto;
+      this.solicitud.score = response.score;
+      this.solicitud.id_nivel_riesgo = response.id_nivel_riesgo;      
+      this.solicitud.calificacion_interna = response.calificacion_interna; 
+      this.solicitud.pre_calif = response.pre_calif;
+      this.solicitud.riesgo_potencial = response.riesgo_potencial;
     },   
 	},
   
