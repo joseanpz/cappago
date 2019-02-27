@@ -960,6 +960,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
   methods: {
   	onComplete: function(){
+      this.$refs.credito.saveCredits();
       this.saveSolicitude();
       this.$emit('move-to-success-route');
     },

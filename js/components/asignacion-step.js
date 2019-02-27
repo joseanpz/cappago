@@ -19,8 +19,7 @@ var AsignacionStep = Vue.component('asignacion-step',{
 									</div>
 									<div class="column is-4" > 
 										<input type="text" v-model="credit.monto" class="input"  disabled/>
-									</div>
-									
+									</div>									
 								</div>	
 								<div class="columns">
 									<div class="column is-2">
@@ -106,23 +105,21 @@ var AsignacionStep = Vue.component('asignacion-step',{
 	},
 
 	methods: {
-
-
 		
 	},
 
 	watch: {
-		garantia: function (val) {
+		/*garantia: function (val) {
 			this.$emit('guarantee-change', val);
 		},
 		destino_credito: function (val) {
 			this.$emit('credit-dest-change', val);
-		},
+		},*/
 		simple_credits: function(val) {
-			this.$emit('smpl-credits-change', val);
+			this.$emit('smpl-credits-authoz-change', val);
 		},
 		revolving_credits: function(val) {
-			this.$emit('rvlg-credits-change', val);
+			this.$emit('rvlg-credits-authoz-change', val);
 		}
 		
 	}
