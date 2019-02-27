@@ -106,73 +106,14 @@ const DetailForm = Vue.component('detail', {
                           <td>{{credit.periodo_gracia}}</td>
                         </tr>
                         
+                      
                       <tr>
-                        <td>01</td>
-                        <td>BR</td>
-                        <td>Simple</td>
-                        <!--
-                        <td>4,152.25</td>
-                        <td></td>
-                        <td></td>
-                        -->
-                        <td>450</td> 
-                        <td></td>
-                        <td>36 meses</td>
-                        <td>x</td>
-                        <td>NA</td>
-                        <td>CT</td>
-                        <td>x</td>
-                        <td>NA</td>
-                      </tr>
-                      <tr>
-                        <td>02</td>
-                        <td>BR</td>
-                        <td>Simple</td>                        
-                        <!--
-                        <td>2,152.25</td>
-                        <td></td>
-                        <td></td>
-                        -->
-                        <td>460</td> 
-                        <td></td>
-                        <td>36 meses</td>
-                        <td>x</td>
-                        <td>NA</td>
-                        <td>CT</td>
-                        <td>x</td>
-                        <td>NA</td>
-                      </tr>
-                      <tr>
-                        <!--
-                        <td colspan="3">Total M.N.</td>
-                        <td>0 M.N.</td>
-                        <td>0</td>
-                        <td>T.de.C.(0.00)</td>
-                        <td>0</td>
-                        <td></td>
-                        -->
+                        
                         <td colspan="6" rowspan="3">
                           Riesgo potencial grupo 450
                         </td>
                       </tr>
-                      <!--
-                      <tr>
-                        <td colspan="3">Total Dls.</td>
-                        <td>0 M.N.</td>
-                        <td>0</td>
-                        <td>T.de.C.(0.00)</td>
-                        <td>0</td>
-                        <td></td>                        
-                      </tr>
-                      <tr>
-                        <td colspan="3">Total Valorizados.</td>
-                        <td>0 M.N.</td>
-                        <td>0</td>
-                        <td>T.de.C.(0.00)</td>
-                        <td>0</td>
-                        <td></td>                        
-                      </tr>
-                      -->
+                      
 
                     </table>
                   </td>
