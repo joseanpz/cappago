@@ -44,7 +44,7 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 				<div class="content">
 					<div class="columns">							
 						<div class="column is-2">
-							<label class="label">Calificación deudor: </label>
+							<label class="label">Pre-calif: </label>
 						</div>
 						<div class="column is-4">		
 							<input type="text" v-model="calificacion_deudor" class="input" />
@@ -56,20 +56,7 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 							<input type="text" v-model="calificacion_interna" class="input" />
 						</div>						
 					</div>	
-				</div>
-				<div class="content">
-					<div class="columns">							
-						<div class="column is-2">
-							<label class="label">Pre-calif: </label>
-						</div>
-						<div class="column is-4">		
-							<input type="text" v-model="pre_calif" class="input" />
-						</div>
-						<div class="column">							
-						</div>
-						
-					</div>	
-				</div>
+				</div>				
 			</div>
 		</div>				
 	`,

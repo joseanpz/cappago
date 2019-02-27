@@ -296,7 +296,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       },
   		//solicited_credits: [],
   		
-  		// static, must be loaded from backend
+  		// static, must be loaded from backend 
   		bank_list: [
   			"Banregio",
   			"Scotiabank",

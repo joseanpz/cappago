@@ -26,15 +26,9 @@ var SolicitudStep = Vue.component('solicitud-step',{
 							<div class="column is-2">
 								<label class="label titulos">Cedente/prosp: </label>
 							</div>
-							<div class="column is-4" > 
+							<div class="column" > 
 								<input type="text" v-model="cedente_prosp" class="input" />
-							</div>						
-							<div class="column is-2">
-								<label class="label titulos">Accionistas: </label>
-							</div>
-							<div class="column is-4" style="text-align:left;">
-								<input type="text"  v-model="accionistas" class="input" />
-							</div>														
+							</div>																										
 						</div>
 						<div class="columns">
 							<div class="column is-2">

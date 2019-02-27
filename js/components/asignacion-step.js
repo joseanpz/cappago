@@ -6,6 +6,12 @@ var AsignacionStep = Vue.component('asignacion-step',{
 				<p class="card-header-title">Asignación de créditos</p>
 			</header>
 			<div class="card-content">				
+				<div class="columns">
+					<div class="column is-2"><label class="label titulos">Riesgo potencial: </label></div>
+					<div class="column is-4">
+						<input type="text" v-model="riesgo_potencial" class="input">
+					</div>
+				</div>
 				<div class="content columns">					
 					<div style="margin:10px;" class="column card " v-if="revolving_credits.length" v-for="credit in revolving_credits" :key="credit.id_local">
 						<header class="header-sec-card" >

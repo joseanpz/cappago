@@ -52,20 +52,22 @@ const DetailForm = Vue.component('detail', {
                   <td><label class="label">Credito:</label></td>
                   <td></td>
                 </tr>
-                <tr>
-                  <td><label class="label">Accionistas:</label></td>
-                  <td>PM</td>
+                <tr>                
                   <td><label class="label">Analista:</label></td>
-                  <td>Rosalia martinez hernandez</td>
+                  <td colspan="3">Rosalia martinez hernandez</td>
                   <td><label class="label">Inicio de operaciones:</label></td>
                   <td>2016-05-01</td>
-                </tr>                
+                </tr> 
+                <tr>
+                  <td><label class="label">Accionistas:</label></td>
+                  <td colspan="5"></td>
+                </tr>               
                 <tr>
                   <td colspan="6" class="div-titulos">Lineas de crédito</td>
                 </tr>
                 <tr>
                   <td colspan="6">
-                    <table style="font-size:13px;">
+                    <table style="font-size:13px; width:100%" >
                       <tr>
                         <td><label class="label">Ref</label></td>
                         <td><label class="label">Emp</label></td>
@@ -197,7 +199,9 @@ const DetailForm = Vue.component('detail', {
                   <td colspan="6" class="div-titulos">Firmas facultadas</td>
                 <tr>
                 <tr>
-                  <td colspan="6" class="div-titulos"><br/><br/></td>
+                  <td colspan="6" class="div-titulos" style="height:200px;" >
+                    <label class="label" style="float:right;">Fecha de autorización</label>
+                  </td>
                 <tr>
               </tbody>
             </table>            
@@ -238,6 +242,12 @@ const DetailForm = Vue.component('detail', {
                   <input type="text" v-model="rfc" class="input" />
                 </label>
               </div> 
+            </div>
+            <div class="columns">
+              <div class="column is-2"><label class="label">Accionistas</label></div>
+              <div class="column">
+                <input type="text" class="input" v-model="accionistas">
+              </div>
             </div>              
           </div>                  
         </div>
