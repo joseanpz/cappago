@@ -6,8 +6,8 @@ var AsignacionStep = Vue.component('asignacion-step',{
 				<p class="card-header-title">Asignación de créditos</p>
 			</header>
 			<div class="card-content">				
-				<div class="content">					
-					<div class="columns card " v-if="revolving_credits.length" v-for="credit in revolving_credits" :key="credit.id_local">
+				<div class="content columns">					
+					<div style="margin:10px;" class="column card " v-if="revolving_credits.length" v-for="credit in revolving_credits" :key="credit.id_local">
 						<header class="header-sec-card" >
                 			<p class="card-header-title title-color">Crédito Revolvente</p>
               			</header>
@@ -20,12 +20,7 @@ var AsignacionStep = Vue.component('asignacion-step',{
 									<div class="column is-4" > 
 										<input type="text" v-model="credit.monto" class="input"  disabled/>
 									</div>
-									<div class="column is-2">
-										<label class="label titulos">Plazo: </label>
-									</div>
-									<div class="column is-4" style="text-align:left;">
-										<input type="text"  v-model="credit.plazo" class="input" disabled />
-									</div>
+									
 								</div>	
 								<div class="columns">
 									<div class="column is-2">
@@ -46,7 +41,7 @@ var AsignacionStep = Vue.component('asignacion-step',{
 						</div>	 		 			
 					</div> 
 
-					<div class="columns card " v-if="simple_credits.length" v-for="credit in simple_credits" :key="credit.id_local">
+					<div style="margin:10px;" class="column card " v-if="simple_credits.length" v-for="credit in simple_credits" :key="credit.id_local">
 						<header class="header-sec-card" >
                 			<p class="card-header-title title-color">Crédito Simple</p>
               			</header>
