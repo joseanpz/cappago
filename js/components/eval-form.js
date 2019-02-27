@@ -197,7 +197,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
       <tab-content title="Asignación Crédito">
         <section class="container">
-          <asignacion-step
+          <asignacion-step ref="asignacion"
             :id_solicitud="solicitud.id"
             :initial_simple_credits="simple_credits"
             :initial_revolving_credits="revolving_credits"
@@ -1388,9 +1388,11 @@ const EvalFormWizard = Vue.component('eval-form', {
     	this.account_statements = val;
     },
     setSimpleCredits: function(val) {
+      this.$refs.asignacion.simple_credits = val;
     	this.simple_credits = val;
     },
     setRevolvingCredits: function(val) {
+      this.$refs.asignacion.revolving_credits = val;
     	this.revolving_credits = val;
     },
     setShortTermDebt: function(val) {
@@ -1412,16 +1414,20 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     linea_simple: function(val) {
       if (val === null) {
+        this.$refs.credito.setSimpleLine("");
         this.solicitud.linea_simple_sugerida = "";
       } else {
+        this.$refs.credito.setSimpleLine(val);
         this.solicitud.linea_simple_sugerida = val;  
       }
     },
 
     linea_revolvente: function(val) {
       if (val === null) {
+        this.$refs.credito.setRevolvingLine("");
         this.solicitud.linea_revolvente_sugerida = "";
       } else {
+        this.$refs.credito.setRevolvingLine(val);
         this.solicitud.linea_revolvente_sugerida = val;  
       }      
     },
