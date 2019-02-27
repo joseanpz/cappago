@@ -58,7 +58,7 @@ var CreditoStep = Vue.component('credito-step',{
                 			<div class="content">
                 				<div class="columns">
 									<div class="column is-2">
-										<label class="label titulos">Monto: </label>
+										<label class="label titulos">Monto Solicitado: </label>
 									</div>
 									<div class="column is-4" > 
 										<input type="text" v-model="credit.monto" class="input" id="numero_solicitud"/>
@@ -128,7 +128,7 @@ var CreditoStep = Vue.component('credito-step',{
 
                 				<div class="columns">
 									<div class="column is-2">
-										<label class="label titulos">Monto: </label>
+										<label class="label titulos">Monto Solicitado: </label>
 									</div>
 									<div class="column is-4" > 
 										<input type="text" v-model="credit.monto" class="input" id="numero_solicitud"/>
@@ -187,8 +187,7 @@ var CreditoStep = Vue.component('credito-step',{
                 				</div>
 	                		</div>								
 						</div>	 		 			
-					</div> 						
-					
+					</div> 				
 				</div>
 			</div>
 		</div>		
@@ -236,6 +235,8 @@ var CreditoStep = Vue.component('credito-step',{
 	    			clasif_b6: null,
 	    			garantia_fondos: null,
 	    			empresa: null,
+	    			sugerido: null,
+	    			autorizado: null,
 	    			saved: false
 	    		});	 
 			} else if (this.selected_type === "2") {
@@ -252,6 +253,8 @@ var CreditoStep = Vue.component('credito-step',{
 	    			clasif_b6: null,
 	    			garantia_fondos: null,
 	    			empresa: null,
+	    			sugerido: null,
+	    			autorizado: null,
 	    			saved: false
 	    		});	  
 			}
@@ -410,6 +413,24 @@ var CreditoStep = Vue.component('credito-step',{
 				})
 				.deleteId('credito_solicitado', credit.id);
 			}			
+	    },
+
+	    setRevolvingLine: function (val) {
+	    	if (this.revolving_credits.length > 0) {
+	    		this.revolving_credits[0].sugerido = val;
+	    	}
+	    },
+
+	    setSimpleLine: function (val) {
+	    	console.log('SETSIMPLELINE');
+
+	    	if (this.simple_credits.length > 0) {
+	    		console.log('SETSIMPLELINE    IF');
+	    		console.log(this.simple_credits);
+	    		console.log(val);
+	    		this.simple_credits[0].sugerido = val;
+	    		console.log(this.simple_credits);
+	    	}
 	    },
 	},
 
