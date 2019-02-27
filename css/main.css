@@ -100,6 +100,10 @@ select:focus select:before {
 	text-align: center;
 	padding-bottom: 0px;
 }
+.card{
+	margin-top:15px; 
+	margin-bottom:20px;
+}
 
 .card-header{
 	border-bottom:3px solid #3a5fab;
