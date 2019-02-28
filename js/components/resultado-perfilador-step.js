@@ -127,7 +127,6 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 		},
 		score: function (val) {
 			this.id_nivel_riesgo = this.scoreToRiskLevelId(val);
-			//this.$emit('risk-level-change', this.id_nivel_riesgo);
 			this.$emit('score-change', val);
 		},
 		tipo_evaluacion_perfilador: function (val) {

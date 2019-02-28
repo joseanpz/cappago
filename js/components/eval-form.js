@@ -141,9 +141,10 @@ const EvalFormWizard = Vue.component('eval-form', {
           @sal-orig-fact-change="setSalOrigFact"
           @sal-orig-revol-change="setSalOrigRevol"
           @sal-orig-simp-change="setSalOrigSimp"
-          @large-credit-experience="setLargeExpCredit"
-          @buro-calif="setBuroCalif"
-          @deuda-date="setDeudaDate"
+          @large-credit-experience-change="setLargeExpCredit"
+          @buro-calif-change="setBuroCalif"
+          @deuda-date-change="setDeudaDate"
+          @higher-line-change="setHigherLine"
 
           ref="buro_credito"
           :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
@@ -213,7 +214,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         </section>
       </tab-content>         
 
-      <!--<pre>{{ data | pretty }}</pre>-->
+      <pre>{{ data | pretty }}</pre>
 
       <template slot="footer" slot-scope="props">
         <div class="wizard-footer-left">
@@ -287,6 +288,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         cheques_fecha: null,
         credito_fecha: null,
         riesgo_potencial: null,
+        linea_mas_alta: null,
       },        
   		account_statements: [],
   		simple_credits: [],
@@ -389,6 +391,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         monto_factoraje_buro: this.monto_factoraje_buro,
         monto_arrendamiento_buro: this.monto_arrendamiento_buro,
         BK12_MAX_CREDIT_AMT: this.solicitud.BK12_MAX_CREDIT_AMT,
+        linea_mas_alta: this.solicitud.linea_mas_alta,
         monto_maximo: this.monto_maximo,
         //deposits_movil_means: this.deposits_movil_means,
         //balances_movil_means: this.balances_movil_means,
@@ -1051,7 +1054,8 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.buro_credito.BK12_MAX_CREDIT_AMT = response.BK12_MAX_CREDIT_AMT;
       this.$refs.buro_credito.deuda_cortoplazo = response.deuda_cortoplazo;
       this.$refs.buro_credito.fecha_consulta = response.fecha_consulta;
-      this.$refs.buro_credito.calif_buro = response.calif_buro;    
+      this.$refs.buro_credito.calif_buro = response.calif_buro; 
+      this.$refs.buro_credito.linea_mas_alta = response.linea_mas_alta;   
       this.$refs.buro_credito.num_cred_act_arren = response.num_cred_act_arren;
       this.$refs.buro_credito.num_cred_act_fact = response.num_cred_act_fact;
       this.$refs.buro_credito.num_cred_act_revol = response.num_cred_act_revol;
@@ -1402,6 +1406,9 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
     setFinantialPassive: function(val) {
       this.solicitud.pasivo_financiero_corto = val;      
+    },
+    setHigherLine: function(val) {
+      this.solicitud.linea_mas_alta = val;      
     },
   },
 

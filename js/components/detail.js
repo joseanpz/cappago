@@ -134,7 +134,7 @@ const DetailForm = Vue.component('detail', {
                   <td colspan="6" class="div-titulos">Calificación de cartera</td>
                 <tr>
                 <tr>
-                  <td colspan="2">Fecha</td>
+                  <td colspan="2">Fecha de consulta de buró</td>
                   <td colspan="4">{{solicitud.fecha_consulta}}</td>                  
                 </tr>                
                 <tr>
@@ -511,7 +511,8 @@ const DetailForm = Vue.component('detail', {
       this.solicitud.BK12_MAX_CREDIT_AMT = response.BK12_MAX_CREDIT_AMT;
       this.solicitud.deuda_cortoplazo = response.deuda_cortoplazo;
       this.solicitud.fecha_consulta = response.fecha_consulta;
-      this.solicitud.calif_buro = response.calif_buro;    
+      this.solicitud.calif_buro = response.calif_buro;  
+      this.solicitud.linea_mas_alta = response.linea_mas_alta;  
       this.solicitud.num_cred_act_arren = response.num_cred_act_arren;
       this.solicitud.num_cred_act_fact = response.num_cred_act_fact;
       this.solicitud.num_cred_act_revol = response.num_cred_act_revol;

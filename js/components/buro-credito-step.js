@@ -38,12 +38,16 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 													<td><input type="number" step="0.001" v-model="deuda_cortoplazo" class="input" /></td>
 												</tr>
 												<tr>
-													<td><label class="label">Fecha consulta: </label></td>
+													<td><label class="label">Fecha consulta de buró: </label></td>
 													<td><input type="date" v-model="fecha_consulta" class="input" /></td>
 												</tr>
 												<tr>
 													<td><label class="label">Calificación buro: </label></td>
 													<td><input type="text"  v-model="calif_buro" class="input" /></td>
+												</tr>
+												<tr>
+													<td><label class="label">Línea más alta: </label></td>
+													<td><input type="number" step="1"  v-model="linea_mas_alta" class="input" /></td>
 												</tr>
 											</table>
 										</div>
@@ -152,8 +156,9 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 			sal_orig_cred_act_revol: null,
 			sal_orig_cred_act_simp: null,
 			exp_creditos_largos: null,
-			calif_buro:null,
-			fecha_consulta:null
+			calif_buro: null,
+			fecha_consulta: null,
+			linea_mas_alta: null
 		}
 	},
 
@@ -214,14 +219,17 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 			this.$emit('sal-orig-simp-change', val);
 		},
 		exp_creditos_largos: function (val) {
-			this.$emit('large-credit-experience', val);
+			this.$emit('large-credit-experience-change', val);
 		},
 		calif_buro: function (val) {
-			this.$emit('buro-calif', val);
+			this.$emit('buro-calif-change', val);
 		},
 		fecha_consulta: function (val) {
-			this.$emit('deuda-date', val);
-		},	
+			this.$emit('deuda-date-change', val);
+		},
+		linea_mas_alta: function (val) {
+			this.$emit('higher-line-change', val);
+		},
 		
 	}
 });
