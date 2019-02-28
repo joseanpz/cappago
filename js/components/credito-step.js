@@ -74,11 +74,9 @@ var CreditoStep = Vue.component('credito-step',{
 		                							<div class="select is-fullwidth">
 														<select v-model="credit.garantia_fondos"  id="garantia" class="select">
 															<option value selected>-- Seleccione--</option>
-															<option value="1">Hipotecaria</option>
-															<option value="2">Líquida</option>								
-															<option value="3">Prendaria</option>
-															<option value="4">Otras</option>
-															<option value="5">No tiene</option>
+															<option value="1">Si</option>
+															<option value="2">No</option>								
+															<option value="3">No aplica</option>
 														</select>
 													</div>
 		                						</td>
@@ -157,12 +155,10 @@ var CreditoStep = Vue.component('credito-step',{
 			                					<td>
 			                						<div class="select is-fullwidth">
 														<select v-model="credit.garantia_fondos"  id="garantia" class="select">
-															<option value selected>-- Seleccione--</option>
-															<option value="1">Hipotecaria</option>
-															<option value="2">Líquida</option>								
-															<option value="3">Prendaria</option>
-															<option value="4">Otras</option>
-															<option value="5">No tiene</option>
+															<option value selected>-- Seleccione--</option>															
+															<option value="1">Si</option>
+															<option value="2">No</option>								
+															<option value="3">No aplica</option>
 														</select>
 													</div>
 			                					</td>

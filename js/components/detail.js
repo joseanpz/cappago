@@ -99,7 +99,7 @@ const DetailForm = Vue.component('detail', {
                           <td style="text-align:right;">{{credit.monto | monto_redondeado}}</td> 
                           <td style="text-align:right;">{{credit.autorizado | monto_redondeado}}</td>
                           <td>{{credit.plazo | plazo_credito}}</td>
-                          <td>{{credit.garantia_fondos | credito_garantia}}</td>
+                          <td>{{credit.garantia_fondos | etiqueta_aplica}}</td>
                           <td>{{credit.clasif_b6 | credito_clasif_b6}}</td>
                           <td>{{credit.destino}}</td>
                           <td>{{credit.hsc | etiqueta_aplica}}</td>
@@ -615,18 +615,7 @@ const DetailForm = Vue.component('detail', {
       }else{
         return null;
       }
-    }, 
-    credito_garantia:function(value){
-      if(!!value){
-          if(value==="1"){return "Hipotecaria";}
-          if(value==="2"){return "Líquida";}
-          if(value==="3"){return "Prendaria";}
-          if(value==="4"){return "Otras";}
-          if(value==="5"){return "No tiene";}
-      }else{
-        return null;
-      }
-    },
+    },     
     credito_clasif_b6:function(value){
       if(!!value){
           if(value==="1"){return "N/A";}
