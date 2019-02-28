@@ -155,8 +155,7 @@ var CreditoStep = Vue.component('credito-step',{
 			                					<td>
 			                						<div class="select is-fullwidth">
 														<select v-model="credit.garantia_fondos"  id="garantia" class="select">
-															<option value selected>-- Seleccione--</option>
-															<option value selected>-- Seleccione--</option>
+															<option value selected>-- Seleccione--</option>															
 															<option value="1">Si</option>
 															<option value="2">No</option>								
 															<option value="3">No aplica</option>
