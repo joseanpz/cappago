@@ -19,7 +19,7 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 						</div>
 						<div class="column is-2"><label class="label titulos">Nivel de riesgo:</label></div>
 						<div class="column is-4">
-							<b-select placeholder="Select a name" v-model="id_nivel_riesgo" expanded>	                			
+							<b-select placeholder="Capture score" v-model="id_nivel_riesgo" expanded disabled>	                			
 								<option v-for="risk_level in risk_levels" :value="risk_level.id">{{ risk_level.nombre }} </option>
 							</b-select>
 						</div>
@@ -94,6 +94,31 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
             })
             .readCatalog('nivel_riesgo')
         },
+
+        scoreToRiskLevelId: function (score) {
+        	var int_score = parseInt(score);
+        	if (int_score >= 0 && int_score < 543){
+        		return '9';
+        	} else if (int_score >= 543 && int_score < 593) {
+        		return '8';
+        	} else if (int_score >= 593 && int_score < 643) {
+        		return '7';
+        	} else if (int_score >= 643 && int_score < 693) {
+        		return '6';
+        	} else if (int_score >= 693 && int_score < 743) {
+        		return '5';
+        	} else if (int_score >= 743 && int_score < 793) {
+        		return '4';
+        	} else if (int_score >= 793 && int_score < 843) {
+        		return '3';
+        	} else if (int_score >= 843 && int_score < 893) {
+        		return '2';
+        	} else if (int_score >= 893) {
+        		return '1';
+        	} else {
+        		return null;
+        	}
+        },
 	},
 
 	watch: {
@@ -101,6 +126,8 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 			this.$emit('decree-change', val);
 		},
 		score: function (val) {
+			this.id_nivel_riesgo = this.scoreToRiskLevelId(val);
+			//this.$emit('risk-level-change', this.id_nivel_riesgo);
 			this.$emit('score-change', val);
 		},
 		tipo_evaluacion_perfilador: function (val) {
