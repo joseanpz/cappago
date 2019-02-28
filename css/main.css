@@ -103,6 +103,8 @@ select:focus select:before {
 .card{
 	margin-top:15px; 
 	margin-bottom:20px;
+	margin-left: 5px;
+	margin-right: 5px;
 }
 
 .card-header{
