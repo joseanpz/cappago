@@ -37,18 +37,6 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 													<td><label class="label">Deuda a Corto Plazo Total (instituciones Bancarias y No Bancarias: <b>BK_DEUDA_CP+NBK_DEUDA_CP</b>): </label></td>
 													<td><input type="number" step="0.001" v-model="deuda_cortoplazo" class="input" /></td>
 												</tr>
-												<tr>
-													<td><label class="label">Fecha consulta de buró: </label></td>
-													<td><input type="date" v-model="fecha_consulta" class="input" /></td>
-												</tr>
-												<tr>
-													<td><label class="label">Calificación buro: </label></td>
-													<td><input type="text"  v-model="calif_buro" class="input" /></td>
-												</tr>
-												<tr>
-													<td><label class="label">Línea más alta: </label></td>
-													<td><input type="number" step="1"  v-model="linea_mas_alta" class="input" /></td>
-												</tr>
 											</table>
 										</div>
 									</div>
@@ -103,34 +91,58 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 							</div>
 						</div>					
 					</div>
-
-						<div class="columns">
-							<div class="column is-6">
-								<div class="card">
-									<header class="header-sec-card">
-										<p class="card-header-title title-color"> Experiencia crediticia</p>
-									</header>
-									<div class="card-content">	
-										<div class="content">								
-											<table class="table">												
-												<tbody>
-													<tr>
-														<td>
-															<div class="field">
-															  <input class="is-checkradio" v-model="exp_creditos_largos" id="exp_creditos_largos" type="checkbox" name="exp_creditos_largos">
-															  <label for="exp_creditos_largos"><b>Tiene experiencia con créditos simples > 48 meses?</b></label>
-															</div>
-														</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
+					<div class="columns">
+						<div class="column is-6">
+							<div class="card">
+								<header class="header-sec-card">
+									<p class="card-header-title title-color"> Experiencia crediticia</p>
+								</header>
+								<div class="card-content">	
+									<div class="content">								
+										<table class="table">												
+											<tbody>
+												<tr>
+													<td>
+														<div class="field">
+														  <input class="is-checkradio" v-model="exp_creditos_largos" id="exp_creditos_largos" type="checkbox" name="exp_creditos_largos">
+														  <label for="exp_creditos_largos"><b>Tiene experiencia con créditos simples > 48 meses?</b></label>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
 									</div>
 								</div>
 							</div>
 						</div>
-
-
+						<div class="column is-6">
+							<div class="card">
+								<header class="header-sec-card">
+									<p class="card-header-title title-color">Generales</p>
+								</header>
+								<div class="card-content">	
+									<div class="content">								
+										<table class="table">												
+											<tbody>
+												<tr>
+													<td><label class="label">Fecha consulta de buró: </label></td>
+													<td><input type="date" v-model="fecha_consulta" class="input" /></td>
+												</tr>
+												<tr>
+													<td><label class="label">Calificación buro: </label></td>
+													<td><input type="text"  v-model="calif_buro" class="input" /></td>
+												</tr>
+												<tr>
+													<td><label class="label">Línea más alta: </label></td>
+													<td><input type="number" step="1"  v-model="linea_mas_alta" class="input" /></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<results v-bind="$props"></results>			
