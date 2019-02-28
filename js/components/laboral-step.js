@@ -1,7 +1,7 @@
 var LaboralStep = Vue.component('laboral-step',{
-	props: ['id_solicitud', 'linea', 'capacidad_pago', 'monto_solicitado', 'monto_maximo', 'ingreso_vs_deuda', 'razon_flujo_tasa', 'razon_flujo_rec_capital'],
+	props: ['id_solicitud', 'fecha_solicitud', 'linea', 'capacidad_pago', 'monto_solicitado', 'monto_maximo', 'ingreso_vs_deuda', 'razon_flujo_tasa', 'razon_flujo_rec_capital'],
 	template: `
-		<section class="container">
+		
 			<div class="card">
 				<header class="card-header">
 					<p class="card-header-title">Características PyME</p>
@@ -68,22 +68,8 @@ var LaboralStep = Vue.component('laboral-step',{
 					</div>
 				</div>
 			</div>
-			<div class="card" v-if="tipo_comprobante=='account_statements'">	
-				<header class="card-header">
-					<p class="card-header-title">Saldos y depositos</p>
-				</header>
-				<div class="card-content">		
-					<div class="content">
-						<saldos-depositos-step
-						:id_solicitud="id_solicitud"
-						@acc-statements-change="emmitAccountStatements"
-						ref="saldo_deposito"> 
-						</saldos-depositos-step>
-					</div>
-				</div>
-			</div>
-			<results v-bind="$props"></results>
-		</section>
+			
+		
 	`,
 
 	components: {

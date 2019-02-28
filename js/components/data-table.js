@@ -11,7 +11,7 @@ const DataTable = Vue.component('data-table', {
                     <option value="desc">Default sort direction: DESC</option>
                 </b-select>
                 -->
-                <b-input type="text" v-model="query" placeholder="Buscar Solicitud"> </b-input>
+                <b-input type="text" v-model="query" placeholder="Buscar folio"> </b-input>
                 <b-select v-model="perPage" :disabled="!isPaginated">
                     <option value="5">5 por página</option>
                     <option value="10">10 por página</option>
@@ -37,7 +37,7 @@ const DataTable = Vue.component('data-table', {
                 >
 
                 <template slot-scope="props">
-                    <b-table-column field="numero_solicitud" label="Solicitud" width="40">
+                    <b-table-column field="numero_solicitud" label="Folio" width="40">
                         {{ props.row.numero_solicitud }}
                     </b-table-column>
                     <b-table-column field="tipo_evaluacion_perfilador" label="Tipo evaluación">
@@ -52,10 +52,10 @@ const DataTable = Vue.component('data-table', {
                     <b-table-column field="tipo_comprobante" label="Comprobantes">
                         {{ props.row.tipo_comprobante | comprobante }}
                     </b-table-column> 
-                    <b-table-column field="linea_simple" label="Línea simple">
+                    <b-table-column field="linea_simple" label="Línea simple sugerida">
                         {{ props.row.linea_simple_sugerida | redondeo_cantidad }}
                     </b-table-column>
-                    <b-table-column field="linea_revolvente" label="Línea revolvente">
+                    <b-table-column field="linea_revolvente" label="Línea revolvente sugerida">
                         {{ props.row.linea_revolvente_sugerida | redondeo_cantidad }}
                     </b-table-column>                    
   
@@ -178,7 +178,19 @@ const DataTable = Vue.component('data-table', {
         },
         redondeo_cantidad: function(value){
             //var c = Math.pow(10 , 2);
-            return Math.round(value * 100) / 100;
+            if(isNaN(value) || value ===0) return parseFloat(0).toFixed(2);
+            
+                value = Math.round(value * 100) / 100;
+                value += '';
+                   var splitStr = value.split(',');
+                   var splitLeft = splitStr[0];
+                   var splitRight = splitStr.length > 1 ? ',' + splitStr[1] : '';
+                   var regx = /(\d+)(\d{3})/;
+                   while (regx.test(splitLeft)) {
+                      splitLeft = splitLeft.replace(regx, '$1' + ',' + '$2');
+                   }
+            return '$ ' + splitLeft + splitRight;
+           
         },
 
     },

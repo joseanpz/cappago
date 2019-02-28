@@ -12,6 +12,7 @@ var js_paths = [
 	'js/components/buro-credito-step.js',
 	'js/components/estado-general-step.js',
 	'js/components/resultado-perfilador-step.js',
+	'js/components/asignacion-step.js',
 	'js/components/eval-form.js',
 	'js/components/detail.js',
 	'js/controllers.js',

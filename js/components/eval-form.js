@@ -5,7 +5,7 @@ Vue.use(VueFormGenerator);
 const EvalFormWizard = Vue.component('eval-form', {
   props: ['id_solicitud'],
 	template: `
-    <form-wizard @on-complete="onComplete"
+    <form-wizard @on-complete="onComplete" ref="form_wizard"
       subtitle="subtitulo" nextButtonText="Siguiente"
       backButtonText="Atras" finishButtonText="Guardar" stepSize="sm"
       color="#3a5fab"  errorColor="#8b0000" shape="circle" transition=""
@@ -13,7 +13,16 @@ const EvalFormWizard = Vue.component('eval-form', {
       <h1 slot="title">Proceso de cálculo de capacidad de pago</h1>
       <tab-content :before-change="saveSolicitude" title="Datos de la solicitud">
         <solicitud-step 
-        @sol-number-change="setSolNumber" 
+        @sol-number-change="setSolNumber"
+        @sol-date-change="setSolDate"
+        @ced-prosp-change="setCedProspect"
+        @promoter-change="setPromoter"
+        @subdiretor-change="setSubdirector"
+        @analyst-change="setAnalyst"
+        @shareholder-change="setShareholder"
+        @checks-date-change="setChecksdate"
+        @credit-date-change="setCreditDate"
+
         ref="solicitud" 
         :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
         :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
@@ -27,122 +36,182 @@ const EvalFormWizard = Vue.component('eval-form', {
       </tab-content>
 
       <tab-content :before-change="saveSolicitudeCredit" title="Datos del crédito">
-        <credito-step
-        @credit-dest-change="setCreditDest"
-        @guarantee-change="setGuarantee"
-        @smpl-credits-change="setSimpleCredits" 
-        @rvlg-credits-change="setRevolvingCredits"
+        
+        <section class="container">
+          <credito-step
+            @credit-dest-change="setCreditDest"
+            @guarantee-change="setGuarantee"
+            @smpl-credits-change="setSimpleCredits" 
+            @rvlg-credits-change="setRevolvingCredits"
 
-        :id_solicitud="solicitud.id"
-        ref="credito"
-        :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
-        :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
-        :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
-        :razon_flujo_tasa="razon_FDA_tasa_rev"
-        :razon_flujo_rec_capital="razon_FDA_FRC_smp"
-        :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
-        > 
-        </credito-step>
+            :id_solicitud="solicitud.id"
+            ref="credito"
+          > 
+          </credito-step>
+          <results 
+            :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+            :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+            :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+            :razon_flujo_tasa="razon_FDA_tasa_rev"
+            :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+            :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+            :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
+          >
+          </results>
+        </section>
+
+
+
       </tab-content>
 
       <tab-content :before-change="saveSolicitudeBalDep" title="Características PyME">
-        <laboral-step
-        @act-seniority-change="setActSeniority"
-        @oper-seniority-change="setOperSeniority"
-        @activity-change="setActivity"
-        @eval-type-change="setEvalType"          
-        @acc-statements-change="setAccountStatements"
+        <section class="container">
+          <laboral-step
+            @act-seniority-change="setActSeniority"
+            @oper-seniority-change="setOperSeniority"
+            @activity-change="setActivity"
+            @eval-type-change="setEvalType"          
+            
 
-        :tipo_comprobante="solicitud.tipo_comprobante"
-        :id_solicitud="solicitud.id"
-        ref="laboral"
-        :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
-        :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
-        :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
-        :razon_flujo_tasa="razon_FDA_tasa_rev"
-        :razon_flujo_rec_capital="razon_FDA_FRC_smp"
-        :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"        
-        > 
-        </laboral-step>
+            :tipo_comprobante="solicitud.tipo_comprobante"
+            :id_solicitud="solicitud.id"
+            :fecha_solicitud="solicitud.fecha_solicitud"
+            ref="laboral"
+            :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+            :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+            :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+            :razon_flujo_tasa="razon_FDA_tasa_rev"
+            :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+            :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+            :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"        
+          > 
+          </laboral-step>
+
+          
+          <saldos-depositos-step  v-if="tipo_comprobante=='account_statements'"
+            :id_solicitud="id_solicitud"
+            :fecha_solicitud="solicitud.fecha_solicitud"
+            @acc-statements-change="setAccountStatements"
+            ref="saldo_deposito"
+          > 
+          
+          </saldos-depositos-step>
+              
+
+          <estado-financiero-card
+            @uafir-change="setUafir"
+            @acc-capital-change="setAccCapital"            
+            @annual-sales-change="setAnnualSales"        
+            @finantial-passive-change="setFinantialPassive"
+
+            ref="estado_financiero"
+            :tipo_comprobante="solicitud.tipo_comprobante"                    
+          >
+          </estado-financiero-card>       
+
+          <results 
+            :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+            :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+            :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+            :razon_flujo_tasa="razon_FDA_tasa_rev"
+            :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+            :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+            :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
+          >
+          </results>
+        </section>
       </tab-content>
 
       <tab-content :before-change="saveSolicitude" title="Buró">
         <buro-credito-step
-        @total-debt-change="setTotalDebt"
-        @monfile-banking-change="setMonfileBanking"
-        @bk12-clean-change="setBk12Clean"
-        @bk12maxcred-amt-change="setBk12maxcredAmt"
-        @short-term-debt-change="setShortTermDebt"
-        @num-arren-change="setNumArren"
-        @num-fact-change="setNumFact"
-        @num-revol-change="setNumRevol"
-        @num-simp-change="setNumSimp"
-        @sal-vig-arren-change="setSalVigArren"
-        @sal-vig-fact-change="setSalVigFact"
-        @sal-vig-revol-change="setSalVigRevol"
-        @sal-vig-simp-change="setSalVigSimp"
-        @sal-orig-arren-change="setSalOrigArren"
-        @sal-orig-fact-change="setSalOrigFact"
-        @sal-orig-revol-change="setSalOrigRevol"
-        @sal-orig-simp-change="setSalOrigSimp"
-        @large-credit-experience="setLargeExpCredit"
+          @total-debt-change="setTotalDebt"
+          @monfile-banking-change="setMonfileBanking"
+          @bk12-clean-change="setBk12Clean"
+          @bk12maxcred-amt-change="setBk12maxcredAmt"
+          @short-term-debt-change="setShortTermDebt"
+          @num-arren-change="setNumArren"
+          @num-fact-change="setNumFact"
+          @num-revol-change="setNumRevol"
+          @num-simp-change="setNumSimp"
+          @sal-vig-arren-change="setSalVigArren"
+          @sal-vig-fact-change="setSalVigFact"
+          @sal-vig-revol-change="setSalVigRevol"
+          @sal-vig-simp-change="setSalVigSimp"
+          @sal-orig-arren-change="setSalOrigArren"
+          @sal-orig-fact-change="setSalOrigFact"
+          @sal-orig-revol-change="setSalOrigRevol"
+          @sal-orig-simp-change="setSalOrigSimp"
+          @large-credit-experience-change="setLargeExpCredit"
+          @buro-calif-change="setBuroCalif"
+          @deuda-date-change="setDeudaDate"
+          @higher-line-change="setHigherLine"
 
-        ref="buro_credito"
-        :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
-        :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
-        :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
-        :razon_flujo_tasa="razon_FDA_tasa_rev"
-        :razon_flujo_rec_capital="razon_FDA_FRC_smp"
-        :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
+          ref="buro_credito"
+          :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+          :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+          :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+          :razon_flujo_tasa="razon_FDA_tasa_rev"
+          :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+          :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+          :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
 
         
         > 
         </buro-credito-step>
       </tab-content>
 
-      <tab-content :before-change="saveSolicitude" title="Estados financieros">
-        <estado-general-step
-        @uafir-change="setUafir"
-        @acc-capital-change="setAccCapital"
-        @debtor-qual-change="setDebtorQual"
-        @annual-sales-change="setAnnualSales"        
-        @finantial-passive-change="setFinantialPassive"
+      <tab-content :before-change="saveSolicitude" title="Perfilador">
+        <section class="container">
+          
 
-        ref="estado_general"
-        :tipo_comprobante="solicitud.tipo_comprobante"
-        :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
-        :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
-        :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
-        :razon_flujo_tasa="razon_FDA_tasa_rev"
-        :razon_flujo_rec_capital="razon_FDA_FRC_smp"
-        :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
+          <resultado-perfilador-card
+            @decree-change="setDecree"
+            @risk-level-change="setRiskLevel"
+            @score-change="setScore"
+            @eval-type-prfl-change="setPrfEvalType"
+            @debtor-qual-change="setDebtorQual"
+            @internal-calif="setInternalCalif"
+            @calif-pre="setCalifPre"
+            ref="resultado_perfilador"            
+          >
 
-        
-        > 
-        </estado-general-step>
+          </resultado-perfilador-card>
+
+          <results 
+            :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+            :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+            :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+            :razon_flujo_tasa="razon_FDA_tasa_rev"
+            :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+            :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+            :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
+          >
+          </results>
+
+        </section>
       </tab-content>
 
-      <tab-content title="Perfilador">
-        <resultado-perfilador-step
-        @decree-change="setDecree"
-        @risk-level-change="setRiskLevel"
-        @score-change="setScore"
-        @eval-type-prfl-change="setPrfEvalType"
+      <tab-content title="Asignación Crédito">
+        <section class="container">
+          <asignacion-step ref="asignacion"
+            @potential-risk-change="setPotentialRisk"
+            :id_solicitud="solicitud.id"
+            :initial_simple_credits="simple_credits"
+            :initial_revolving_credits="revolving_credits"
+          >
 
-        ref="resultado_perfilador"
-        :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
-        :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
-        :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
-        :razon_flujo_tasa="razon_FDA_tasa_rev"
-        :razon_flujo_rec_capital="razon_FDA_FRC_smp"
-        :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
-        > 
-        </resultado-perfilador-step>
+          </asignacion-step>
+          <results 
+            :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+            :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+            :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+            :razon_flujo_tasa="razon_FDA_tasa_rev"
+            :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+            :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+            :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"
+          >
+          </results>
+        </section>
       </tab-content>         
 
       <!--<pre>{{ data | pretty }}</pre>-->
@@ -171,6 +240,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         id_actividad: null,
         id_nivel_riesgo: null,
         numero_solicitud: null,
+        fecha_solicitud: null,
         tipo_comprobante: "account_statements",
         linea_simple_sugerida: null,
         plazo_simple: null,
@@ -205,16 +275,32 @@ const EvalFormWizard = Vue.component('eval-form', {
         sal_orig_cred_act_fact: null,
         sal_orig_cred_act_revol: null,
         sal_orig_cred_act_simp: null,
-        exp_creditos_largos: null
+        exp_creditos_largos: null,
+        fecha_consulta: null,
+        calif_buro: null,
+        calificacion_interna: null,
+        pre_calif: null,
+        cedente_prosp: null,
+        promotor: null,
+        subdirector: null,
+        analista: null,
+        accionistas: null,
+        cheques_fecha: null,
+        credito_fecha: null,
+        riesgo_potencial: null,
+        linea_mas_alta: null,
       },        
   		account_statements: [],
   		simple_credits: [],
   		revolving_credits: [],
       config: null,
       niveles_riesgo: [],
+      tab_titles: {
+        estado_general: "Perfilador"
+      },
   		//solicited_credits: [],
   		
-  		// static, must be loaded from backend
+  		// static, must be loaded from backend 
   		bank_list: [
   			"Banregio",
   			"Scotiabank",
@@ -222,7 +308,7 @@ const EvalFormWizard = Vue.component('eval-form', {
   			"Banorte",
   			"Banamex"
   		]		   
-      }
+    }
   },
   components : {
     SolicitudStep,
@@ -231,12 +317,8 @@ const EvalFormWizard = Vue.component('eval-form', {
     SaldosDepositosStep,
     BuroCreditoStep,
     EstadoGeneralStep,
-    ResultadoPerfiladorStep
-
-  	/*FirstFormStep,
-  	SecondFormStep,
-  	ThirdFormStep,
-    FourthFormStep]*/
+    ResultadoPerfiladorStep,
+    AsignacionStep
   },
 
   created: function () {
@@ -247,6 +329,12 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.readSolicitud();
     }  
   },
+
+  mounted: function () {
+    if (!!this.id_solicitud) {
+      this.$refs.form_wizard.activateAll();
+    } 
+  },  
 
   computed: {
   	
@@ -259,9 +347,9 @@ const EvalFormWizard = Vue.component('eval-form', {
         //solicitud: this.solicitud,
         //id_solicitud: this.id_solicitud,
         //account_statements: this.account_statements,
-        //solicited_credits: this.solicited_credits,
-        balances_sum: this.balances_sum,
-        deposits_sum: this.deposits_sum,
+        solicited_credits: this.solicited_credits,
+        //balances_sum: this.balances_sum,
+        //deposits_sum: this.deposits_sum,
         //max_balance: this.max_balance,
         //min_balance: this.min_balance,
         //max_deposit: this.max_deposit,
@@ -269,12 +357,21 @@ const EvalFormWizard = Vue.component('eval-form', {
         //simple_credits: this.simple_credits,
         //revolving_credits: this.revolving_credits,
         //id_nivel_riesgo: this.solicitud.id_nivel_riesgo,
-        //niveles_riesgo: this.niveles_riesgo,        
+        //niveles_riesgo: this.niveles_riesgo,  
+        tipo_comprobante: this.solicitud.tipo_comprobante,
+        /*monto_simple: this.monto_simple,
+        monto_revolvente: this.monto_revolvente,
+        linea_simple: this.linea_simple,
+        linea_revolvente: this.linea_revolvente, 
+        linea_simple_sugerida: this.solicitud.linea_simple_sugerida,
+        linea_revolvente_sugerida: this.solicitud.linea_revolvente_sugerida,     
 
-        deposits_month_avg: this.deposits_month_avg,
-        balances_month_avg: this.balances_month_avg,
-        deposits_tendency: this.deposits_tendency,
-        //config: this.config,
+        //deposits_month_avg: this.deposits_month_avg,
+        //balances_month_avg: this.balances_month_avg,
+        //deposits_tendency: this.deposits_tendency,
+        //config: this.config,*/
+        valor_actual: this.valor_actual,
+        deuda_cortoplazo: this.deuda_cortoplazo,
         capital_contable: this.solicitud.capital_contable,
         guarantee_factor: this.guarantee_factor,
         INGRESO_MENSUAL: this.INGRESO_MENSUAL,
@@ -294,17 +391,18 @@ const EvalFormWizard = Vue.component('eval-form', {
         monto_factoraje_buro: this.monto_factoraje_buro,
         monto_arrendamiento_buro: this.monto_arrendamiento_buro,
         BK12_MAX_CREDIT_AMT: this.solicitud.BK12_MAX_CREDIT_AMT,
+        linea_mas_alta: this.solicitud.linea_mas_alta,
         monto_maximo: this.monto_maximo,
-        deposits_movil_means: this.deposits_movil_means,
-        balances_movil_means: this.balances_movil_means,
+        //deposits_movil_means: this.deposits_movil_means,
+        //balances_movil_means: this.balances_movil_means,
         //deposits_polynomial_tendency: this.deposits_polynomial_tendency,
         //balances_polynomial_tendency: this.balances_polynomial_tendency,
-        balances_projection: this.balances_projection,
-        deposits_projection: this.deposits_projection,
-        bal_proj_standard_deviation: this.bal_proj_standard_deviation,
-        dep_proj_standard_deviation: this.dep_proj_standard_deviation,
-        balances_tendency_factor: this.balances_tendency_factor,
-        deposits_tendency_factor: this.deposits_tendency_factor
+        //balances_projection: this.balances_projection,
+        //deposits_projection: this.deposits_projection,
+        //bal_proj_standard_deviation: this.bal_proj_standard_deviation,
+        //dep_proj_standard_deviation: this.dep_proj_standard_deviation,
+        //balances_tendency_factor: this.balances_tendency_factor,
+        //deposits_tendency_factor: this.deposits_tendency_factor
 
 
         /*factor_monto_maximo: this.factor_monto_maximo,
@@ -343,6 +441,10 @@ const EvalFormWizard = Vue.component('eval-form', {
         linea_simple: this.linea_simple,
         linea_revolvente: this.linea_revolvente*/
       }
+    },
+
+    tipo_comprobante: function () {
+      return this.solicitud.tipo_comprobante;
     },
     
     saved: function() {
@@ -662,7 +764,8 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     plazo_simple: function () {
-      if (this.simple_credits.length === 0) return null;
+      if (!this.config) return null;
+      if (this.simple_credits.length === 0) return this.config.plazo; // default 36 o null?
       var ret = 0;
       for(var i=0; i<this.simple_credits.length; i++) {
         ret += parseFloat(this.simple_credits[i].plazo) * parseFloat(this.simple_credits[i].monto);
@@ -780,6 +883,11 @@ const EvalFormWizard = Vue.component('eval-form', {
       if (!this.nivel_riesgo || !this.INGRESO_MENSUAL) return null;
       return this.INGRESO_MENSUAL * this.nivel_riesgo.n_veces_riesgo;
     },
+    valor_actual: function () {
+      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.config ) return null;
+
+      return this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva;       
+    },
 
     capacidad_pago_smp: function () {
       if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.solicitud.deuda_cortoplazo || !this.config ) return null;
@@ -808,7 +916,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     linea_revolvente_prev: function () {
       if (this.solicitud.tipo_comprobante === "account_statements"){
-        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return null;
+        if (!this.monto_revolvente || !this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return null;
         return Math.min(this.monto_revolvente, this.capacidad_pago_rev, 
           this.razon_FDA_tasa_rev, this.monto_maximo);
       } else {
@@ -816,17 +924,15 @@ const EvalFormWizard = Vue.component('eval-form', {
         return Math.min(this.monto_revolvente, this.capacidad_pago_rev,
           this.razon_FDA_tasa_rev, this.monto_maximo);
       }
-
     },
 
-
-
+    // TODO: Ajustar lógica para multiples créditos
     linea_simple: function () {
       if (!this.linea_simple_prev) return null;
       if (!this.linea_revolvente_prev) return Math.max(0, this.linea_simple_prev);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
-        return  Math.max(0, Math.ceil((this.linea_simple_prev -  offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))) / 10 ) * 10);
+        return  Math.max(0, Math.ceil((this.linea_simple_prev - offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))) / 10 ) * 10);
       } else {
         return Math.max(0, Math.ceil(this.linea_simple_prev / 10) * 10);
       }
@@ -837,7 +943,7 @@ const EvalFormWizard = Vue.component('eval-form', {
       if (!this.linea_simple_prev) return Math.max(0, this.linea_revolvente_prev);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
-        return  Math.max(0, Math.ceil((this.linea_revolvente_prev -  offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10);
+        return  Math.max(0, Math.ceil((this.linea_revolvente_prev - offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10);
       } else {
         return Math.max(0, Math.ceil(this.linea_revolvente_prev / 10) * 10);
       }
@@ -854,9 +960,8 @@ const EvalFormWizard = Vue.component('eval-form', {
 
   methods: {
   	onComplete: function(){
+      this.$refs.credito.saveCredits();
       this.saveSolicitude();
-      //alert('Yay. Done!');
-      console.log('about to emit');
       this.$emit('move-to-success-route');
     },
 
@@ -881,8 +986,6 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     balances_quadratic_cubic_projections: function (value) {
       if(this.balances_polynomial_tendency === null) return [0,0];
-      console.log("balances quad cib proj");
-      console.log(this.balances_polynomial_tendency);
       var quadratic_equation = this.balances_polynomial_tendency[0].equation;
       var cubic_equation = this.balances_polynomial_tendency[1].equation;
       var quadratic_value = quadratic_equation[0] + quadratic_equation[1]*value + quadratic_equation[2]*value*value;
@@ -931,6 +1034,14 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     setSolicitud: function (response) {
       this.$refs.solicitud.numero_solicitud = response.numero_solicitud;
+      this.$refs.solicitud.fecha_solicitud = response.fecha_solicitud;
+      this.$refs.solicitud.cedente_prosp = response.cedente_prosp;
+      this.$refs.solicitud.promotor = response.promotor;
+      this.$refs.solicitud.subdirector = response.subdirector;
+      this.$refs.solicitud.analista = response.analista;
+      this.$refs.solicitud.accionistas = response.accionistas;
+      this.$refs.solicitud.cheques_fecha = response.cheques_fecha;
+      this.$refs.solicitud.credito_fecha = response.credito_fecha;
       this.$refs.credito.destino_credito = response.destino_credito;
       this.$refs.credito.garantia = response.garantia;
       this.$refs.laboral.id_actividad = response.id_actividad;
@@ -941,6 +1052,10 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.buro_credito.MONTHS_ON_FILE_BANKING = response.MONTHS_ON_FILE_BANKING;
       this.$refs.buro_credito.BK12_CLEAN = response.BK12_CLEAN;
       this.$refs.buro_credito.BK12_MAX_CREDIT_AMT = response.BK12_MAX_CREDIT_AMT;
+      this.$refs.buro_credito.deuda_cortoplazo = response.deuda_cortoplazo;
+      this.$refs.buro_credito.fecha_consulta = response.fecha_consulta;
+      this.$refs.buro_credito.calif_buro = response.calif_buro; 
+      this.$refs.buro_credito.linea_mas_alta = response.linea_mas_alta;   
       this.$refs.buro_credito.num_cred_act_arren = response.num_cred_act_arren;
       this.$refs.buro_credito.num_cred_act_fact = response.num_cred_act_fact;
       this.$refs.buro_credito.num_cred_act_revol = response.num_cred_act_revol;
@@ -953,17 +1068,19 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.buro_credito.sal_orig_cred_act_fact = response.sal_orig_cred_act_fact;
       this.$refs.buro_credito.sal_orig_cred_act_revol = response.sal_orig_cred_act_revol;
       this.$refs.buro_credito.sal_orig_cred_act_simp = response.sal_orig_cred_act_simp;
-      this.$refs.buro_credito.exp_creditos_largos = (response.exp_creditos_largos === "true");  
-      this.$refs.estado_general.uafir = response.uafir;
-      this.$refs.estado_general.capital_contable = response.capital_contable;
-      this.$refs.estado_general.ventas_anuales = response.ventas_anuales;
-      this.$refs.estado_general.deuda_cortoplazo = response.deuda_cortoplazo;
-      this.$refs.estado_general.pasivo_financiero_corto = response.pasivo_financiero_corto;
-      this.$refs.estado_general.calificacion_deudor = response.calificacion_deudor;
+      this.$refs.buro_credito.exp_creditos_largos = (response.exp_creditos_largos === "true"); 
+      this.$refs.estado_financiero.uafir = response.uafir;
+      this.$refs.estado_financiero.capital_contable = response.capital_contable;
+      this.$refs.estado_financiero.ventas_anuales = response.ventas_anuales;      
+      this.$refs.estado_financiero.pasivo_financiero_corto = response.pasivo_financiero_corto;
+      this.$refs.resultado_perfilador.calificacion_deudor = response.calificacion_deudor;
       this.$refs.resultado_perfilador.tipo_evaluacion_perfilador = response.tipo_evaluacion_perfilador;
       this.$refs.resultado_perfilador.decreto = response.decreto;
       this.$refs.resultado_perfilador.score = response.score;
-      this.$refs.resultado_perfilador.id_nivel_riesgo = response.id_nivel_riesgo;
+      this.$refs.resultado_perfilador.id_nivel_riesgo = response.id_nivel_riesgo;      
+      this.$refs.resultado_perfilador.calificacion_interna = response.calificacion_interna; 
+      this.$refs.resultado_perfilador.pre_calif = response.pre_calif;
+      this.$refs.asignacion.riesgo_potencial = response.riesgo_potencial;
     },
 
     saveSolicitudeCredit: function () {
@@ -973,8 +1090,10 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     saveSolicitudeBalDep: function () {
-      this.saveSolicitude();      
-      this.$refs.laboral.saveBalancesDeposits();
+      this.saveSolicitude(); 
+      if(typeof this.$refs.saldo_deposito != 'undefined') {
+        this.$refs.saldo_deposito.save();
+      } 
       return true;
     },
 
@@ -1059,20 +1178,6 @@ const EvalFormWizard = Vue.component('eval-form', {
       var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
       var b = (sum_y/count) - (m*sum_x)/count;
 
-      /*
-       * We will make the x and y result line now
-       */
-      /*var result_values_x = [];
-      var result_values_y = [];
-
-      for (var v = 0; v &lt; values_length; v++) {
-        x = values_x[v];
-        y = x * m + b;
-        result_values_x.push(x);
-        result_values_y.push(y);
-      }
-
-      return [result_values_x, result_values_y];*/
       return [m, b]
     },
 
@@ -1156,6 +1261,30 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
     setSolNumber: function(val) {
       this.solicitud.numero_solicitud = val;
+    },
+    setSolDate: function(val) {
+      this.solicitud.fecha_solicitud = val;
+    },
+    setCedProspect: function(val) {
+      this.solicitud.cedente_prosp = val;
+    },
+    setPromoter: function(val) {
+      this.solicitud.promotor = val;
+    },
+    setSubdirector: function(val) {
+      this.solicitud.subdirector = val;
+    },
+    setAnalyst: function(val) {
+      this.solicitud.analista = val;
+    },
+    setShareholder: function(val) {
+      this.solicitud.accionistas = val;
+    },
+    setChecksdate: function(val) {
+      this.solicitud.cheques_fecha = val;
+    },
+    setCreditDate: function(val) {
+      this.solicitud.credito_fecha = val;
     },
     setEvalType: function(val) {
       this.solicitud.tipo_comprobante = val;
@@ -1244,15 +1373,32 @@ const EvalFormWizard = Vue.component('eval-form', {
     setLargeExpCredit: function(val) {
       this.solicitud.exp_creditos_largos = val;
     },  
+    setBuroCalif: function(val) {
+      this.solicitud.calif_buro = val;
+    },  
+    setDeudaDate: function(val) {
+      this.solicitud.fecha_consulta = val;
+    },
+    setInternalCalif: function(val) {
+      this.solicitud.calificacion_interna = val;
+    },
+    setPotentialRisk: function(val) {
+      this.solicitud.riesgo_potencial = val;
+    },
+    setCalifPre: function(val) {
+      this.solicitud.pre_calif = val;
+    },
     setAccountStatements: function(val) {
       console.log("updating");
       console.log(val);
     	this.account_statements = val;
     },
     setSimpleCredits: function(val) {
+      this.$refs.asignacion.simple_credits = val;
     	this.simple_credits = val;
     },
     setRevolvingCredits: function(val) {
+      this.$refs.asignacion.revolving_credits = val;
     	this.revolving_credits = val;
     },
     setShortTermDebt: function(val) {
@@ -1260,21 +1406,47 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
     setFinantialPassive: function(val) {
       this.solicitud.pasivo_financiero_corto = val;      
-    }
-
+    },
+    setHigherLine: function(val) {
+      this.solicitud.linea_mas_alta = val;      
+    },
   },
 
   watch: {
+    tipo_comprobante: function (val) {
+      if(val === "account_statements") {
+        this.tab_titles.estado_general = "Perfilador"
+      } else if (val === "financial_statements") {
+        this.tab_titles.estado_general = "Perfilador/Estados Financieros"
+      }
+    },
+
     linea_simple: function(val) {
-      this.solicitud.linea_simple_sugerida = val;
+      if (val === null) {
+        this.$refs.credito.setSimpleLine("");
+        this.solicitud.linea_simple_sugerida = "";
+      } else {
+        this.$refs.credito.setSimpleLine(val);
+        this.solicitud.linea_simple_sugerida = val;  
+      }
     },
 
     linea_revolvente: function(val) {
-      this.solicitud.linea_revolvente_sugerida = val;
+      if (val === null) {
+        this.$refs.credito.setRevolvingLine("");
+        this.solicitud.linea_revolvente_sugerida = "";
+      } else {
+        this.$refs.credito.setRevolvingLine(val);
+        this.solicitud.linea_revolvente_sugerida = val;  
+      }      
     },
 
     plazo_simple: function(val) {
-      this.solicitud.plazo_simple = val;
+      if (val === null) {
+        this.solicitud.plazo_simple = "";
+      } else {
+        this.solicitud.plazo_simple = val;  
+      }
     }
   }
 });
