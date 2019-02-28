@@ -896,7 +896,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         return Math.max(0, valor_actual - this.solicitud.deuda_cortoplazo);
       } else {
         if (!this.solicitud.pasivo_financiero_corto ) return null;
-        return Math.max(0, valor_actual - Math.max(this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo));  
+        return Math.max(0, valor_actual - Math.max(parseFloat(this.config.factor_pasivo_financiero) * this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo));  
       }
        
     },
