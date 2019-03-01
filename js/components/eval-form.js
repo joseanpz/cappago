@@ -165,6 +165,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           
 
           <resultado-perfilador-card
+            :cambia_decreto="cambia_decreto"
             @decree-change="setDecree"
             @risk-level-change="setRiskLevel"
             @score-change="setScore"
@@ -214,7 +215,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         </section>
       </tab-content>         
 
-      <pre>{{ data | pretty }}</pre>
+      <!--<pre>{{ data | pretty }}</pre>-->
 
       <template slot="footer" slot-scope="props">
         <div class="wizard-footer-left">
@@ -395,6 +396,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         linea_mas_alta: this.solicitud.linea_mas_alta,
         monto_maximo: this.monto_maximo,
         VENTAS: this.VENTAS,
+        cambia_decreto: this.cambia_decreto,
+        linea_revolvente_prev: this.linea_revolvente_prev,
         //deposits_movil_means: this.deposits_movil_means,
         //balances_movil_means: this.balances_movil_means,
         //deposits_polynomial_tendency: this.deposits_polynomial_tendency,
@@ -932,6 +935,28 @@ const EvalFormWizard = Vue.component('eval-form', {
         return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, Math.max(this.VENTAS, this.monto_maximo));
       }
     },
+
+
+    linea_revolvente_prev_sin_ventas: function () {
+      if (this.solicitud.tipo_comprobante === "account_statements"){
+        if (!this.monto_revolvente || !this.capacidad_pago_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return 0;
+        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, this.monto_maximo);
+      } else {
+        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return 0;
+        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, this.monto_maximo);
+      }
+    },
+
+    cambia_decreto: function () {
+      if (!this.linea_revolvente_prev || !this.linea_revolvente_prev_sin_ventas || !this.nivel_riesgo  ) return false;
+      var a = this.linea_revolvente_prev / this.linea_revolvente_prev_sin_ventas;      
+      if (a > 2.5) return true;
+      if (!this.linea_revolvente_prev || !this.solicitud.sal_orig_cred_act_revol || !this.solicitud.sal_orig_cred_act_fact || !this.nivel_riesgo || !this.INGRESO_MENSUAL ) return false;
+      var b = this.linea_revolvente_prev + parseFloat(this.solicitud.sal_orig_cred_act_revol) + parseFloat(this.solicitud.sal_orig_cred_act_fact)
+      if (b / this.INGRESO_MENSUAL > this.nivel_riesgo.factor_veces_linea_revolvente) return true;
+      return false;
+    },
+
 
     // TODO: Ajustar lógica para multiples créditos
     linea_simple: function () {
