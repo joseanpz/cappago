@@ -165,6 +165,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           
 
           <resultado-perfilador-card
+            :cambia_decreto="cambia_decreto"
             @decree-change="setDecree"
             @risk-level-change="setRiskLevel"
             @score-change="setScore"
@@ -370,6 +371,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         //balances_month_avg: this.balances_month_avg,
         //deposits_tendency: this.deposits_tendency,
         //config: this.config,*/
+        monto_total_rev: this.monto_total_rev,
         valor_actual: this.valor_actual,
         deuda_cortoplazo: this.deuda_cortoplazo,
         capital_contable: this.solicitud.capital_contable,
@@ -393,6 +395,9 @@ const EvalFormWizard = Vue.component('eval-form', {
         BK12_MAX_CREDIT_AMT: this.solicitud.BK12_MAX_CREDIT_AMT,
         linea_mas_alta: this.solicitud.linea_mas_alta,
         monto_maximo: this.monto_maximo,
+        VENTAS: this.VENTAS,
+        cambia_decreto: this.cambia_decreto,
+        linea_revolvente_prev: this.linea_revolvente_prev,
         //deposits_movil_means: this.deposits_movil_means,
         //balances_movil_means: this.balances_movil_means,
         //deposits_polynomial_tendency: this.deposits_polynomial_tendency,
@@ -834,17 +839,26 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     monto_maximo_rev: function () {
-      if (!this.monto_revolvente_buro || !this.factor_monto_maximo) return null;
-      return this.monto_revolvente_buro * this.factor_monto_maximo;
+      if (!this.linea_mas_alta || !this.factor_monto_maximo) return 0;
+      return this.linea_mas_alta * this.factor_monto_maximo;
+    },
+
+    monto_total_rev: function () {
+      return !this.solicitud.sal_orig_cred_act_fact? 0:this.solicitud.sal_orig_cred_act_fact  + !this.solicitud.sal_orig_cred_act_revol? 0:this.solicitud.sal_orig_cred_act_revol;
     },
 
     //  restricciones  //
     monto_maximo: function () {
+       if (!this.solicitud.linea_mas_alta || !this.factor_monto_maximo) return 0;
+      //if (this.monto_simple_buro === null  || this.monto_revolvente_buro === null || this.monto_factoraje_buro === null || this.monto_arrendamiento_buro === null || this.solicitud.BK12_MAX_CREDIT_AMT === null || this.factor_monto_maximo === null) return null;
+      //var ret = Math.max(this.solicitud.BK12_MAX_CREDIT_AMT, this.monto_simple_buro, this.monto_revolvente_buro, this.monto_factoraje_buro, this.monto_arrendamiento_buro) * this.factor_monto_maximo;
+      var ret = parseFloat(this.solicitud.linea_mas_alta) * this.factor_monto_maximo;
+      return ret;
+    },
 
-      if (this.monto_simple_buro === null  || this.monto_revolvente_buro === null || this.monto_factoraje_buro === null || this.monto_arrendamiento_buro === null || this.solicitud.BK12_MAX_CREDIT_AMT === null || this.factor_monto_maximo === null) return null;
-      var ret = Math.max(this.solicitud.BK12_MAX_CREDIT_AMT, this.monto_simple_buro, this.monto_revolvente_buro, this.monto_factoraje_buro, this.monto_arrendamiento_buro) * this.factor_monto_maximo;
-
-      return ret
+    VENTAS: function () {
+      if (!this.nivel_riesgo || !this.INGRESO_MENSUAL) return null;
+      return this.nivel_riesgo.factor_veces_ventas * this.INGRESO_MENSUAL;
     },
 
     dif_deuda_ingreso_rev: function () {
@@ -896,7 +910,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         return Math.max(0, valor_actual - this.solicitud.deuda_cortoplazo);
       } else {
         if (!this.solicitud.pasivo_financiero_corto ) return null;
-        return Math.max(0, valor_actual - Math.max(this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo));  
+        return Math.max(0, valor_actual - Math.max(parseFloat(this.config.factor_pasivo_financiero) * this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo));  
       }
        
     },
@@ -904,27 +918,45 @@ const EvalFormWizard = Vue.component('eval-form', {
     // lineas de credito
     linea_simple_prev: function () {
       if (this.solicitud.tipo_comprobante === "account_statements"){
-        if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp || !this.monto_maximo ) return null;
-        return Math.min(this.monto_simple, this.capacidad_pago_smp,
-          this.razon_FDA_FRC_smp, this.monto_maximo);
+        if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp  ) return 0;
+        return Math.min(this.monto_simple, this.capacidad_pago_smp, this.razon_FDA_FRC_smp);
       } else {
-        if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp || !this.monto_maximo ) return null;
-        return Math.min(this.monto_simple, this.capacidad_pago_smp, 
-          this.razon_FDA_FRC_smp, this.monto_maximo);
+        if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp  ) return 0;
+        return Math.min(this.monto_simple, this.capacidad_pago_smp, this.razon_FDA_FRC_smp);
       }        
     },
 
     linea_revolvente_prev: function () {
       if (this.solicitud.tipo_comprobante === "account_statements"){
-        if (!this.monto_revolvente || !this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return null;
-        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, 
-          this.razon_FDA_tasa_rev, this.monto_maximo);
+        if (!this.monto_revolvente || !this.capacidad_pago_rev || !this.razon_FDA_tasa_rev || !this.VENTAS || !this.monto_maximo) return 0;
+        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, Math.max(this.VENTAS, this.monto_maximo));
       } else {
-        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return null;
-        return Math.min(this.monto_revolvente, this.capacidad_pago_rev,
-          this.razon_FDA_tasa_rev, this.monto_maximo);
+        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev  || !this.VENTAS || !this.monto_maximo) return 0;
+        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, Math.max(this.VENTAS, this.monto_maximo));
       }
     },
+
+
+    linea_revolvente_prev_sin_ventas: function () {
+      if (this.solicitud.tipo_comprobante === "account_statements"){
+        if (!this.monto_revolvente || !this.capacidad_pago_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return 0;
+        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, this.monto_maximo);
+      } else {
+        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return 0;
+        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, this.monto_maximo);
+      }
+    },
+
+    cambia_decreto: function () {
+      if (!this.linea_revolvente_prev || !this.linea_revolvente_prev_sin_ventas || !this.nivel_riesgo  ) return false;
+      var a = this.linea_revolvente_prev / this.linea_revolvente_prev_sin_ventas;      
+      if (a > 2.5) return true;
+      if (!this.linea_revolvente_prev || !this.solicitud.sal_orig_cred_act_revol || !this.solicitud.sal_orig_cred_act_fact || !this.nivel_riesgo || !this.INGRESO_MENSUAL ) return false;
+      var b = this.linea_revolvente_prev + parseFloat(this.solicitud.sal_orig_cred_act_revol) + parseFloat(this.solicitud.sal_orig_cred_act_fact)
+      if (b / this.INGRESO_MENSUAL > this.nivel_riesgo.factor_veces_linea_revolvente) return true;
+      return false;
+    },
+
 
     // TODO: Ajustar lógica para multiples créditos
     linea_simple: function () {

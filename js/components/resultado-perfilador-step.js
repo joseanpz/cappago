@@ -1,5 +1,5 @@
 var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
-	props: ['linea', 'capacidad_pago', 'monto_solicitado', 'monto_maximo', 'ingreso_vs_deuda', 'razon_flujo_tasa', 'razon_flujo_rec_capital'],
+	props: ['cambia_decreto'],
 	template: `		
 		<div class="card card-subitem">
 			<header class="card-header">
@@ -12,9 +12,10 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 						<div class="column is-4">
 							<b-select placeholder="Select a name" v-model="decreto" expanded>	                			
 								<option value selected>-- seleccione -- </option>
+								<option value="3" v-if="!cambia_decreto">PRE-APROBADO</option>
 								<option value="1">ESTUDIO</option>
 								<option value="2">DENEGADO</option>
-								<option value="3">PRE-APROBADO</option>
+								
 							</b-select>									
 						</div>
 						<div class="column is-2"><label class="label titulos">Nivel de riesgo:</label></div>
@@ -122,8 +123,14 @@ var ResultadoPerfiladorStep = Vue.component('resultado-perfilador-card',{
 	},
 
 	watch: {
-		decreto: function (val) {
-			this.$emit('decree-change', val);
+		cambia_decreto: function (val) {
+			console.log('cambiando decreto en watch de cambia_decreto');
+			if (val && this.decreto === "3") {
+				this.decreto = "1";
+			}
+		},
+		decreto: function (val) {			
+			this.$emit('decree-change', val);			
 		},
 		score: function (val) {
 			this.id_nivel_riesgo = this.scoreToRiskLevelId(val);
