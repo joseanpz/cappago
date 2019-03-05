@@ -345,10 +345,10 @@ const EvalFormWizard = Vue.component('eval-form', {
     
     data: function() {
       return {
-        //solicitud: this.solicitud,
+        solicitud: this.solicitud,
         //id_solicitud: this.id_solicitud,
         //account_statements: this.account_statements,
-        solicited_credits: this.solicited_credits,
+        //solicited_credits: this.solicited_credits,
         //balances_sum: this.balances_sum,
         //deposits_sum: this.deposits_sum,
         //max_balance: this.max_balance,
@@ -923,8 +923,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp  ) return 0;
         return Math.min(this.monto_simple, this.capacidad_pago_smp, this.razon_FDA_FRC_smp);
       } else {
-        if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp  ) return 0;
-        return Math.min(this.monto_simple, this.capacidad_pago_smp, this.razon_FDA_FRC_smp);
+        if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp || this.solicitud.capital_contable === null ) return 0;
+        return Math.min(this.monto_simple, this.capacidad_pago_smp, this.razon_FDA_FRC_smp, 0.25*parseFloat(this.solicitud.capital_contable));
       }        
     },
 
@@ -933,8 +933,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (!this.monto_revolvente || !this.capacidad_pago_rev || !this.razon_FDA_tasa_rev || !this.VENTAS || this.monto_maximo === null) return 0;
         return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, Math.max(this.VENTAS, this.monto_maximo));
       } else {
-        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev  || !this.VENTAS || this.monto_maximo === null) return 0;
-        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, Math.max(this.VENTAS, this.monto_maximo));
+        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev  || !this.VENTAS || this.monto_maximo === null || this.solicitud.capital_contable === null) return 0;
+        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, 0.25*parseFloat(this.solicitud.capital_contable), Math.max(this.VENTAS, this.monto_maximo));
       }
     },
 
@@ -944,40 +944,43 @@ const EvalFormWizard = Vue.component('eval-form', {
         if (!this.monto_revolvente || !this.capacidad_pago_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return 0;
         return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, this.monto_maximo);
       } else {
-        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo) return 0;
-        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, this.monto_maximo);
+        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev || !this.monto_maximo || this.solicitud.capital_contable === null) return 0;
+        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, this.monto_maximo, 0.25*parseFloat(this.solicitud.capital_contable));
       }
     },
 
     // TODO: Ajustar lógica para multiples créditos
     linea_simple: function () {
-      if (!this.linea_simple_prev) return 0;
-      if (!this.linea_revolvente_prev) return Math.max(0, Math.ceil(this.linea_simple_prev / 10) * 10);
+      if (!this.linea_simple_prev || (!this.monto_simple && !this.monto_revolvente)) return 0;
+      //if (!this.linea_revolvente_prev) return Math.max(0, Math.ceil(this.linea_simple_prev / 10) * 10);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
-        return  Math.max(0, Math.ceil((this.linea_simple_prev - offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))) / 10 ) * 10);
+        // return  Math.max(0, Math.ceil((this.linea_simple_prev - offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))) / 10 ) * 10);
+        return  Math.max(0, Math.ceil((parseFloat(this.dif_deuda_ingreso) * (this.linea_simple_prev / (this.linea_simple_prev + this.linea_revolvente_prev))) / 10 ) * 10);
       } else {
         return Math.max(0, Math.ceil(this.linea_simple_prev / 10) * 10);
       }
     },
 
     linea_revolvente: function () {
-      if (!this.linea_revolvente_prev) return 0;
-      if (!this.linea_simple_prev) return Math.max(0,  Math.ceil(this.linea_revolvente_prev / 10) * 10);
+      if (!this.linea_revolvente_prev || (!this.monto_simple && !this.monto_revolvente)) return 0;
+      //if (!this.linea_simple_prev) return Math.max(0,  Math.ceil(this.linea_revolvente_prev / 10) * 10);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
-        return  Math.max(0, Math.ceil((this.linea_revolvente_prev - offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10);
+        // return  Math.max(0, Math.ceil((this.linea_revolvente_prev - offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10);
+        return  Math.max(0, Math.ceil((parseFloat(this.dif_deuda_ingreso) * (this.linea_revolvente_prev / (this.linea_simple_prev + this.linea_revolvente_prev))) / 10) * 10);
       } else {
         return Math.max(0, Math.ceil(this.linea_revolvente_prev / 10) * 10);
       }
     },
 
     linea_revolvente_sin_ventas: function () {
-      if (!this.linea_revolvente_prev_sin_ventas) return 0;
-      if (!this.linea_simple_prev) return Math.max(0, Math.ceil(this.linea_revolvente_prev_sin_ventas / 10) * 10);
+      if (!this.linea_revolvente_prev_sin_ventas || (!this.monto_simple && !this.monto_revolvente)) return 0;
+      //if (!this.linea_simple_prev) return Math.max(0, Math.ceil(this.linea_revolvente_prev_sin_ventas / 10) * 10);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev_sin_ventas) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
-        return  Math.max(0, Math.ceil((this.linea_revolvente_prev_sin_ventas - offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10);
+        // return  Math.max(0, Math.ceil((this.linea_revolvente_prev_sin_ventas - offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10);
+        return  Math.max(0, Math.ceil((parseFloat(this.dif_deuda_ingreso) * (this.linea_revolvente_prev_sin_ventas / (this.linea_simple_prev + this.linea_revolvente_prev_sin_ventas))) / 10) * 10);
       } else {
         return Math.max(0, Math.ceil(this.linea_revolvente_prev_sin_ventas / 10) * 10);
       }
