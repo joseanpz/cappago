@@ -1487,7 +1487,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         this.$refs.credito.setSimpleLine(val);
         this.solicitud.linea_simple_sugerida = val;  
       }
-      this.$refs.credito.saveCredits();
+      
     },
 
     linea_revolvente: function(val) {
@@ -1498,7 +1498,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         this.$refs.credito.setRevolvingLine(val);
         this.solicitud.linea_revolvente_sugerida = val;  
       }
-      this.$refs.credito.saveCredits();   
+
     },
 
     plazo_simple: function(val) {
