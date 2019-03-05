@@ -215,7 +215,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         </section>
       </tab-content>         
 
-      <!--<pre>{{ data | pretty }}</pre>-->
+      <pre>{{ data | pretty }}</pre>
 
       <template slot="footer" slot-scope="props">
         <div class="wizard-footer-left">
@@ -930,10 +930,10 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     linea_revolvente_prev: function () {
       if (this.solicitud.tipo_comprobante === "account_statements"){
-        if (!this.monto_revolvente || !this.capacidad_pago_rev || !this.razon_FDA_tasa_rev || !this.VENTAS || !this.monto_maximo) return 0;
+        if (!this.monto_revolvente || !this.capacidad_pago_rev || !this.razon_FDA_tasa_rev || !this.VENTAS || this.monto_maximo === null) return 0;
         return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, Math.max(this.VENTAS, this.monto_maximo));
       } else {
-        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev  || !this.VENTAS || !this.monto_maximo) return 0;
+        if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev  || !this.VENTAS || this.monto_maximo === null) return 0;
         return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, Math.max(this.VENTAS, this.monto_maximo));
       }
     },
@@ -952,7 +952,7 @@ const EvalFormWizard = Vue.component('eval-form', {
     // TODO: Ajustar lógica para multiples créditos
     linea_simple: function () {
       if (!this.linea_simple_prev) return null;
-      if (!this.linea_revolvente_prev) return Math.max(0, this.linea_simple_prev);
+      if (!this.linea_revolvente_prev) return Math.max(0, Math.ceil(this.linea_simple_prev / 10) * 10);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
         return  Math.max(0, Math.ceil((this.linea_simple_prev - offset * (this.monto_simple / (this.monto_simple + this.monto_revolvente))) / 10 ) * 10);
@@ -963,7 +963,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     linea_revolvente: function () {
       if (!this.linea_revolvente_prev) return null;
-      if (!this.linea_simple_prev) return Math.max(0, this.linea_revolvente_prev);
+      if (!this.linea_simple_prev) return Math.max(0,  Math.ceil(this.linea_revolvente_prev / 10) * 10);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
         return  Math.max(0, Math.ceil((this.linea_revolvente_prev - offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10);
@@ -974,7 +974,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     linea_revolvente_sin_ventas: function () {
       if (!this.linea_revolvente_prev_sin_ventas) return null;
-      if (!this.linea_simple_prev) return Math.max(0, this.linea_revolvente_prev_sin_ventas);
+      if (!this.linea_simple_prev) return Math.max(0, Math.ceil(this.linea_revolvente_prev_sin_ventas / 10) * 10);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev_sin_ventas) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
         return  Math.max(0, Math.ceil((this.linea_revolvente_prev_sin_ventas - offset * (this.monto_revolvente / (this.monto_simple + this.monto_revolvente))) / 10) * 10);
@@ -984,7 +984,10 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     cambia_decreto: function () {
-      if (!this.linea_revolvente || !this.linea_revolvente_sin_ventas || !this.nivel_riesgo  ) return false;
+      if (!this.linea_revolvente_sin_ventas && !!this.monto_revolvente ) return true;
+      
+      if (!this.linea_revolvente  || !this.nivel_riesgo  ) return false;
+      
       var a = this.linea_revolvente / this.linea_revolvente_sin_ventas;      
       if (a > 2.5) return true;
       if (!this.linea_revolvente || !this.solicitud.sal_orig_cred_act_revol || !this.solicitud.sal_orig_cred_act_fact || !this.nivel_riesgo || !this.INGRESO_MENSUAL ) return false;
