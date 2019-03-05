@@ -215,7 +215,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         </section>
       </tab-content>         
 
-      <pre>{{ data | pretty }}</pre>
+      <!--<pre>{{ data | pretty }}</pre>-->
 
       <template slot="footer" slot-scope="props">
         <div class="wizard-footer-left">
@@ -951,7 +951,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     // TODO: Ajustar lógica para multiples créditos
     linea_simple: function () {
-      if (!this.linea_simple_prev) return null;
+      if (!this.linea_simple_prev) return 0;
       if (!this.linea_revolvente_prev) return Math.max(0, Math.ceil(this.linea_simple_prev / 10) * 10);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
@@ -962,7 +962,7 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     linea_revolvente: function () {
-      if (!this.linea_revolvente_prev) return null;
+      if (!this.linea_revolvente_prev) return 0;
       if (!this.linea_simple_prev) return Math.max(0,  Math.ceil(this.linea_revolvente_prev / 10) * 10);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
@@ -973,7 +973,7 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     linea_revolvente_sin_ventas: function () {
-      if (!this.linea_revolvente_prev_sin_ventas) return null;
+      if (!this.linea_revolvente_prev_sin_ventas) return 0;
       if (!this.linea_simple_prev) return Math.max(0, Math.ceil(this.linea_revolvente_prev_sin_ventas / 10) * 10);
       var offset = parseFloat(this.linea_simple_prev) + parseFloat(this.linea_revolvente_prev_sin_ventas) - parseFloat(this.dif_deuda_ingreso);
       if (offset > 0) {
@@ -985,11 +985,13 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     cambia_decreto: function () {
       if (!this.linea_revolvente_sin_ventas && !!this.monto_revolvente ) return true;
+
+      if (!!this.plazo_simple && parseInt(this.plazo_simple) >= 48 && !this.solicitud.exp_creditos_largos) return true;
       
-      if (!this.linea_revolvente  || !this.nivel_riesgo  ) return false;
       
       var a = this.linea_revolvente / this.linea_revolvente_sin_ventas;      
       if (a > 2.5) return true;
+      
       if (!this.linea_revolvente || !this.solicitud.sal_orig_cred_act_revol || !this.solicitud.sal_orig_cred_act_fact || !this.nivel_riesgo || !this.INGRESO_MENSUAL ) return false;
       var b = this.linea_revolvente + parseFloat(this.solicitud.sal_orig_cred_act_revol) + parseFloat(this.solicitud.sal_orig_cred_act_fact)
       if (b / this.INGRESO_MENSUAL > this.nivel_riesgo.factor_veces_linea_revolvente) return true;
