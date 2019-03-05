@@ -45,6 +45,8 @@ const EvalFormWizard = Vue.component('eval-form', {
             @rvlg-credits-change="setRevolvingCredits"
 
             :id_solicitud="solicitud.id"
+            :linea_revolvente="linea_revolvente"
+            :linea_simple="linea_simple"
             ref="credito"
           > 
           </credito-step>
@@ -334,6 +336,8 @@ const EvalFormWizard = Vue.component('eval-form', {
   mounted: function () {
     if (!!this.id_solicitud) {
       this.$refs.form_wizard.activateAll();
+      //this.$refs.credito.setSimpleLine(this.linea_simple);
+      //this.$refs.credito.setRevolvingLine(this.linea_revolvente);
     } 
   },  
 
@@ -348,7 +352,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         solicitud: this.solicitud,
         //id_solicitud: this.id_solicitud,
         //account_statements: this.account_statements,
-        //solicited_credits: this.solicited_credits,
+        solicited_credits: this.solicited_credits,
         //balances_sum: this.balances_sum,
         //deposits_sum: this.deposits_sum,
         //max_balance: this.max_balance,
@@ -400,6 +404,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         linea_simple_prev: this.linea_simple_prev,
         linea_revolvente_prev: this.linea_revolvente_prev,
         linea_revolvente_sin_ventas: this.linea_revolvente_sin_ventas,
+        linea_simple: this.linea_simple,
+        linea_revolvente: this.linea_revolvente,
         //deposits_movil_means: this.deposits_movil_means,
         //balances_movil_means: this.balances_movil_means,
         //deposits_polynomial_tendency: this.deposits_polynomial_tendency,
@@ -1481,6 +1487,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         this.$refs.credito.setSimpleLine(val);
         this.solicitud.linea_simple_sugerida = val;  
       }
+      
     },
 
     linea_revolvente: function(val) {
@@ -1490,7 +1497,8 @@ const EvalFormWizard = Vue.component('eval-form', {
       } else {
         this.$refs.credito.setRevolvingLine(val);
         this.solicitud.linea_revolvente_sugerida = val;  
-      }      
+      }
+
     },
 
     plazo_simple: function(val) {
