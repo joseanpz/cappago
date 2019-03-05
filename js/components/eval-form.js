@@ -89,7 +89,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
           
           <saldos-depositos-step  v-if="tipo_comprobante=='account_statements'"
-            :id_solicitud="id_solicitud"
+            :id_solicitud="solicitud.id"
             :fecha_solicitud="solicitud.fecha_solicitud"
             @acc-statements-change="setAccountStatements"
             ref="saldo_deposito"
