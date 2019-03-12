@@ -215,7 +215,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           >
           </results>
         </section>
-      </tab-content>         
+      </tab-content>  
 
       <!--<pre>{{ data | pretty }}</pre>-->
 
@@ -349,10 +349,10 @@ const EvalFormWizard = Vue.component('eval-form', {
     
     data: function() {
       return {
-        solicitud: this.solicitud,
+        //solicitud: this.solicitud,
         //id_solicitud: this.id_solicitud,
         //account_statements: this.account_statements,
-        solicited_credits: this.solicited_credits,
+        //solicited_credits: this.solicited_credits,
         //balances_sum: this.balances_sum,
         //deposits_sum: this.deposits_sum,
         //max_balance: this.max_balance,
@@ -363,7 +363,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         //revolving_credits: this.revolving_credits,
         //id_nivel_riesgo: this.solicitud.id_nivel_riesgo,
         //niveles_riesgo: this.niveles_riesgo,  
-        tipo_comprobante: this.solicitud.tipo_comprobante,
+        //tipo_comprobante: this.solicitud.tipo_comprobante,
         /*monto_simple: this.monto_simple,
         monto_revolvente: this.monto_revolvente,
         linea_simple: this.linea_simple,
@@ -758,10 +758,12 @@ const EvalFormWizard = Vue.component('eval-form', {
     factor_monto_maximo: function () {
       if (!this.solicitud.score || this.solicitud.score < 0) return null;
 
-      if (this.solicitud.score <= 450) {
+      if (this.solicitud.score <= 592) {
         return 0.5;
-      } else if (this.solicitud.score <= 900) {
-        return Math.min(0.0104782096057237 * 0.000126666 * Math.exp( 0.016576983 * this.solicitud.score  ) + 0.5, 1.5);
+      } else if (this.solicitud.score <= 743) {
+        return Math.min(0.034244095 * Math.exp( 0.004467184 * this.solicitud.score  ), 1.5);
+      } else if (this.solicitud.score <= 843) {
+        return Math.min(3.971645403 * Math.log( this.solicitud.score  ) - 25.22004859, 1.5);
       } else {
         return 1.5;
       }
