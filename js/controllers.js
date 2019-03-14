@@ -23,7 +23,7 @@ const HomeController = {
 const EvalListController = { 
 	template: `
     <div>
-      <section class="container" style="margin-top: 20px;">
+      <section class="container">
         <div class="columns"> 
           <div class="column">                 
               <data-table class="table is-bordered is-striped is-hoverable" id="listado"></data-table>
@@ -40,7 +40,7 @@ const EvalListController = {
 const EvalFormController = { 
 	template: `
     <div>
-      <section class="container" style="margin-top: 20px;">
+      <section class="container">
         <div class="columns"> 
           <div class="column">
             <eval-form ref="eval_form" @move-to-success-route="moveToListRoute"></eval-form>

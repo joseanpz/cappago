@@ -4,6 +4,7 @@
 
 .container{	
 	margin-bottom: 50px;
+	margin-top: 60px;
 }
 .results{	
 	margin-top: 20px;
@@ -234,7 +235,7 @@ select:focus select:before {
     border-color: #3a5fab !important;
 }
 .is-checkradio[type=checkbox]:hover:not([disabled])+label::before, .is-checkradio[type=checkbox]:hover:not([disabled])+label:before, .is-checkradio[type=radio]:hover:not([disabled])+label::before, .is-checkradio[type=radio]:hover:not([disabled])+label:before {
-    border-color: #3a5fab!important;
+    border-color: #3a5fab!important; 
 }
 .is-checkradio[type=checkbox]+label::after, .is-checkradio[type=checkbox]+label:after {
     box-sizing: border-box;
@@ -252,3 +253,4 @@ select:focus select:before {
 .card  table td, th {
 	border: 0px !important;
 }
+
