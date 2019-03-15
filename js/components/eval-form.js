@@ -45,6 +45,8 @@ const EvalFormWizard = Vue.component('eval-form', {
             @rvlg-credits-change="setRevolvingCredits"
 
             :id_solicitud="solicitud.id"
+            :linea_revolvente="linea_revolvente"
+            :linea_simple="linea_simple"
             ref="credito"
           > 
           </credito-step>
@@ -213,7 +215,7 @@ const EvalFormWizard = Vue.component('eval-form', {
           >
           </results>
         </section>
-      </tab-content>         
+      </tab-content>  
 
       <!--<pre>{{ data | pretty }}</pre>-->
 
@@ -334,6 +336,8 @@ const EvalFormWizard = Vue.component('eval-form', {
   mounted: function () {
     if (!!this.id_solicitud) {
       this.$refs.form_wizard.activateAll();
+      //this.$refs.credito.setSimpleLine(this.linea_simple);
+      //this.$refs.credito.setRevolvingLine(this.linea_revolvente);
     } 
   },  
 
@@ -345,7 +349,7 @@ const EvalFormWizard = Vue.component('eval-form', {
     
     data: function() {
       return {
-        solicitud: this.solicitud,
+        //solicitud: this.solicitud,
         //id_solicitud: this.id_solicitud,
         //account_statements: this.account_statements,
         //solicited_credits: this.solicited_credits,
@@ -359,7 +363,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         //revolving_credits: this.revolving_credits,
         //id_nivel_riesgo: this.solicitud.id_nivel_riesgo,
         //niveles_riesgo: this.niveles_riesgo,  
-        tipo_comprobante: this.solicitud.tipo_comprobante,
+        //tipo_comprobante: this.solicitud.tipo_comprobante,
         /*monto_simple: this.monto_simple,
         monto_revolvente: this.monto_revolvente,
         linea_simple: this.linea_simple,
@@ -400,6 +404,8 @@ const EvalFormWizard = Vue.component('eval-form', {
         linea_simple_prev: this.linea_simple_prev,
         linea_revolvente_prev: this.linea_revolvente_prev,
         linea_revolvente_sin_ventas: this.linea_revolvente_sin_ventas,
+        linea_simple: this.linea_simple,
+        linea_revolvente: this.linea_revolvente,
         //deposits_movil_means: this.deposits_movil_means,
         //balances_movil_means: this.balances_movil_means,
         //deposits_polynomial_tendency: this.deposits_polynomial_tendency,
@@ -752,10 +758,12 @@ const EvalFormWizard = Vue.component('eval-form', {
     factor_monto_maximo: function () {
       if (!this.solicitud.score || this.solicitud.score < 0) return null;
 
-      if (this.solicitud.score <= 450) {
+      if (this.solicitud.score <= 592) {
         return 0.5;
-      } else if (this.solicitud.score <= 900) {
-        return Math.min(0.0104782096057237 * 0.000126666 * Math.exp( 0.016576983 * this.solicitud.score  ) + 0.5, 1.5);
+      } else if (this.solicitud.score <= 743) {
+        return Math.min(0.034244095 * Math.exp( 0.004467184 * this.solicitud.score  ), 1.5);
+      } else if (this.solicitud.score <= 843) {
+        return Math.min(3.971645403 * Math.log( this.solicitud.score  ) - 25.22004859, 1.5);
       } else {
         return 1.5;
       }
@@ -1481,6 +1489,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         this.$refs.credito.setSimpleLine(val);
         this.solicitud.linea_simple_sugerida = val;  
       }
+      
     },
 
     linea_revolvente: function(val) {
@@ -1490,7 +1499,8 @@ const EvalFormWizard = Vue.component('eval-form', {
       } else {
         this.$refs.credito.setRevolvingLine(val);
         this.solicitud.linea_revolvente_sugerida = val;  
-      }      
+      }
+
     },
 
     plazo_simple: function(val) {

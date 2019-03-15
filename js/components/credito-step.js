@@ -1,5 +1,5 @@
 var CreditoStep = Vue.component('credito-step',{
-	props:['id_solicitud'],
+	props:['id_solicitud', 'linea_revolvente', 'linea_simple'],
 	template: `		
 		<div class="card">
 			<header class="card-header">
@@ -272,6 +272,8 @@ var CreditoStep = Vue.component('credito-step',{
 	          console.log('Reading creditos');
 	          console.log(response);
 	          self.setCreditos(response.records);  // solicitud.numero_solicitud = response.numero_solicitud;
+	          self.setRevolvingLine();
+	          self.setSimpleLine();
 	        })
 	        .withFailureHandler(function(err){
 	          console.log('An error ocurred while reading creditos');
@@ -417,19 +419,30 @@ var CreditoStep = Vue.component('credito-step',{
 
 	    setRevolvingLine: function (val) {
 	    	if (this.revolving_credits.length > 0) {
-	    		this.revolving_credits[0].sugerido = val;
+	    		if (val === null) {
+	    			this.revolving_credits[0].sugerido = this.linea_revolvente;
+	    		} else {
+	    			this.revolving_credits[0].sugerido = val;	    			
+	    		}
+	    		
 	    	}
 	    },
 
 	    setSimpleLine: function (val) {
 	    	console.log('SETSIMPLELINE');
+	    	console.log(val);
 
 	    	if (this.simple_credits.length > 0) {
-	    		console.log('SETSIMPLELINE    IF');
-	    		console.log(this.simple_credits);
-	    		console.log(val);
-	    		this.simple_credits[0].sugerido = val;
-	    		console.log(this.simple_credits);
+	    		if (val === null) {
+	    			console.log('SETSIMPLELINE    IF');
+		    		console.log(this.simple_credits);	    		
+		    		this.simple_credits[0].sugerido = this.linea_simple;
+		    		console.log(this.simple_credits);
+
+	    		} else {
+	    			this.simple_credits[0].sugerido = val;
+	    		}
+	    		
 	    	}
 	    },
 	},
