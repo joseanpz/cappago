@@ -19,7 +19,7 @@ const DetailForm = Vue.component('detail', {
         <br/>
         <div class="columns" style="padding-bottom: 250px;">
           <div class="column">
-            <table class="table is-bordered is-striped" style="width:90%;">
+            <table class="table is-bordered is-striped" style="width:100%;">
               <tbody>
                 <tr>
                   <td colspan="6" class="div-titulos">Información General</td>
@@ -77,18 +77,21 @@ const DetailForm = Vue.component('detail', {
                         <td><label class="label">RESPONS.</label></td>
                         <td><label class="label">VENCIMIENTO</label></td>
                         -->
-                        <td><label class="label">LINEA SOLICITADA</label></td>
                         <td><label class="label">IMPORTE</label></td>
-                        <td><label class="label">LINEA AUTORIZADA</label></td>
-                        <td><label class="label">RESPONSABILIDAD</label></td>
-                        <td><label class="label">PLAZO</label></td>
+                        <td><label class="label">RESPONS.</label></td>
                         <td><label class="label">VENCIMIENTO</label></td>
+                        <td><label class="label">LINEA SOLICITADA</label></td>
+                        
+                        <td><label class="label">LINEA AUTORIZADA</label></td>
+                        
+                        <td><label class="label">PLAZO</label></td>
+                        
                         <td><label class="label">GTIA. FONDOS</label></td>
                         <td><label class="label">CLASIF B-6</label></td>
                         <td><label class="label">DESTINO</label></td>
                         <td><label class="label">SHC</label></td>
                         <td><label class="label">PERIODO GRACIA</label></td>
-                        <td><label class="label">TIPO OPERACIÓN</label></td>
+                        <!--<td><label class="label">TIPO OPERACIÓN</label></td>-->
                       </tr>
                      
                         <tr v-if="credits.length" v-for="credit in credits" :key="credit.id_local">
@@ -101,18 +104,21 @@ const DetailForm = Vue.component('detail', {
                           <td></td>
                           <td></td>
                           -->
+                          <td style="text-align:right;"></td>
+                          <td style="text-align:right;"></td>
+                          <td style="text-align:right;"></td> 
                           <td style="text-align:right;">{{credit.monto | monto_redondeado}}</td> 
-                          <td style="text-align:right;"></td> 
+                           
                           <td style="text-align:right;">{{credit.autorizado | monto_redondeado}}</td>
-                          <td style="text-align:right;"></td> 
+                           
                           <td>{{credit.plazo | plazo_credito}}</td>
-                          <td style="text-align:right;"></td> 
+                          
                           <td>{{credit.garantia_fondos | etiqueta_aplica}}</td>
                           <td>{{credit.clasif_b6 | credito_clasif_b6}}</td>
                           <td>{{credit.destino}}</td>
                           <td>{{credit.hsc | etiqueta_aplica}}</td>
                           <td>{{credit.periodo_gracia | etiqueta_aplica}}</td>
-                          <td style="text-align:right;"></td> 
+                          <!--<td style="text-align:right;"></td>--> 
                         </tr>                      
                       <tr>                        
                         <td colspan="16" rowspan="3">
@@ -168,12 +174,12 @@ const DetailForm = Vue.component('detail', {
                 </tr>
                 <tr>
                   <td colspan="6" class="div-titulos">Firmas facultadas</td>
-                <tr>
+                </tr>
                 <tr>
                   <td colspan="6" class="div-titulos" style="height:200px;">
                     <label class="label" style="float:right;">Fecha de autorización</label>
                   </td>
-                <tr>
+                </tr>
               </tbody>
             </table>            
           </div>            
@@ -388,7 +394,7 @@ const DetailForm = Vue.component('detail', {
           
           var img = canvas.toDataURL("image/url",1.0);  
           var doc = new jsPDF('p', 'pt', 'letter')
-          doc.addImage(img, 'JPEG',25,75,560,650);
+          doc.addImage(img, 'JPEG',25,30,560,730); //
           
           doc.save('CapacidadPago_'+self.solicitud.numero_solicitud+'.pdf');
            document.getElementById("header_PDF").style.display = "none";
