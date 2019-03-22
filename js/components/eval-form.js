@@ -13,24 +13,24 @@ const EvalFormWizard = Vue.component('eval-form', {
       <h1 slot="title">Proceso de cálculo de capacidad de pago</h1>
       <tab-content :before-change="saveSolicitude" title="Datos de la solicitud">
         <solicitud-step 
-        @sol-number-change="setSolNumber"
-        @sol-date-change="setSolDate"
-        @ced-prosp-change="setCedProspect"
-        @promoter-change="setPromoter"
-        @subdiretor-change="setSubdirector"
-        @analyst-change="setAnalyst"
-        @shareholder-change="setShareholder"
-        @checks-date-change="setChecksdate"
-        @credit-date-change="setCreditDate"
+          @sol-number-change="setSolNumber"
+          @sol-date-change="setSolDate"
+          @ced-prosp-change="setCedProspect"
+          @promoter-change="setPromoter"
+          @subdiretor-change="setSubdirector"
+          @analyst-change="setAnalyst"
+          @shareholder-change="setShareholder"
+          @checks-date-change="setChecksdate"
+          @credit-date-change="setCreditDate"
 
-        ref="solicitud" 
-        :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
-        :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
-        :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
-        :razon_flujo_tasa="razon_FDA_tasa_rev"
-        :razon_flujo_rec_capital="razon_FDA_FRC_smp"
-        :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
-        :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"        
+          ref="solicitud" 
+          :linea="{'simple':linea_simple, 'revolvente':linea_revolvente}"
+          :capacidad_pago="{'simple':capacidad_pago_smp, 'revolvente':capacidad_pago_rev}"
+          :ingreso_vs_deuda="{'simple':dif_deuda_ingreso_smp, 'revolvente':dif_deuda_ingreso_rev}"
+          :razon_flujo_tasa="razon_FDA_tasa_rev"
+          :razon_flujo_rec_capital="razon_FDA_FRC_smp"
+          :monto_solicitado="{'simple':monto_simple, 'revolvente':monto_revolvente}"
+          :monto_maximo="{'simple':monto_maximo, 'revolvente':monto_maximo}"        
         > 
         </solicitud-step>
       </tab-content>
