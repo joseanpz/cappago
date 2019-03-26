@@ -14,7 +14,7 @@ var AsignacionStep = Vue.component('asignacion-step',{
 				</div>
 				<div class="content columns">
 					<div class="column">					
-						<div style="margin:10px;" class="column card " v-if="revolving_credits.length" v-for="credit in revolving_credits" :key="credit.id_local">
+						<div style="margin:10px;" class="column card " v-if="new_incr_revolving_credits.length" v-for="credit in new_incr_revolving_credits" :key="credit.id_local">
 							<header class="header-sec-card" >
 	                			<p class="card-header-title title-color">{{productName(credit.id_producto)}} (Revolvente)</p>
 	              			</header>
@@ -48,7 +48,7 @@ var AsignacionStep = Vue.component('asignacion-step',{
 						</div>
 					</div>
 					<div class="column">					
-						<div style="margin:10px;" class="column card " v-if="simple_credits.length" v-for="credit in simple_credits" :key="credit.id_local">
+						<div style="margin:10px;" class="column card " v-if="new_incr_simple_credits.length" v-for="credit in new_incr_simple_credits" :key="credit.id_local">
 							<header class="header-sec-card" >
 	                			<p class="card-header-title title-color">{{productName(credit.id_producto)}} (Simple)</p>
 	              			</header>
@@ -120,6 +120,12 @@ var AsignacionStep = Vue.component('asignacion-step',{
     	tempdelay : function() {
     		return parseInt(this.garantia);
     	},
+    	new_incr_revolving_credits: function () {
+    		return this.revolving_credits.filter(credit => credit.tipo_operacion === '2' || credit.tipo_operacion === '3')
+    	},
+    	new_incr_simple_credits: function () {
+    		return this.simple_credits.filter(credit => credit.tipo_operacion === '2' || credit.tipo_operacion === '3')
+    	},
 	},
 
 	methods: {
@@ -146,7 +152,7 @@ var AsignacionStep = Vue.component('asignacion-step',{
 			// console.log(producto);
 			if (typeof producto === 'undefined' || producto === null) return null;
 			return producto.tipo_producto;
-		}		
+		},	
 	},
 
 	watch: {

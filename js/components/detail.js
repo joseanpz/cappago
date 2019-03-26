@@ -12,7 +12,7 @@ const DetailForm = Vue.component('detail', {
         <div class="columns">
           <p style="font-size:12px; text-align:right;" class="column"> 
             ACUERDO PARA AUTORIZACIÓN DE LÍNEA DE CRÉDITO <br/>
-            <span style="font-size:10px;"><b>Crédito negocio hasta 500 mil</b></span> <br/>
+            <span style="font-size:10px;"><b>Crédito Negocios</b></span> <br/>
             <span style="font-size:10px;"><b>Fecha de presentación: {{solicitud.fecha_solicitud}}</b></span> <br/>
           </p>
         </div>
@@ -94,19 +94,19 @@ const DetailForm = Vue.component('detail', {
                         <!--<td><label class="label">TIPO OPERACIÓN</label></td>-->
                       </tr>
                      
-                        <tr v-if="credits.length" v-for="credit in credits" :key="credit.id_local">
+                        <tr v-if="credits.length" v-for="credit in ordered_credits" :key="credit.id_local">
                           <td>{{credit.id_local}}</td>
                           <td>{{credit.empresa}}</td>
                           <td>{{credit.tipo | tipo_credito}}</td>
-                          <td></td>
+                          <td style="text-align:center;">{{productName(credit.id_producto)}}</td>
                           <!--
                           <td>4,152.25</td>
                           <td></td>
                           <td></td>
-                          -->
-                          <td style="text-align:right;"></td>
-                          <td style="text-align:right;"></td>
-                          <td style="text-align:right;"></td> 
+                          -->                          
+                          <td style="text-align:right;">{{credit.importe}}</td>
+                          <td style="text-align:right;">{{credit.responsabilidad}}</td>
+                          <td style="text-align:right;">{{credit.vencimiento}}</td> 
                           <td style="text-align:right;">{{credit.monto | monto_redondeado}}</td> 
                            
                           <td style="text-align:right;">{{credit.autorizado | monto_redondeado}}</td>
@@ -150,8 +150,8 @@ const DetailForm = Vue.component('detail', {
                   <td colspan="3" style="text-align:center;">Simple línea máxima sugerida</td>   
                 </tr> 
                 <tr>
-                  <td colspan="3" style="text-align:center;"><b>$2,220.00</b></td>
-                  <td colspan="3" style="text-align:center;"><b>$ 3984,222.09</b></td>   
+                  <td colspan="3" style="text-align:center;"><b>{{solicitud.linea_revolvente_sugerida}}</b></td>
+                  <td colspan="3" style="text-align:center;"><b>{{solicitud.linea_simple_sugerida}}</b></td>   
                 </tr> 
                 <tr>
                   <td colspan="6" class="div-titulos">Calificación de cartera</td>
@@ -305,7 +305,8 @@ const DetailForm = Vue.component('detail', {
         credito_fecha: null,
         riesgo_potencial: null,
       },
-      risk_levels: [], 
+      risk_levels: [],
+      products: [],
       activities: [],
       credits: [],
       avales: [],
@@ -322,7 +323,8 @@ const DetailForm = Vue.component('detail', {
     this.readDetail();
     this.readRiskLevels();
     this.readActivities();
-    this.readCredits();  
+    this.readCredits();
+    this.readProducts(); 
   },
 
   computed:{
@@ -331,18 +333,24 @@ const DetailForm = Vue.component('detail', {
               nivel_riesgo: this.nivel_riesgo,                  
         }
     },
-     decreto: function() {
+    decreto: function() {
       if (!this.solicitud.decreto) return null;
       if (this.solicitud.decreto === "1") return "ESTUDIO";
       if (this.solicitud.decreto === "2") return "DENEGADO";
       if (this.solicitud.decreto === "3"){
-        console.log('decreto');
-        console.log(this.solicitud);
-        if (!!this.solicitud.plazo_simple && parseInt(this.solicitud.plazo_simple) >= 48 && !this.solicitud.exp_creditos_largos) return "ESTUDIO";
+        // console.log('decreto');
+        // console.log(this.solicitud);
+        // if (!!this.solicitud.plazo_simple && parseInt(this.solicitud.plazo_simple) >= 48 && !this.solicitud.exp_creditos_largos) return "ESTUDIO";
         return "PRE-APROBADO"
       } ;
       return "N/A";
     },
+    ordered_credits: function () {
+      return this.credits.filter(item => item.tipo_operacion === "1")
+        .concat(this.credits.filter(item => item.tipo_operacion === "2"))
+        .concat(this.credits.filter(item => item.tipo_operacion === "3"));
+    },
+
     nivel_riesgo: function() {
       var self = this;
       console.log('nivel_riesgo computed');
@@ -420,6 +428,20 @@ const DetailForm = Vue.component('detail', {
       })
       .readId('solicitud',this.id)
 
+    },
+    readProducts: function () {
+      var self = this;
+      google.script.run
+        .withSuccessHandler(function(response){
+          console.log('Reading products!')
+            console.log(response);
+            self.products = response.records;            
+        })
+        .withFailureHandler(function(err){
+          console.log('An error ocurred while fetching products!')
+            console.log(err);
+        })
+        .readCatalog('producto')
     },
     readActivities: function () {
       var self = this;
@@ -508,9 +530,9 @@ const DetailForm = Vue.component('detail', {
       this.solicitud.decreto = response.decreto;
       this.solicitud.plazo_simple = response.plazo_simple;
       this.solicitud.score = response.score;
-      this.solicitud.id_nivel_riesgo = response.id_nivel_riesgo;
+      this.solicitud.id_nivel_riesgo = response.id_nivel_riesgo;*/
       this.solicitud.linea_revolvente_sugerida = response.linea_revolvente_sugerida;
-      this.solicitud.linea_simple_sugerida = response.linea_simple_sugerida;*/
+      this.solicitud.linea_simple_sugerida = response.linea_simple_sugerida;
 
 
       this.solicitud.numero_solicitud = response.numero_solicitud;
@@ -561,7 +583,17 @@ const DetailForm = Vue.component('detail', {
       this.solicitud.calificacion_interna = response.calificacion_interna; 
       this.solicitud.pre_calif = response.pre_calif;
       this.solicitud.riesgo_potencial = response.riesgo_potencial;
-    },   
+    }, 
+
+    productName: function(id) {
+      console.log('product name en detalle')
+      if (typeof this.products === 'undefined') return null;
+      var producto = this.products.find(item => item.id === id);
+      // console.log(this.products);
+      // console.log(producto);
+      if (typeof producto === 'undefined' || producto === null) return null;
+      return producto.tipo_producto;
+    },  
   },
   
   filters: {        
@@ -649,7 +681,9 @@ const DetailForm = Vue.component('detail', {
       }else{
         return null;
       }
-    }
+    },
+
+    
   
         
   },
