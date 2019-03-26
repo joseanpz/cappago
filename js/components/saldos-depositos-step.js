@@ -12,7 +12,7 @@ var SaldosDepositosStep = Vue.component('saldos-depositos-step',{
 							<label class="label titulos" style="text-align:center; margin:auto;">Seleccione un Banco</label>
 						</div>
 						<div class="column is-2">
-		 					<b-select placeholder="Select a name" v-model="selected_bank"> 
+		 					<b-select placeholder="Seleccione un Banco" v-model="selected_bank"> 
 								<option 
 								v-for="bank in banks" 
 								:value="bank.id" 

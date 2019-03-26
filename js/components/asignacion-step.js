@@ -12,78 +12,81 @@ var AsignacionStep = Vue.component('asignacion-step',{
 						<input type="text" v-model="riesgo_potencial" class="input">
 					</div>
 				</div>
-				<div class="content columns">					
-					<div style="margin:10px;" class="column card " v-if="revolving_credits.length" v-for="credit in revolving_credits" :key="credit.id_local">
-						<header class="header-sec-card" >
-                			<p class="card-header-title title-color">Crédito Revolvente</p>
-              			</header>
-						<div class="card-content">                     
-                			<div class="content">
-                				<div class="columns">
-									<div class="column is-2">
-										<label class="label titulos">Monto Solicitado: </label>
+				<div class="content columns">
+					<div class="column">					
+						<div style="margin:10px;" class="column card " v-if="new_incr_revolving_credits.length" v-for="credit in new_incr_revolving_credits" :key="credit.id_local">
+							<header class="header-sec-card" >
+	                			<p class="card-header-title title-color">{{productName(credit.id_producto)}} (Revolvente)</p>
+	              			</header>
+							<div class="card-content">                     
+	                			<div class="content">
+	                				<div class="columns">
+										<div class="column is-2">
+											<label class="label titulos">Monto Solicitado: </label>
+										</div>
+										<div class="column is-4" > 
+											<input type="text" v-model="credit.monto" class="input"  disabled/>
+										</div>									
+									</div>	
+									<div class="columns">
+										<div class="column is-2">
+											<label class="label titulos">Monto sugerido: </label>
+										</div>
+										<div class="column is-4" > 
+											<input type="text" v-model="credit.sugerido" class="input" disabled/>
+										</div>
+										<div class="column is-2">
+											<label class="label titulos">Monto Autorizado: </label>
+										</div>
+										<div class="column is-4" > 
+											<input type="text" v-model="credit.autorizado" class="input"/>
+										</div>
 									</div>
-									<div class="column is-4" > 
-										<input type="text" v-model="credit.monto" class="input"  disabled/>
-									</div>									
-								</div>	
-								<div class="columns">
-									<div class="column is-2">
-										<label class="label titulos">Monto sugerido: </label>
-									</div>
-									<div class="column is-4" > 
-										<input type="text" v-model="credit.sugerido" class="input" disabled/>
-									</div>
-									<div class="column is-2">
-										<label class="label titulos">Monto Autorizado: </label>
-									</div>
-									<div class="column is-4" > 
-										<input type="text" v-model="credit.autorizado" class="input"/>
-									</div>
-								</div>
-                				
-	                		</div>								
-						</div>	 		 			
-					</div> 
+	                				
+		                		</div>								
+							</div>	 		 			
+						</div>
+					</div>
+					<div class="column">					
+						<div style="margin:10px;" class="column card " v-if="new_incr_simple_credits.length" v-for="credit in new_incr_simple_credits" :key="credit.id_local">
+							<header class="header-sec-card" >
+	                			<p class="card-header-title title-color">{{productName(credit.id_producto)}} (Simple)</p>
+	              			</header>
+							<div class="card-content">                     
+	                			<div class="content">
 
-					<div style="margin:10px;" class="column card " v-if="simple_credits.length" v-for="credit in simple_credits" :key="credit.id_local">
-						<header class="header-sec-card" >
-                			<p class="card-header-title title-color">Crédito Simple</p>
-              			</header>
-						<div class="card-content">                     
-                			<div class="content">
-
-                				<div class="columns">
-									<div class="column is-2">
-										<label class="label titulos">Monto Solicitado: </label>
+	                				<div class="columns">
+										<div class="column is-2">
+											<label class="label titulos">Monto Solicitado: </label>
+										</div>
+										<div class="column is-4" > 
+											<input type="text" v-model="credit.monto" class="input" disabled/>
+										</div>
+										<div class="column is-2">
+											<label class="label titulos">Plazo: </label>
+										</div>
+										<div class="column is-4" style="text-align:left;">
+											<input type="text"  v-model="credit.plazo" class="input" disabled/>
+										</div>
 									</div>
-									<div class="column is-4" > 
-										<input type="text" v-model="credit.monto" class="input" disabled/>
+									<div class="columns">
+										<div class="column is-2">
+											<label class="label titulos">Monto sugerido: </label>
+										</div>
+										<div class="column is-4" > 
+											<input type="text" v-model="credit.sugerido" class="input" disabled/>
+										</div>
+										<div class="column is-2">
+											<label class="label titulos">Monto Autorizado: </label>
+										</div>
+										<div class="column is-4" > 
+											<input type="text" v-model="credit.autorizado" class="input"/>
+										</div>
 									</div>
-									<div class="column is-2">
-										<label class="label titulos">Plazo: </label>
-									</div>
-									<div class="column is-4" style="text-align:left;">
-										<input type="text"  v-model="credit.plazo" class="input" disabled/>
-									</div>
-								</div>
-								<div class="columns">
-									<div class="column is-2">
-										<label class="label titulos">Monto sugerido: </label>
-									</div>
-									<div class="column is-4" > 
-										<input type="text" v-model="credit.sugerido" class="input" disabled/>
-									</div>
-									<div class="column is-2">
-										<label class="label titulos">Monto Autorizado: </label>
-									</div>
-									<div class="column is-4" > 
-										<input type="text" v-model="credit.autorizado" class="input"/>
-									</div>
-								</div>
-	                		</div>								
-						</div>	 		 			
-					</div> 				
+		                		</div>								
+							</div>	 		 			
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>			
@@ -98,9 +101,17 @@ var AsignacionStep = Vue.component('asignacion-step',{
 			riesgo_potencial: null,
 			simple_credits: this.initial_simple_credits,
 			revolving_credits: this.initial_revolving_credits,
+			products: [],
 		}
 	},
-	
+
+	created: function () {
+		this.readProducts();		
+	},
+
+	filters: {
+		
+	},	
 
 	computed: {
 		solicited_credits: function () {
@@ -109,10 +120,39 @@ var AsignacionStep = Vue.component('asignacion-step',{
     	tempdelay : function() {
     		return parseInt(this.garantia);
     	},
+    	new_incr_revolving_credits: function () {
+    		return this.revolving_credits.filter(credit => credit.tipo_operacion === '2' || credit.tipo_operacion === '3')
+    	},
+    	new_incr_simple_credits: function () {
+    		return this.simple_credits.filter(credit => credit.tipo_operacion === '2' || credit.tipo_operacion === '3')
+    	},
 	},
 
 	methods: {
-		
+		readProducts: function () {
+          var self = this;
+          google.script.run
+            .withSuccessHandler(function(response){
+            	console.log('Reading products!')
+              	console.log(response);
+              	self.products = response.records;
+            })
+            .withFailureHandler(function(err){
+            	console.log('An error ocurred while fetching products!')
+              	console.log(err);
+            })
+            .readCatalog('producto')
+        },
+
+        productName: function(id) {
+			console.log('product name en asignacion')
+			if (typeof this.products === 'undefined') return null;
+			var producto = this.products.find(item => item.id === id);
+			// console.log(this.products);
+			// console.log(producto);
+			if (typeof producto === 'undefined' || producto === null) return null;
+			return producto.tipo_producto;
+		},	
 	},
 
 	watch: {

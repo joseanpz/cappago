@@ -1,7 +1,7 @@
 const DetailForm = Vue.component('detail', {
   props: ['id'],
-	template: `
-	<section class="container" >
+  template: `
+  <section class="container" >
   <div id="detail-print" style="padding:30px;">          
 
         <header class="columns navbar is-primary" id="header_PDF" style="display:none; padding-bottom:20px;">
@@ -12,7 +12,7 @@ const DetailForm = Vue.component('detail', {
         <div class="columns">
           <p style="font-size:12px; text-align:right;" class="column"> 
             ACUERDO PARA AUTORIZACIÓN DE LÍNEA DE CRÉDITO <br/>
-            <span style="font-size:10px;"><b>Crédito negocio hasta 500 mil</b></span> <br/>
+            <span style="font-size:10px;"><b>Crédito Negocios</b></span> <br/>
             <span style="font-size:10px;"><b>Fecha de presentación: {{solicitud.fecha_solicitud}}</b></span> <br/>
           </p>
         </div>
@@ -67,46 +67,61 @@ const DetailForm = Vue.component('detail', {
                 </tr>
                 <tr>
                   <td colspan="6">
-                    <table style="font-size:12px; width:100%" >
+                    <table style="font-size:10px; width:100%" >
                       <tr>
                         <td><label class="label">REF</label></td>
                         <td><label class="label">EMP</label></td>
                         <td><label class="label">TIPO</label></td>
-                        <!--
-                        <td><label class="label">IMPORTE</label></td>
+                        <td><label class="label">PRODUCTO</label></td>
+                        <!--                        
                         <td><label class="label">RESPONS.</label></td>
                         <td><label class="label">VENCIMIENTO</label></td>
                         -->
+                        <td><label class="label">IMPORTE</label></td>
+                        <td><label class="label">RESPONS.</label></td>
+                        <td><label class="label">VENCIMIENTO</label></td>
                         <td><label class="label">LINEA SOLICITADA</label></td>
+                        
                         <td><label class="label">LINEA AUTORIZADA</label></td>
+                        
                         <td><label class="label">PLAZO</label></td>
+                        
                         <td><label class="label">GTIA. FONDOS</label></td>
                         <td><label class="label">CLASIF B-6</label></td>
                         <td><label class="label">DESTINO</label></td>
                         <td><label class="label">SHC</label></td>
                         <td><label class="label">PERIODO GRACIA</label></td>
+                        <!--<td><label class="label">TIPO OPERACIÓN</label></td>-->
                       </tr>
                      
-                        <tr v-if="credits.length" v-for="credit in credits" :key="credit.id_local">
+                        <tr v-if="credits.length" v-for="credit in ordered_credits" :key="credit.id_local">
                           <td>{{credit.id_local}}</td>
                           <td>{{credit.empresa}}</td>
                           <td>{{credit.tipo | tipo_credito}}</td>
+                          <td style="text-align:center;">{{productName(credit.id_producto)}}</td>
                           <!--
                           <td>4,152.25</td>
                           <td></td>
                           <td></td>
-                          -->
+                          -->                          
+                          <td style="text-align:right;">{{credit.importe}}</td>
+                          <td style="text-align:right;">{{credit.responsabilidad}}</td>
+                          <td style="text-align:right;">{{credit.vencimiento}}</td> 
                           <td style="text-align:right;">{{credit.monto | monto_redondeado}}</td> 
+                           
                           <td style="text-align:right;">{{credit.autorizado | monto_redondeado}}</td>
+                           
                           <td>{{credit.plazo | plazo_credito}}</td>
+                          
                           <td>{{credit.garantia_fondos | etiqueta_aplica}}</td>
                           <td>{{credit.clasif_b6 | credito_clasif_b6}}</td>
                           <td>{{credit.destino}}</td>
                           <td>{{credit.hsc | etiqueta_aplica}}</td>
                           <td>{{credit.periodo_gracia | etiqueta_aplica}}</td>
+                          <!--<td style="text-align:right;"></td>--> 
                         </tr>                      
                       <tr>                        
-                        <td colspan="6" rowspan="3">
+                        <td colspan="16" rowspan="3">
                           Riesgo potencial grupo: {{solicitud.riesgo_potencial}}
                         </td>
                       </tr>                      
@@ -125,11 +140,19 @@ const DetailForm = Vue.component('detail', {
                   <td colspan="4">{{aval}}</td>                  
                 </tr>
                 <tr>
-                  <td colspan="6" class="div-titulos">Decreto del estudio de credito</td>
-                <tr>                
+                  <td colspan="6" class="div-titulos">Decreto paramétrico</td>
+                </tr>                              
                 <tr>
                   <td colspan="6" style="text-align:center;"><b>{{ decreto }}</b></td>
                 </tr>
+                <tr>
+                  <td colspan="3" style="text-align:center;">Revolvente línea máxima sugerida</td>
+                  <td colspan="3" style="text-align:center;">Simple línea máxima sugerida</td>  
+                </tr> 
+                <tr>
+                  <td colspan="3" style="text-align:center; font-size:18px;"><b>{{solicitud.linea_revolvente_sugerida | monto_redondeado}}</b></td>
+                  <td colspan="3" style="text-align:center; font-size:18px;"><b>{{solicitud.linea_simple_sugerida | monto_redondeado}}</b></td>   
+                </tr> 
                 <tr>
                   <td colspan="6" class="div-titulos">Calificación de cartera</td>
                 <tr>
@@ -151,12 +174,12 @@ const DetailForm = Vue.component('detail', {
                 </tr>
                 <tr>
                   <td colspan="6" class="div-titulos">Firmas facultadas</td>
+                </tr>
                 <tr>
-                <tr>
-                  <td colspan="6" class="div-titulos" style="height:200px;" >
+                  <td colspan="6" class="div-titulos" style="height:200px;">
                     <label class="label" style="float:right;">Fecha de autorización</label>
                   </td>
-                <tr>
+                </tr>
               </tbody>
             </table>            
           </div>            
@@ -226,9 +249,9 @@ const DetailForm = Vue.component('detail', {
         <br/>        
     </section> 
     `,
-	data () {
-		return {       
-			solicitud : {
+  data () {
+    return {       
+      solicitud : {
         id: null,
         id_actividad: null,
         id_nivel_riesgo: null,
@@ -282,7 +305,8 @@ const DetailForm = Vue.component('detail', {
         credito_fecha: null,
         riesgo_potencial: null,
       },
-      risk_levels: [], 
+      risk_levels: [],
+      products: [],
       activities: [],
       credits: [],
       avales: [],
@@ -292,14 +316,15 @@ const DetailForm = Vue.component('detail', {
       solicitante: null,
       domicilio: null,
       accionistas: null,
-		}
-	},
+    }
+  },
 
   created: function () {   
     this.readDetail();
     this.readRiskLevels();
     this.readActivities();
-    this.readCredits();  
+    this.readCredits();
+    this.readProducts(); 
   },
 
   computed:{
@@ -308,18 +333,24 @@ const DetailForm = Vue.component('detail', {
               nivel_riesgo: this.nivel_riesgo,                  
         }
     },
-     decreto: function() {
+    decreto: function() {
       if (!this.solicitud.decreto) return null;
       if (this.solicitud.decreto === "1") return "ESTUDIO";
       if (this.solicitud.decreto === "2") return "DENEGADO";
       if (this.solicitud.decreto === "3"){
-        console.log('decreto');
-        console.log(this.solicitud);
-        if (!!this.solicitud.plazo_simple && parseInt(this.solicitud.plazo_simple) >= 48 && !this.solicitud.exp_creditos_largos) return "ESTUDIO";
+        // console.log('decreto');
+        // console.log(this.solicitud);
+        // if (!!this.solicitud.plazo_simple && parseInt(this.solicitud.plazo_simple) >= 48 && !this.solicitud.exp_creditos_largos) return "ESTUDIO";
         return "PRE-APROBADO"
       } ;
       return "N/A";
     },
+    ordered_credits: function () {
+      return this.credits.filter(item => item.tipo_operacion === "1")
+        .concat(this.credits.filter(item => item.tipo_operacion === "2"))
+        .concat(this.credits.filter(item => item.tipo_operacion === "3"));
+    },
+
     nivel_riesgo: function() {
       var self = this;
       console.log('nivel_riesgo computed');
@@ -360,26 +391,26 @@ const DetailForm = Vue.component('detail', {
     },
   },
   
-	methods: {
-		genPDF: function () {		
+  methods: {
+    genPDF: function () {   
       var self = this;
       document.getElementById("header_PDF").style.display = "block";
       document.getElementById("div_footer").style.display = "block";
 
-			html2canvas(document.getElementById("detail-print"), {
-				onrendered: function (canvas) {
+      html2canvas(document.getElementById("detail-print"), {
+        onrendered: function (canvas) {
           
-					var img = canvas.toDataURL("image/url",1.0);  
-					var doc = new jsPDF('p', 'pt', 'letter')
-					doc.addImage(img, 'JPEG',25,75,560,650);
+          var img = canvas.toDataURL("image/url",1.0);  
+          var doc = new jsPDF('p', 'pt', 'letter')
+          doc.addImage(img, 'JPEG',25,30,560,730); //
           
-					doc.save('CapacidadPago_'+self.solicitud.numero_solicitud+'.pdf');
+          doc.save('CapacidadPago_'+self.solicitud.numero_solicitud+'.pdf');
            document.getElementById("header_PDF").style.display = "none";
            document.getElementById("div_footer").style.display = "none";
-				}
-			});
+        }
+      });
     
-		},
+    },
     readDetail:function(){
       var self = this;
       console.log('Reading detail');
@@ -397,6 +428,20 @@ const DetailForm = Vue.component('detail', {
       })
       .readId('solicitud',this.id)
 
+    },
+    readProducts: function () {
+      var self = this;
+      google.script.run
+        .withSuccessHandler(function(response){
+          console.log('Reading products!')
+            console.log(response);
+            self.products = response.records;            
+        })
+        .withFailureHandler(function(err){
+          console.log('An error ocurred while fetching products!')
+            console.log(err);
+        })
+        .readCatalog('producto')
     },
     readActivities: function () {
       var self = this;
@@ -485,9 +530,9 @@ const DetailForm = Vue.component('detail', {
       this.solicitud.decreto = response.decreto;
       this.solicitud.plazo_simple = response.plazo_simple;
       this.solicitud.score = response.score;
-      this.solicitud.id_nivel_riesgo = response.id_nivel_riesgo;
+      this.solicitud.id_nivel_riesgo = response.id_nivel_riesgo;*/
       this.solicitud.linea_revolvente_sugerida = response.linea_revolvente_sugerida;
-      this.solicitud.linea_simple_sugerida = response.linea_simple_sugerida;*/
+      this.solicitud.linea_simple_sugerida = response.linea_simple_sugerida;
 
 
       this.solicitud.numero_solicitud = response.numero_solicitud;
@@ -538,8 +583,18 @@ const DetailForm = Vue.component('detail', {
       this.solicitud.calificacion_interna = response.calificacion_interna; 
       this.solicitud.pre_calif = response.pre_calif;
       this.solicitud.riesgo_potencial = response.riesgo_potencial;
-    },   
-	},
+    }, 
+
+    productName: function(id) {
+      console.log('product name en detalle')
+      if (typeof this.products === 'undefined') return null;
+      var producto = this.products.find(item => item.id === id);
+      // console.log(this.products);
+      // console.log(producto);
+      if (typeof producto === 'undefined' || producto === null) return null;
+      return producto.tipo_producto;
+    },  
+  },
   
   filters: {        
     nivel_riesgo_nombre: function(value) {
@@ -626,7 +681,9 @@ const DetailForm = Vue.component('detail', {
       }else{
         return null;
       }
-    }
+    },
+
+    
   
         
   },

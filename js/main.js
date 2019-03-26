@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+
+
 /* (function() {
   var burger = document.querySelector('.burger');
   var nav = document.querySelector('#'+burger.dataset.target);
