@@ -147,11 +147,11 @@ const DetailForm = Vue.component('detail', {
                 </tr>
                 <tr>
                   <td colspan="3" style="text-align:center;">Revolvente línea máxima sugerida</td>
-                  <td colspan="3" style="text-align:center;">Simple línea máxima sugerida</td>   
+                  <td colspan="3" style="text-align:center;">Simple línea máxima sugerida</td>  
                 </tr> 
                 <tr>
-                  <td colspan="3" style="text-align:center;"><b>{{solicitud.linea_revolvente_sugerida}}</b></td>
-                  <td colspan="3" style="text-align:center;"><b>{{solicitud.linea_simple_sugerida}}</b></td>   
+                  <td colspan="3" style="text-align:center; font-size:18px;"><b>{{solicitud.linea_revolvente_sugerida | monto_redondeado}}</b></td>
+                  <td colspan="3" style="text-align:center; font-size:18px;"><b>{{solicitud.linea_simple_sugerida | monto_redondeado}}</b></td>   
                 </tr> 
                 <tr>
                   <td colspan="6" class="div-titulos">Calificación de cartera</td>
