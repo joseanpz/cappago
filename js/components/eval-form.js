@@ -217,7 +217,7 @@ const EvalFormWizard = Vue.component('eval-form', {
         </section>
       </tab-content>  
 
-      <pre>{{ data | pretty }}</pre>
+      <!--<pre>{{ data | pretty }}</pre>-->
 
       <template slot="footer" slot-scope="props">
         <div class="wizard-footer-left">
@@ -412,6 +412,9 @@ const EvalFormWizard = Vue.component('eval-form', {
         razon_FDA_FRC_smp: this.razon_FDA_FRC_smp,
         razon_FDA_tasa_rev: this.razon_FDA_tasa_rev,
         tope_capital_contable_smp_rev: this.tope_capital_contable_smp_rev,
+        valor_actual: this.valor_actual,
+        pasivo_financiero_corto: this.solicitud.pasivo_financiero_corto, 
+        deuda_cortoplazo: this.solicitud.deuda_cortoplazo,
         capacidad_pago_smp: this.capacidad_pago_smp,
         capacidad_pago_rev: this.capacidad_pago_rev,
         //deposits_movil_means: this.deposits_movil_means,
@@ -778,7 +781,7 @@ const EvalFormWizard = Vue.component('eval-form', {
 
     plazo_simple: function () {
       if (!this.config) return null;
-      if (this.simple_credits.length === 0) return this.config.plazo; // default 36 o null?
+      if (this.simple_credits.length === 0) return parseFloat(this.config.plazo); // default 36 o null?
       var ret = 0;
       for(var i=0; i<this.simple_credits.length; i++) {
         if (this.simple_credits[i].tipo_operacion === "3") {
