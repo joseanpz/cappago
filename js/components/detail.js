@@ -56,7 +56,7 @@ const DetailForm = Vue.component('detail', {
                   <td><label class="label">Analista:</label></td>
                   <td colspan="3">{{solicitud.analista}}</td>
                   <td><label class="label">Inicio de operaciones:</label></td>
-                  <td>2016-05-01</td>
+                  <td>{{solicitud.antiguedad_operacion}}</td>
                 </tr> 
                 <tr>
                   <td><label class="label">Accionistas:</label></td>
