@@ -311,7 +311,7 @@ var CreditoStep = Vue.component('credito-step',{
     	},
 
     	next_local_id: function () {
-    		return this.simple_credits.concat(this.revolving_credits).map(credit => credit.id_local).reduce((a,b) => Math.max(a,b)) + 1;
+    		return this.simple_credits.concat(this.revolving_credits).map(credit => credit.id_local).reduce((a,b) => Math.max(a,b),0) + 1;
     	},
 	},
 
