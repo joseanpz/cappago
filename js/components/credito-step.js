@@ -80,8 +80,12 @@ var CreditoStep = Vue.component('credito-step',{
 			                						<td><input type="text"  v-model="credit.responsabilidad" class="input"/></td>		                						
 				                				</tr>
 			                					<tr v-bind:class="{card: credit.tipo_operacion == '3' || credit.tipo_operacion == '2'} ">
+			                						<!--<td><label class="label titulos">Monto: </label></td>
+			                						<td colspan="3"><input type="text" v-model="credit.monto" class="input"/></td>-->
 			                						<td><label class="label titulos">Monto: </label></td>
-			                						<td colspan="3"><input type="text" v-model="credit.monto" class="input"/></td>		                						
+			                						<td><input type="text" v-model="credit.monto" class="input"/></td>
+			                						<td><label class="label titulos">Plazo: </label></td>
+			                						<td><input type="text"  v-model="credit.plazo" class="input"/></td>		                						
 				                				</tr>
 				                				<tr>
 				                					<td><label class="label titulos">Vencimiento </label></td>
@@ -311,7 +315,7 @@ var CreditoStep = Vue.component('credito-step',{
     	},
 
     	next_local_id: function () {
-    		return this.simple_credits.concat(this.revolving_credits).map(credit => credit.id_local).reduce((a,b) => Math.max(a,b)) + 1;
+    		return this.simple_credits.concat(this.revolving_credits).map(credit => credit.id_local).reduce((a,b) => Math.max(a,b),0) + 1;
     	},
 	},
 
