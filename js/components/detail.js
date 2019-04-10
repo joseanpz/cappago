@@ -1,8 +1,8 @@
 const DetailForm = Vue.component('detail', {
   props: ['id'],
   template: `
-  <section class="container" >
-  <div id="detail-print" style="padding:30px;">          
+    <section class="container" >
+      <div id="detail-print" style="padding:30px;">          
 
         <header class="columns navbar is-primary" id="header_PDF" style="display:none; padding-bottom:20px;">
           <a class="navbar-item" href="#" style="font-weight:bold; padding-left:50px;">
@@ -17,7 +17,7 @@ const DetailForm = Vue.component('detail', {
           </p>
         </div>
         <br/>
-        <div class="columns" style="padding-bottom: 250px;">
+        <div class="columns" style="#padding-bottom: 250px;">
           <div class="column">
             <table class="table is-bordered is-striped" style="width:100%;">
               <tbody>
@@ -63,11 +63,11 @@ const DetailForm = Vue.component('detail', {
                   <td colspan="5">{{accionistas}}</td>
                 </tr>               
                 <tr>
-                  <td colspan="6" class="div-titulos">Lineas de crédito</td>
+                  <td colspan="6" class="div-titulos">Líneas de crédito</td>
                 </tr>
                 <tr>
                   <td colspan="6">
-                    <table style="font-size:10px; width:100%" >
+                    <table style="font-size:13px; width:100%" >
                       <tr>
                         <td><label class="label">REF</label></td>
                         <td><label class="label">EMP</label></td>
@@ -94,42 +94,67 @@ const DetailForm = Vue.component('detail', {
                         <!--<td><label class="label">TIPO OPERACIÓN</label></td>-->
                       </tr>
                      
-                        <tr v-if="credits.length" v-for="credit in ordered_credits" :key="credit.id_local">
-                          <td>{{credit.id_local}}</td>
-                          <td>{{credit.empresa}}</td>
-                          <td>{{credit.tipo | tipo_credito}}</td>
-                          <td style="text-align:center;">{{productName(credit.id_producto)}}</td>
-                          <!--
-                          <td>4,152.25</td>
-                          <td></td>
-                          <td></td>
-                          -->                          
-                          <td style="text-align:right;">{{credit.importe}}</td>
-                          <td style="text-align:right;">{{credit.responsabilidad}}</td>
-                          <td style="text-align:right;">{{credit.vencimiento}}</td> 
-                          <td style="text-align:right;">{{credit.monto | monto_redondeado}}</td> 
-                           
-                          <td style="text-align:right;">{{credit.autorizado | monto_redondeado}}</td>
-                           
-                          <td>{{credit.plazo | plazo_credito}}</td>
-                          
-                          <td>{{credit.garantia_fondos | etiqueta_aplica}}</td>
-                          <td>{{credit.clasif_b6 | credito_clasif_b6}}</td>
-                          <td>{{credit.destino}}</td>
-                          <td>{{credit.hsc | etiqueta_aplica}}</td>
-                          <td>{{credit.periodo_gracia | etiqueta_aplica}}</td>
-                          <!--<td style="text-align:right;"></td>--> 
-                        </tr>                      
-                      <tr>                        
-                        <td colspan="16" rowspan="3">
-                          Riesgo potencial grupo: {{solicitud.riesgo_potencial}}
+                      <tr v-if="credits.length" v-for="credit in ordered_credits" :key="credit.id_local">
+                        <td>{{credit.id_local}}</td>
+                        <td>{{credit.empresa}}</td>
+                        <td>{{credit.tipo | tipo_credito}}</td>
+                        <td style="text-align:center;">{{productName(credit.id_producto)}}</td>                         
+                        <td style="text-align:right;">{{credit.importe}}</td>
+                        <td style="text-align:right;">{{credit.responsabilidad}}</td>
+                        <td style="text-align:right;">{{credit.vencimiento}}</td> 
+                        <td style="text-align:right;">{{credit.linea_solicitada | monto_redondeado}}</td>                            
+                        <td style="text-align:right;">{{credit.autorizado | monto_redondeado}}</td>                           
+                        <td>{{credit.plazo}}</td>                          
+                        <td>{{credit.garantia_fondos | etiqueta_aplica}}</td>
+                        <td>{{credit.clasif_b6 | credito_clasif_b6}}</td>
+                        <td>{{credit.destino}}</td>
+                        <td>{{credit.hsc | etiqueta_aplica}}</td>
+                        <td>{{credit.periodo_gracia | etiqueta_aplica}}</td>
+                      </tr>
+                      <tr style="height: 49px;">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>                         
+                        <td></td>
+                        <td></td>
+                        <td></td> 
+                        <td></td>                            
+                        <td></td>                           
+                        <td></td>                          
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr style="height: 49px;">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>                         
+                        <td></td>
+                        <td></td>
+                        <td></td> 
+                        <td></td>                            
+                        <td></td>                           
+                        <td></td>                          
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>                       
+                      <tr style="height: 49px;" >                        
+                        <td colspan="16" rowspan="3" >
+                          <b>RIESGO POTENCIAL GRUPO</b>: {{solicitud.riesgo_potencial}}
                         </td>
                       </tr>                      
                     </table>
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="6" class="div-titulos">Avales/ Obligados solidarios / fiadores</td>
+                  <td colspan="6" class="div-titulos">Avales/ Obligados solidarios / Fiadores</td>
                 <tr>
                 <tr>
                   <td colspan="2"><label class="label">Ref:</label></td>
@@ -146,8 +171,8 @@ const DetailForm = Vue.component('detail', {
                   <td colspan="6" style="text-align:center;"><b>{{ decreto }}</b></td>
                 </tr>
                 <tr>
-                  <td colspan="3" style="text-align:center;">Revolvente línea máxima sugerida</td>
-                  <td colspan="3" style="text-align:center;">Simple línea máxima sugerida</td>  
+                  <td colspan="3" style="text-align:center;">Crédito Revolvente acumulado sugerido</td>
+                  <td colspan="3" style="text-align:center;">Crédito Simple acumulado sugerido</td>  
                 </tr> 
                 <tr>
                   <td colspan="3" style="text-align:center; font-size:18px;"><b>{{solicitud.linea_revolvente_sugerida | monto_redondeado}}</b></td>
@@ -184,71 +209,101 @@ const DetailForm = Vue.component('detail', {
             </table>            
           </div>            
         </div>
+        <div class="columns" style="padding-bottom: 20px;">
+
+          <div class="column">
+            <label class="label" style="text-align:left;">
+                    Observaciones:                  
+            </label>
+            <ul style="height: 230px; font-size: 20px;">
+              <li v-for="note in notes">{{note.texto}}</li>
+            </ul>           
+          </div>
+        </div>
 
         <div class="footer columns" style="display:none; bottom: 0; padding:10px; height:150px;" id="div_footer"> 
-          <div style="font-weight:bold; font-size: 20px; text-align: center;" class="column is-4">banregio | Inteligencia de riesgos</div>
+          <div style="font-weight:bold; font-size: 20px; text-align: center;" class="column is-4">
+            banregio | Inteligencia de riesgos
+          </div>
           <div class="column" style="text-align: right;">
             <p><b>Banco Regional, S.A</b></p>
             <p><b>Institución de Banca Múltiple, Banregio Grupo Financiero. </b></p>
             <p>Todos los Derechos Reservados</p>
           </div>
         </div> 
-        </div>
+      </div>
         
-        <div id="editor" style="text-align:right;" class=" card" >
-          <header class="card-header">
-              <p class="card-header-title">Información sensible:</p>
-          </header>
-          <div class="card-content">  
-            <div class="content columns">
-              <div class="column">
-                <label class="label" style="text-align:left;">
-                  Solicitante
-                  <input type="text" v-model="solicitante" class="input"/>
-                </label>
-              </div>
-              <div class="column">
-                <label class="label" style="text-align:left;">
-                  Domicilio
-                  <input type="text" v-model="domicilio" class="input"/>
-                </label>
-              </div>
-              <div class="column">
-                <label class="label" style="text-align:left;">
-                  RFC
-                  <input type="text" v-model="rfc" class="input" />
-                </label>
-              </div> 
+      <div id="editor" style="text-align:right;" class=" card" >
+        <header class="card-header">
+            <p class="card-header-title">Información sensible:</p>
+        </header>
+        <div class="card-content">  
+          <div class="content columns">
+            <div class="column">
+              <label class="label" style="text-align:left;">
+                Solicitante
+                <input type="text" v-model="solicitante" class="input"/>
+              </label>
             </div>
-            <div class="columns">
-              <div class="column is-2"><label class="label">Accionistas</label></div>
-              <div class="column">
-                <input type="text" class="input" v-model="accionistas">
-              </div>
-            </div>              
-          </div>                  
+            <div class="column">
+              <label class="label" style="text-align:left;">
+                Domicilio
+                <input type="text" v-model="domicilio" class="input"/>
+              </label>
+            </div>
+            <div class="column">
+              <label class="label" style="text-align:left;">
+                RFC
+                <input type="text" v-model="rfc" class="input" />
+              </label>
+            </div> 
+          </div>
+          <div class="columns">
+            <div class="column is-2"><label class="label">Accionistas</label></div>
+            <div class="column">
+              <input type="text" class="input" v-model="accionistas">
+            </div>
+          </div>              
+        </div>                  
+      </div>
+     
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">Avales:</p>
+        </header>
+        <div class="card-content">  
+          <div class="content columns">
+            <div class="column">              
+                <input type="text" v-model="aval" class="input"/>              
+            </div>
+          </div>            
         </div>
-        <br/>
-        <div class="card">
-          <header class="card-header">
-            <p class="card-header-title">Avales:</p>
-          </header>
-          <div class="card-content">  
-            <div class="content columns">
-              <div class="column">              
-                  <input type="text" v-model="aval" class="input"/>              
-              </div>
-            </div>      
-            <div class="columns">
-              <div class="column">
-                <button class="button " @click = "genPDF" style="background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Descarga</button>
-              </div>
+      </div>
+
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">Observaciones:</p>
+        </header>
+        <div class="card-content">  
+          <div class="content columns" v-for="note in notes" :key="note.id_local">
+            <div class="column">              
+                <input type="text" v-model="note.texto" class="input"/>              
+            </div>
+          </div>      
+          <div class="columns">
+            <div class="column">
+              <button class="button " @click = "newNote" style="background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Agregar</button>
             </div>
           </div>
         </div>
-        <br/>        
+      </div>
+      <div class="columns">
+        <div class="column">
+          <button class="button " @click = "genPDF" style="float: right; background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Descarga</button>
+        </div>
+      </div>        
     </section> 
-    `,
+  `,
   data () {
     return {       
       solicitud : {
@@ -309,6 +364,7 @@ const DetailForm = Vue.component('detail', {
       products: [],
       activities: [],
       credits: [],
+      notes: [],
       avales: [],
       aval: null,
       credits_count: 0,
@@ -402,7 +458,7 @@ const DetailForm = Vue.component('detail', {
           
           var img = canvas.toDataURL("image/url",1.0);  
           var doc = new jsPDF('p', 'pt', 'letter')
-          doc.addImage(img, 'JPEG',25,30,560,730); //
+          doc.addImage(img, 'JPEG',25,10,560,770); //
           
           doc.save('CapacidadPago_'+self.solicitud.numero_solicitud+'.pdf');
            document.getElementById("header_PDF").style.display = "none";
@@ -411,6 +467,13 @@ const DetailForm = Vue.component('detail', {
       });
     
     },
+
+    newNote: function () {
+      var new_id_local = this.notes.map(note => note.id_local).reduce((a,b) => Math.max(a,b),0) + 1;
+      var note = {id_local: new_id_local, texto: null};
+      this.notes.push(note);
+    },
+
     readDetail:function(){
       var self = this;
       console.log('Reading detail');
@@ -491,6 +554,11 @@ const DetailForm = Vue.component('detail', {
         for (var i=0; i < this.credits_count; i++) {
           var record = records[i];
           // do trasform
+          if (record.tipo_operacion === "2"){
+            record.linea_solicitada = parseInt(record.monto) + parseInt(record.importe);
+          } else {
+            record.linea_solicitada = record.monto;
+          }
           this.credits.push(record);
         }
       }
@@ -651,13 +719,13 @@ const DetailForm = Vue.component('detail', {
     },
     tipo_credito:function(value){
       if(!!value){
-        if(value==="1"){return "Simple";}
-        if(value==="2"){return "Revolvente";}
+        if(value==="1"){return "SMP";}
+        if(value==="2"){return "REV";}
       }
     },
     plazo_credito:function(value){
       if(!!value){
-        return value+' meses';
+        return value;
       }else{
         return null;
       }
