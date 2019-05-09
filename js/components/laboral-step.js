@@ -38,6 +38,40 @@ var LaboralStep = Vue.component('laboral-step',{
 							</div>
 						</div>
 
+						<div class="columns">
+							<div class="column is-2">
+								<label class="label titulos">Número de emplados: </label>
+							</div>
+							<div class="column is-4">
+								<input type="text" v-model="numero_empleados" class="input" />
+							</div>
+
+							<div class="column is-2">
+								<label class="label titulos">Promedio venta anual: </label>
+							</div>
+							<div class="column is-4">
+								<input type="text" v-model="promedio_venta_anual" class="input" />
+							</div>
+						</div>
+
+						<div class="columns">
+							<div class="column is-2">
+								<label class="label titulos">Actividad especifica: </label>
+							</div>
+							<div class="column is-4">
+								<input type="text" v-model="actividad_especifica" class="input" />
+							</div>
+
+							<div class="column is-2">
+								<label class="label titulos">Sector: </label>
+							</div>
+							<div class="column">
+								<b-select placeholder="Select a name" v-model="id_actividad" expanded>
+			                        <option v-for="activity in activities" :value="activity.id">{{ activity.nombre }} </option>
+			        			</b-select>
+							</div>	
+						</div>
+
 						<div class="columns">	
 							<div class="column is-6">	
 								<div class="columns">
@@ -55,15 +89,7 @@ var LaboralStep = Vue.component('laboral-step',{
 								    	</b-radio>
 									</div>
 								</div>																										
-							</div>
-							<div class="column is-2">
-								<label class="label titulos">Sector: </label>
-							</div>
-							<div class="column">
-								<b-select placeholder="Select a name" v-model="id_actividad" expanded>
-			                        <option v-for="activity in activities" :value="activity.id">{{ activity.nombre }} </option>
-			        			</b-select>
-							</div>														
+							</div>																				
 						</div>			
 					</div>
 				</div>
@@ -80,6 +106,9 @@ var LaboralStep = Vue.component('laboral-step',{
 	data () {
 		return {
 			id_actividad: null,
+			actividad_especifica: null,
+			numero_empleados: null,
+			promedio_venta_anual: null,
 			tipo_comprobante: "account_statements",
 			antiguedad_actividad: null,
 			antiguedad_operacion: null,
@@ -129,6 +158,15 @@ var LaboralStep = Vue.component('laboral-step',{
 		},
 		antiguedad_operacion: function (val) {
 			this.$emit('oper-seniority-change', val);
-		},		
+		},
+		actividad_especifica: function (val) {
+			this.$emit('spec-activity-change', val);
+		},
+		numero_empleados: function (val) {
+			this.$emit('num-employees-change', val);
+		},
+		promedio_venta_anual: function (val) {
+			this.$emit('avg-annual-sales-change', val);
+		},	
 	}
 });
