@@ -3,7 +3,7 @@ const DataTable = Vue.component('data-table', {
   // 'defaultSortDirection', 'currentPage', 'perPage'],
   //template: '<span>Test</span>'
     template: ` 
-        <section class="class-section">
+        <section class="class-section" style="margin-top: 50px;">
             <b-field grouped group-multiline >
                 <!--
                 <b-select v-model="defaultSortDirection">

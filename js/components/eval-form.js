@@ -62,8 +62,6 @@ const EvalFormWizard = Vue.component('eval-form', {
           </results>
         </section>
 
-
-
       </tab-content>
 
       <tab-content :before-change="saveSolicitudeBalDep" title="Características PyME">
@@ -72,7 +70,10 @@ const EvalFormWizard = Vue.component('eval-form', {
             @act-seniority-change="setActSeniority"
             @oper-seniority-change="setOperSeniority"
             @activity-change="setActivity"
-            @eval-type-change="setEvalType"          
+            @eval-type-change="setEvalType"
+            @spec-activity-change="setSpecActivity"
+            @num-employees-change="setNumEmployees"
+            @avg-annual-sales-change="setAvgAnnualSales"        
             
 
             :tipo_comprobante="solicitud.tipo_comprobante"
@@ -261,6 +262,9 @@ const EvalFormWizard = Vue.component('eval-form', {
         destino_credito: null,
         antiguedad_actividad: null,
         antiguedad_operacion: null,
+        actividad_especifica: null,
+        numero_empleados: null,
+        promedio_venta_anual: null,
         calificacion_deudor: null,
         deuda_total: null,
         MONTHS_ON_FILE_BANKING: null,
@@ -1114,6 +1118,9 @@ const EvalFormWizard = Vue.component('eval-form', {
       this.$refs.laboral.tipo_comprobante = response.tipo_comprobante;
       this.$refs.laboral.antiguedad_actividad = response.antiguedad_actividad;
       this.$refs.laboral.antiguedad_operacion = response.antiguedad_operacion;
+      this.$refs.laboral.actividad_especifica = response.actividad_especifica;
+      this.$refs.laboral.numero_empleados = response.numero_empleados;
+      this.$refs.laboral.promedio_venta_anual = response.promedio_venta_anual;
       this.$refs.buro_credito.deuda_total = response.deuda_total;
       this.$refs.buro_credito.MONTHS_ON_FILE_BANKING = response.MONTHS_ON_FILE_BANKING;
       this.$refs.buro_credito.BK12_CLEAN = response.BK12_CLEAN;
@@ -1384,6 +1391,15 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
     setOperSeniority: function(val) {
       this.solicitud.antiguedad_operacion = val;
+    },
+    setSpecActivity: function(val) {
+      this.solicitud.actividad_especifica = val;
+    },
+    setNumEmployees: function(val) {
+      this.solicitud.numero_empleados = val;
+    },
+    setAvgAnnualSales: function(val) {
+      this.solicitud.promedio_venta_anual = val;
     },
     setDebtorQual: function(val) {
     	this.solicitud.calificacion_deudor = val;

@@ -61,7 +61,15 @@ const DetailForm = Vue.component('detail', {
                 <tr>
                   <td><label class="label">Accionistas:</label></td>
                   <td colspan="5">{{accionistas}}</td>
-                </tr>               
+                </tr>
+                <tr>
+                  <td><label class="label">Actividad específica:</label></td>
+                  <td>{{solicitud.actividad_especifica}}</td>
+                  <td><label class="label">No. empleados:</label></td>
+                  <td>{{solicitud.numero_empleados}}</td>
+                  <td><label class="label">Promedio venta anual:</label></td>
+                  <td>{{solicitud.promedio_venta_anual}}</td>
+                </tr>              
                 <tr>
                   <td colspan="6" class="div-titulos">Líneas de crédito</td>
                 </tr>
@@ -329,6 +337,9 @@ const DetailForm = Vue.component('detail', {
         destino_credito: null,
         antiguedad_actividad: null,
         antiguedad_operacion: null,
+        actividad_especifica: null,
+        numero_empleados: null,
+        promedio_venta_anual: null,
         calificacion_deudor: null,
         deuda_total: null,
         MONTHS_ON_FILE_BANKING: null,
@@ -618,6 +629,9 @@ const DetailForm = Vue.component('detail', {
       this.solicitud.tipo_comprobante = response.tipo_comprobante;
       this.solicitud.antiguedad_actividad = response.antiguedad_actividad;
       this.solicitud.antiguedad_operacion = response.antiguedad_operacion;
+      this.solicitud.actividad_especifica = response.actividad_especifica;
+      this.solicitud.numero_empleados = response.numero_empleados;
+      this.solicitud.promedio_venta_anual = response.promedio_venta_anual;
       this.solicitud.deuda_total = response.deuda_total;
       this.solicitud.MONTHS_ON_FILE_BANKING = response.MONTHS_ON_FILE_BANKING;
       this.solicitud.BK12_CLEAN = response.BK12_CLEAN;
