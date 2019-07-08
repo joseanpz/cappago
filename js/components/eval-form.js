@@ -921,21 +921,21 @@ const EvalFormWizard = Vue.component('eval-form', {
       return this.INGRESO_MENSUAL * this.nivel_riesgo.n_veces_riesgo;
     },
     valor_actual: function () {
-      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.config ) return null;
+      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.config || !this.solicitud.deuda_cortoplazo) return null;
+      var deuda_cp_mensual = null
+      if (this.solicitud.tipo_comprobante === "account_statements"){
+        deuda_cp_mensual = this.solicitud.deuda_cortoplazo;
+      } else {
+        if (!this.solicitud.pasivo_financiero_corto ) return null;
+        deuda_cp_mensual = Math.max( this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo);  
+      }
 
-      return this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva;       
+      return (this.FLUJO_MENSUAL - deuda_cp_mensual / 12) * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva;       
     },
 
     capacidad_pago_smp: function () {
-      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.solicitud.deuda_cortoplazo || !this.config ) return null;
-      var valor_actual = this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva; 
-      if (this.solicitud.tipo_comprobante === "account_statements"){
-        return Math.max(0, valor_actual - this.solicitud.deuda_cortoplazo);
-      } else {
-        if (!this.solicitud.pasivo_financiero_corto ) return null;
-        return Math.max(0, valor_actual - Math.max(parseFloat(this.config.factor_pasivo_financiero) * this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo));  
-      }
-       
+      if (!this.valor_actual) return null;
+      return this.valor_actual;       
     },
 
     // lineas de credito
