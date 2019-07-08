@@ -35,7 +35,7 @@ var BuroCreditoStep = Vue.component('buro-credito-step', {
 														<td><input type="number" step="0.001" v-model="MONTHS_ON_FILE_BANKING" class="input" /> </td>
 													</tr>
 													<tr>
-														<td><label class="label">Deuda a Corto Plazo Total (instituciones Bancarias y No Bancarias: <b>BK_DEUDA_CP+NBK_DEUDA_CP</b>): </label></td>
+														<td><label class="label">Deuda a Corto Plazo Total: </label></td>
 														<td><input type="number" step="0.001" v-model="deuda_cortoplazo" class="input" /></td>
 													</tr>
 												</table>
