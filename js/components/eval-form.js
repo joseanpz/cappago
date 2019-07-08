@@ -722,30 +722,33 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     FLUJO_MENSUAL: function () {
+      if (!this.solicitud.id_nivel_riesgo || !this.factor_uafir || !this.INGRESO_MENSUAL) return null;
+      var id_nr = parseInt(this.solicitud.id_nivel_riesgo);
+      var uafir_mensual = null;
+
       if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (this.balances_movil_means.length === 0 || !this.balances_tendency_factor || !this.solicitud.id_nivel_riesgo) return null;
+        if (this.balances_movil_means.length === 0 || !this.balances_tendency_factor) return null;
         var comparatives = [this.balances_movil_means, this.balances_projection * this.balances_tendency_factor];
-        var id_nr = parseInt(this.solicitud.id_nivel_riesgo);
+
         if (id_nr < 4) {           
-          return Math.max(comparatives[0], comparatives[1]) ; 
+          uafir_mensual = Math.max(comparatives[0], comparatives[1]) ; 
         } else if (id_nr < 6) {
-          return (parseFloat(comparatives[0]) + parseFloat(comparatives[1])) / 2 ; 
-        } else if (id_nr >= 6) {
-          return Math.min(comparatives[0], comparatives[1]) ;   
-        }  else {
-          return null;
+          uafir_mensual = (parseFloat(comparatives[0]) + parseFloat(comparatives[1])) / 2 ; 
+        } else {
+          uafir_mensual = Math.min(comparatives[0], comparatives[1]) ;   
         }      
       } else {
-        if (!this.solicitud.id_nivel_riesgo || !this.solicitud.id_actividad || !this.INGRESO_MENSUAL || !this.solicitud.uafir) return null;
-        var id_nr = parseInt(this.solicitud.id_nivel_riesgo);
-        if (id_nr < 5 ) {
-          console.log('flujo mensual preaprobado');
-          return Math.min(this.INGRESO_MENSUAL*this.factor_uafir*1.2, this.solicitud.uafir/12);
-        } else {
-          console.log('flujo mensual estudio o denegado');
-          return Math.min(this.INGRESO_MENSUAL*this.factor_uafir, this.solicitud.uafir/12);
-        }
-      } 
+        if (!this.solicitud.uafir) return null;
+        uafir_mensual = this.solicitud.uafir/12;        
+      }       
+      
+      if (id_nr < 5 ) {
+        console.log('flujo mensual preaprobado');
+        return Math.min(this.INGRESO_MENSUAL*this.factor_uafir*1.2, uafir_mensual);
+      } else {
+        console.log('flujo mensual estudio o denegado');
+        return Math.min(this.INGRESO_MENSUAL*this.factor_uafir, uafir_mensual);
+      }
     },
 
     FLUJO_ANUAL: function () {
