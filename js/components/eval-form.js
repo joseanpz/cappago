@@ -764,11 +764,11 @@ const EvalFormWizard = Vue.component('eval-form', {
     factor_monto_maximo: function () {
       if (!this.solicitud.score || this.solicitud.score < 0) return null;
 
-      if (this.solicitud.score <= 592) {
+      if (this.solicitud.score <= 600) {
         return 0.5;
       } else if (this.solicitud.score <= 743) {
         return Math.min(0.034244095 * Math.exp( 0.004467184 * this.solicitud.score  ), 1.5);
-      } else if (this.solicitud.score <= 843) {
+      } else if (this.solicitud.score <= 835) {
         return Math.min(3.971645403 * Math.log( this.solicitud.score  ) - 25.22004859, 1.5);
       } else {
         return 1.5;
