@@ -722,30 +722,33 @@ const EvalFormWizard = Vue.component('eval-form', {
     },
 
     FLUJO_MENSUAL: function () {
+      if (!this.solicitud.id_nivel_riesgo || !this.factor_uafir || !this.INGRESO_MENSUAL) return null;
+      var id_nr = parseInt(this.solicitud.id_nivel_riesgo);
+      var uafir_mensual = null;
+
       if (this.solicitud.tipo_comprobante === "account_statements" ) {
-        if (this.balances_movil_means.length === 0 || !this.balances_tendency_factor || !this.solicitud.id_nivel_riesgo) return null;
+        if (this.balances_movil_means.length === 0 || !this.balances_tendency_factor) return null;
         var comparatives = [this.balances_movil_means, this.balances_projection * this.balances_tendency_factor];
-        var id_nr = parseInt(this.solicitud.id_nivel_riesgo);
+
         if (id_nr < 4) {           
-          return Math.max(comparatives[0], comparatives[1]) ; 
+          uafir_mensual = Math.max(comparatives[0], comparatives[1]) ; 
         } else if (id_nr < 6) {
-          return (parseFloat(comparatives[0]) + parseFloat(comparatives[1])) / 2 ; 
-        } else if (id_nr >= 6) {
-          return Math.min(comparatives[0], comparatives[1]) ;   
-        }  else {
-          return null;
+          uafir_mensual = (parseFloat(comparatives[0]) + parseFloat(comparatives[1])) / 2 ; 
+        } else {
+          uafir_mensual = Math.min(comparatives[0], comparatives[1]) ;   
         }      
       } else {
-        if (!this.solicitud.id_nivel_riesgo || !this.solicitud.id_actividad || !this.INGRESO_MENSUAL || !this.solicitud.uafir) return null;
-        var id_nr = parseInt(this.solicitud.id_nivel_riesgo);
-        if (id_nr < 5 ) {
-          console.log('flujo mensual preaprobado');
-          return Math.min(this.INGRESO_MENSUAL*this.factor_uafir*1.2, this.solicitud.uafir/12);
-        } else {
-          console.log('flujo mensual estudio o denegado');
-          return Math.min(this.INGRESO_MENSUAL*this.factor_uafir, this.solicitud.uafir/12);
-        }
-      } 
+        if (!this.solicitud.uafir) return null;
+        uafir_mensual = this.solicitud.uafir/12;        
+      }       
+      
+      if (id_nr < 5 ) {
+        console.log('flujo mensual preaprobado');
+        return Math.min(this.INGRESO_MENSUAL*this.factor_uafir*1.2, uafir_mensual);
+      } else {
+        console.log('flujo mensual estudio o denegado');
+        return Math.min(this.INGRESO_MENSUAL*this.factor_uafir, uafir_mensual);
+      }
     },
 
     FLUJO_ANUAL: function () {
@@ -761,11 +764,11 @@ const EvalFormWizard = Vue.component('eval-form', {
     factor_monto_maximo: function () {
       if (!this.solicitud.score || this.solicitud.score < 0) return null;
 
-      if (this.solicitud.score <= 592) {
+      if (this.solicitud.score <= 600) {
         return 0.5;
       } else if (this.solicitud.score <= 743) {
         return Math.min(0.034244095 * Math.exp( 0.004467184 * this.solicitud.score  ), 1.5);
-      } else if (this.solicitud.score <= 843) {
+      } else if (this.solicitud.score <= 835) {
         return Math.min(3.971645403 * Math.log( this.solicitud.score  ) - 25.22004859, 1.5);
       } else {
         return 1.5;
@@ -918,21 +921,21 @@ const EvalFormWizard = Vue.component('eval-form', {
       return this.INGRESO_MENSUAL * this.nivel_riesgo.n_veces_riesgo;
     },
     valor_actual: function () {
-      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.config ) return null;
+      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.config || !this.solicitud.deuda_cortoplazo) return null;
+      var deuda_cp_mensual = null
+      if (this.solicitud.tipo_comprobante === "account_statements"){
+        deuda_cp_mensual = this.solicitud.deuda_cortoplazo;
+      } else {
+        if (!this.solicitud.pasivo_financiero_corto ) return null;
+        deuda_cp_mensual = Math.max( this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo);  
+      }
 
-      return this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva;       
+      return (this.FLUJO_MENSUAL - deuda_cp_mensual / 12) * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva;       
     },
 
     capacidad_pago_smp: function () {
-      if (!this.FLUJO_MENSUAL || !this.nivel_riesgo || !this.solicitud.deuda_cortoplazo || !this.config ) return null;
-      var valor_actual = this.FLUJO_MENSUAL * this.config.factor2 * (1 - Math.pow(1 + this.tasa_mensual_iva, -this.plazo_simple)) / this.tasa_mensual_iva; 
-      if (this.solicitud.tipo_comprobante === "account_statements"){
-        return Math.max(0, valor_actual - this.solicitud.deuda_cortoplazo);
-      } else {
-        if (!this.solicitud.pasivo_financiero_corto ) return null;
-        return Math.max(0, valor_actual - Math.max(parseFloat(this.config.factor_pasivo_financiero) * this.solicitud.pasivo_financiero_corto, this.solicitud.deuda_cortoplazo));  
-      }
-       
+      if (!this.valor_actual) return null;
+      return this.valor_actual;       
     },
 
     // lineas de credito
