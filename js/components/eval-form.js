@@ -403,11 +403,13 @@ const EvalFormWizard = Vue.component('eval-form', {
         BK12_MAX_CREDIT_AMT: this.solicitud.BK12_MAX_CREDIT_AMT,
         linea_mas_alta: this.solicitud.linea_mas_alta,
         monto_maximo: this.monto_maximo,*/
+        // linea_revolvente_sugerida: this.solicitud.linea_revolvente_sugerida
         VENTAS: this.VENTAS,
         cambia_decreto: this.cambia_decreto,
         linea_simple_prev: this.linea_simple_prev,
         linea_revolvente_prev: this.linea_revolvente_prev,
         linea_revolvente_sin_ventas: this.linea_revolvente_sin_ventas,
+        linea_revolvente_prev_sin_ventas: this.linea_revolvente_prev_sin_ventas,
         linea_simple: this.linea_simple,
         plazo_simple: this.plazo_simple,
         linea_revolvente: this.linea_revolvente,
@@ -421,6 +423,9 @@ const EvalFormWizard = Vue.component('eval-form', {
         deuda_cortoplazo: this.solicitud.deuda_cortoplazo,
         capacidad_pago_smp: this.capacidad_pago_smp,
         capacidad_pago_rev: this.capacidad_pago_rev,
+        monto_simple: this.monto_simple,
+        monto_revolvente: this.monto_revolvente,
+        dif_deuda_ingreso: this.dif_deuda_ingreso,
         //deposits_movil_means: this.deposits_movil_means,
         //balances_movil_means: this.balances_movil_means,
         //deposits_polynomial_tendency: this.deposits_polynomial_tendency,
@@ -942,20 +947,20 @@ const EvalFormWizard = Vue.component('eval-form', {
     linea_simple_prev: function () {
       if (this.solicitud.tipo_comprobante === "account_statements"){
         if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp  ) return 0;
-        return Math.min(this.monto_simple, this.capacidad_pago_smp, this.razon_FDA_FRC_smp);
+        return Math.max(0, Math.min(this.monto_simple, this.capacidad_pago_smp, this.razon_FDA_FRC_smp));
       } else {
         if (!this.capacidad_pago_smp || !this.dif_deuda_ingreso_smp || !this.razon_FDA_FRC_smp || this.solicitud.capital_contable === null ) return 0;
-        return Math.min(this.monto_simple, this.capacidad_pago_smp, this.razon_FDA_FRC_smp, 0.25*parseFloat(this.solicitud.capital_contable));
+        return Math.max(0, Math.min(this.monto_simple, this.capacidad_pago_smp, this.razon_FDA_FRC_smp, 0.25*parseFloat(this.solicitud.capital_contable)));
       }        
     },
 
     linea_revolvente_prev: function () {
       if (this.solicitud.tipo_comprobante === "account_statements"){
         if (!this.monto_revolvente || !this.capacidad_pago_rev || !this.razon_FDA_tasa_rev || !this.VENTAS || this.monto_maximo === null) return 0;
-        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, Math.max(this.VENTAS, this.monto_maximo));
+        return Math.max(0, Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, Math.max(this.VENTAS, this.monto_maximo)));
       } else {
         if (!this.capacidad_pago_rev || !this.dif_deuda_ingreso_rev || !this.razon_FDA_tasa_rev  || !this.VENTAS || this.monto_maximo === null || this.solicitud.capital_contable === null) return 0;
-        return Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, 0.25*parseFloat(this.solicitud.capital_contable), Math.max(this.VENTAS, this.monto_maximo));
+        return Math.max(0, Math.min(this.monto_revolvente, this.capacidad_pago_rev, this.razon_FDA_tasa_rev, 0.25*parseFloat(this.solicitud.capital_contable), Math.max(this.VENTAS, this.monto_maximo)));
       }
     },
 
