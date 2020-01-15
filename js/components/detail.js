@@ -2,27 +2,24 @@ const DetailForm = Vue.component('detail', {
   props: ['id'],
   template: `
     <section class="container" >
-      <div id="detail-print" style="padding:30px;">          
-
-        <header class="columns navbar is-primary" id="header_PDF" style="display:none; padding-bottom:20px;">
-          <a class="navbar-item" href="#" style="font-weight:bold; padding-left:50px;">
-              banregio  
-          </a>
-        </header>
+      <div id="detail-print" style="padding:30px;">  
         <div class="columns">
-          <p style="font-size:12px; text-align:right;" class="column"> 
-            ACUERDO PARA AUTORIZACIÓN DE LÍNEA DE CRÉDITO <br/>
-            <span style="font-size:10px;"><b>Crédito Negocios</b></span> <br/>
-            <span style="font-size:10px;"><b>Fecha de presentación: {{solicitud.fecha_solicitud}}</b></span> <br/>
+          <p  class="column" style="font-weight:bold; color:black; line-height:15pt;">
+            <span  style="font-size:20px; ">ACUERDO PARA AUTORIZACIÓN DE LÍNEA DE CRÉDITO</span>            
+            <span style="font-size:16px; display:inline-block;">Crédito Negocios</span>            
+          </p>
+          <p style="font-size:14px; text-align:right; font-weight:bold" class="column">             
+            <span id="header_PDF" style="font-size:16px; display:none;">banregio | inteligencia de riesgos</span>  
+            <span style="display:grid;">Fecha de presentación: {{solicitud.fecha_solicitud}}</span>
           </p>
         </div>
         <br/>
         <div class="columns" style="#padding-bottom: 250px;">
-          <div class="column">
-            <table class="table is-bordered is-striped" style="width:100%;">
+          <div class="column table-pdf">
+            <table class="table is-bordered" style="width:100%; font-weight:bold">
               <tbody>
                 <tr>
-                  <td colspan="6" class="div-titulos">Información General</td>
+                  <td colspan="6" class="div-titulos-pdf">Información General</td>
                 <tr>
                 <tr>
                   <td><label class="label">Solicitante:</label></td>
@@ -71,7 +68,7 @@ const DetailForm = Vue.component('detail', {
                   <td>{{solicitud.promedio_venta_anual}}</td>
                 </tr>              
                 <tr>
-                  <td colspan="6" class="div-titulos">Líneas de crédito</td>
+                  <td colspan="6" class="div-titulos-pdf">Líneas de crédito</td>
                 </tr>
                 <tr>
                   <td colspan="6">
@@ -162,7 +159,7 @@ const DetailForm = Vue.component('detail', {
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="6" class="div-titulos">Avales/ Obligados solidarios / Fiadores</td>
+                  <td colspan="6" class="div-titulos-pdf">Avales / Obligados solidarios / Fiadores</td>
                 <tr>
                 <tr>
                   <td colspan="2"><label class="label">Ref:</label></td>
@@ -173,7 +170,7 @@ const DetailForm = Vue.component('detail', {
                   <td colspan="4">{{aval}}</td>                  
                 </tr>
                 <tr>
-                  <td colspan="6" class="div-titulos">Decreto paramétrico</td>
+                  <td colspan="6" class="div-titulos-pdf">Decreto paramétrico</td>
                 </tr>                              
                 <tr>
                   <td colspan="6" style="text-align:center;"><b>{{ decreto }}</b></td>
@@ -187,7 +184,7 @@ const DetailForm = Vue.component('detail', {
                   <td colspan="3" style="text-align:center; font-size:18px;"><b>{{solicitud.linea_simple_sugerida | monto_redondeado}}</b></td>   
                 </tr> 
                 <tr>
-                  <td colspan="6" class="div-titulos">Calificación de cartera</td>
+                  <td colspan="6" class="div-titulos-pdf">Calificación de cartera</td>
                 <tr>
                 <tr>
                   <td colspan="2">Fecha de consulta de buró</td>
@@ -206,10 +203,10 @@ const DetailForm = Vue.component('detail', {
                   <td colspan="4">{{solicitud.calif_buro}}</td>                  
                 </tr>
                 <tr>
-                  <td colspan="6" class="div-titulos">Firmas facultadas</td>
+                  <td colspan="6" class="div-titulos-pdf">Firmas facultadas</td>
                 </tr>
                 <tr>
-                  <td colspan="6" class="div-titulos" style="height:200px;">
+                  <td colspan="6" class="div-titulos-pdf" style="height:200px;">
                     <label class="label" style="float:right;">Fecha de autorización</label>
                   </td>
                 </tr>
@@ -461,15 +458,15 @@ const DetailForm = Vue.component('detail', {
   methods: {
     genPDF: function () {   
       var self = this;
-      document.getElementById("header_PDF").style.display = "block";
-      document.getElementById("div_footer").style.display = "block";
+      document.getElementById("header_PDF").style.display = "grid";
+      // document.getElementById("div_footer").style.display = "block";
 
       html2canvas(document.getElementById("detail-print"), {
         onrendered: function (canvas) {
           
           var img = canvas.toDataURL("image/url",1.0);  
           var doc = new jsPDF('p', 'pt', 'letter')
-          doc.addImage(img, 'JPEG',25,10,560,770); //
+          doc.addImage(img, 'JPEG',25,35,550,735); // (x0, y0, hlength, vlength)
           
           doc.save('CapacidadPago_'+self.solicitud.numero_solicitud+'.pdf');
            document.getElementById("header_PDF").style.display = "none";
