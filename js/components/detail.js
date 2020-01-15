@@ -302,11 +302,16 @@ const DetailForm = Vue.component('detail', {
           </div>
         </div>
       </div>
-      <div class="columns">
-        <div class="column">
-          <button class="button " @click = "genPDF" style="float: right; background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Descarga</button>
+
+      <div class="card">
+        <div class="card-content">  
+          <div class="content columns">
+            <div class="column">              
+            <button class="button " @click = "genPDF" style="float: right; background-color: rgb(58, 95, 171); border-color: rgb(58, 95, 171); color: white;" >Descarga</button>              
+            </div>
+          </div>            
         </div>
-      </div>        
+      </div>       
     </section> 
   `,
   data () {
